@@ -5,12 +5,13 @@ export class MParticleCapacitorWeb
   extends WebPlugin
   implements MParticleCapacitorPlugin {
 
-    constructor() {
-      super({
-        name: 'MParticlePlugin',
-        platforms: ['web']
-      });
-    }
+    // check on this later
+    // constructor() {
+    //   super({
+    //     name: 'MParticlePlugin',
+    //     platforms: ['web']
+    //   });
+    // }
 
     
   async echo(options: { value: string }): Promise<{ value: string }> {
@@ -23,9 +24,10 @@ export class MParticleCapacitorWeb
   }
 }
 
-const MParticlePlugin = new MParticleCapacitorWeb();
+// builds without. check on later
+// const MParticlePlugin = new MParticleCapacitorWeb();
  
-export { MParticlePlugin };
+// export { MParticlePlugin };
  
-import { registerWebPlugin } from '@capacitor/core';
-registerWebPlugin(MParticlePlugin);
+// import { registerWebPlugin } from '@capacitor/core';
+// registerWebPlugin(MParticlePlugin);
