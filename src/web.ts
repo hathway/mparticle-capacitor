@@ -9,4 +9,15 @@ export class MParticleCapacitorWeb
     console.log('ECHO', options);
     return options;
   }
+  
+  async helloMP(): Promise<string> {
+    return 'hello from mParticle';
+  }
 }
+
+const MParticlePlugin = new MParticleCapacitorWeb();
+ 
+export { MParticlePlugin };
+ 
+import { registerWebPlugin } from '@capacitor/core';
+registerWebPlugin(MParticlePlugin);
