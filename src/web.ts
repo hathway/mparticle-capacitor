@@ -22,6 +22,10 @@ export class MParticleCapacitorWeb
   async helloMP(): Promise<string> {
     return 'hello from mParticle';
   }
+
+  async mParticleInit(call:any): Promise<string> {
+    return call;
+  }
 }
 
 // builds without. check on later

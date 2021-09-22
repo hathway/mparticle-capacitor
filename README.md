@@ -15,6 +15,9 @@ npx cap sync
 
 * [`echo(...)`](#echo)
 * [`helloMP()`](#hellomp)
+* [`mParticleInit(...)`](#mparticleinit)
+* [`addListener(...)`](#addlistener)
+* [Interfaces](#interfaces)
 
 </docgen-index>
 
@@ -45,5 +48,46 @@ helloMP() => any
 **Returns:** <code>any</code>
 
 --------------------
+
+
+### mParticleInit(...)
+
+```typescript
+mParticleInit(call: any) => any
+```
+
+| Param      | Type             |
+| ---------- | ---------------- |
+| **`call`** | <code>any</code> |
+
+**Returns:** <code>any</code>
+
+--------------------
+
+
+### addListener(...)
+
+```typescript
+addListener(eventName: 'mParticleInit', listenerFunc: mParticleInitListener) => Promise<PluginListenerHandle> & PluginListenerHandle
+```
+
+| Param              | Type                               |
+| ------------------ | ---------------------------------- |
+| **`eventName`**    | <code>"mParticleInit"</code>       |
+| **`listenerFunc`** | <code>(info: any) =&gt; any</code> |
+
+**Returns:** <code>any</code>
+
+--------------------
+
+
+### Interfaces
+
+
+#### PluginListenerHandle
+
+| Prop         | Type                      |
+| ------------ | ------------------------- |
+| **`remove`** | <code>() =&gt; any</code> |
 
 </docgen-api>

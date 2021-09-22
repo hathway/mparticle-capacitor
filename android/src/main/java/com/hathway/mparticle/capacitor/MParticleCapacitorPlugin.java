@@ -19,4 +19,20 @@ public class MParticleCapacitorPlugin extends Plugin {
         ret.put("value", implementation.echo(value));
         call.resolve(ret);
     }
+
+    @PluginMethod
+    public void helloMP(PluginCall call) {
+        JSObject ret = new JSObject();
+        ret.put("value", implementation.echo("helloMP Android"));
+        call.resolve(ret);
+    }
+
+    @PluginMethod
+    public void mParticleInit(PluginCall call) {
+        JSObject ret = new JSObject();
+        ret.put("value", "android mParticleInit");
+        notifyListeners("myPluginEvent", ret);        
+        String value = call.getString("value");
+        call.resolve(ret);
+    }
 }
