@@ -1,6 +1,6 @@
 import Foundation
 import Capacitor
-import mParticle_Apple_SDK
+import mParticle_Apple_SDK;
 
 /**
  * Please read the Capacitor iOS Plugin Development Guide
