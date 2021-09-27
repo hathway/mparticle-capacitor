@@ -8,6 +8,8 @@ export interface MParticleCapacitorPlugin {
 
   mParticleInit(call:any): Promise<any>;
 
+  logMPEvent(call:any): Promise<any>;
+
   addListener(
     eventName: 'mParticleInit',
     listenerFunc: mParticleInitListener,

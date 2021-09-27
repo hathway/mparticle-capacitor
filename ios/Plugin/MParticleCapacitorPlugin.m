@@ -8,4 +8,5 @@ CAP_PLUGIN(MParticleCapacitorPlugin, "MParticleCapacitor",
            CAP_PLUGIN_METHOD(helloMP, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(mParticleInit, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(application, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(logMPEvent, CAPPluginReturnPromise);
 )

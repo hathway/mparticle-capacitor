@@ -16,6 +16,7 @@ npx cap sync
 * [`echo(...)`](#echo)
 * [`helloMP()`](#hellomp)
 * [`mParticleInit(...)`](#mparticleinit)
+* [`logMPEvent(...)`](#logmpevent)
 * [`addListener(...)`](#addlistener)
 * [Interfaces](#interfaces)
 
@@ -54,6 +55,21 @@ helloMP() => any
 
 ```typescript
 mParticleInit(call: any) => any
+```
+
+| Param      | Type             |
+| ---------- | ---------------- |
+| **`call`** | <code>any</code> |
+
+**Returns:** <code>any</code>
+
+--------------------
+
+
+### logMPEvent(...)
+
+```typescript
+logMPEvent(call: any) => any
 ```
 
 | Param      | Type             |

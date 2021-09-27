@@ -26,6 +26,11 @@ export class MParticleCapacitorWeb
   async mParticleInit(call:any): Promise<string> {
     return call;
   }
+
+  async logMPEvent(call:any) {
+    console.log('event fired',call);
+    return call;
+  }
 }
 
 // builds without. check on later

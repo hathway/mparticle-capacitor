@@ -35,4 +35,11 @@ public class MParticleCapacitorPlugin extends Plugin {
         String value = call.getString("value");
         call.resolve(ret);
     }
+
+    @PluginMethod
+    public void logMPEvent(PluginCall call) {
+        System.out.println('logevent called');
+        JSObject ret = new JSObject();
+        call.resolve(ret)
+    }
 }
