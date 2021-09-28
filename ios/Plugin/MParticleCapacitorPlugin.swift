@@ -33,12 +33,12 @@ public class MParticleCapacitorPlugin: CAPPlugin {
 
         MParticle.sharedInstance().start(with: options)
 
-        self.notifyListeners("mParticleInit", data: ["value":"I am init'd"])
-        let value = call.getString("value") ?? ""
-        dump("i am ios mparticleinit call:")
-        dump(value)
+        // self.notifyListeners("mParticleInit", data: ["value":"I am init'd"])
+        // let value = call.getString("value") ?? ""
+        // dump("i am ios mparticleinit call:")
+        // dump(value)
         call.resolve([
-            "value": implementation.echo(value)
+            "value": "ios mparticle initialized"
         ])
     }
 

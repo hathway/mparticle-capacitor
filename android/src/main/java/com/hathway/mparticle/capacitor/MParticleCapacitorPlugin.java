@@ -29,17 +29,11 @@ public class MParticleCapacitorPlugin extends Plugin {
 
     @PluginMethod
     public void mParticleInit(PluginCall call) {
-        JSObject ret = new JSObject();
-        ret.put("value", "android mParticleInit");
-        notifyListeners("myPluginEvent", ret);        
-        String value = call.getString("value");
-        call.resolve(ret);
+        call.unimplemented('Not implemented on Android.');
     }
 
     @PluginMethod
     public void logMPEvent(PluginCall call) {
-        System.out.println('logevent called');
-        JSObject ret = new JSObject();
-        call.resolve(ret)
+        call.unimplemented('Not implemented on Android.');
     }
 }
