@@ -55,4 +55,9 @@ dependencies {
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+    implementation 'com.mparticle:android-core:5+'
+    // // Required for gathering Android Advertising ID (see below)
+    // implementation 'com.google.android.gms:play-services-ads-identifier:16.0.0'
+    // // Recommended to query the Google Play install referrer
+    // implementation 'com.android.installreferrer:installreferrer:1.0'
 }
