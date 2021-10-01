@@ -17,6 +17,8 @@ npx cap sync
 * [`helloMP()`](#hellomp)
 * [`mParticleInit(...)`](#mparticleinit)
 * [`logMPEvent(...)`](#logmpevent)
+* [`logMParticlePageView(...)`](#logmparticlepageview)
+* [`setUserAttribute(...)`](#setuserattribute)
 * [`addListener(...)`](#addlistener)
 * [Interfaces](#interfaces)
 
@@ -70,6 +72,36 @@ mParticleInit(call: any) => any
 
 ```typescript
 logMPEvent(call: any) => any
+```
+
+| Param      | Type             |
+| ---------- | ---------------- |
+| **`call`** | <code>any</code> |
+
+**Returns:** <code>any</code>
+
+--------------------
+
+
+### logMParticlePageView(...)
+
+```typescript
+logMParticlePageView(call: any) => any
+```
+
+| Param      | Type             |
+| ---------- | ---------------- |
+| **`call`** | <code>any</code> |
+
+**Returns:** <code>any</code>
+
+--------------------
+
+
+### setUserAttribute(...)
+
+```typescript
+setUserAttribute(call: any) => any
 ```
 
 | Param      | Type             |

@@ -60,6 +60,26 @@ public class MParticleCapacitorPlugin: CAPPlugin {
         ])
     }
 
+    @objc func logMParticlePageView(_ call: CAPPluginCall) {
+        let name = call.getString("pageName") ?? "default name"
+        let screenInfo = ["page": call.getString("pageLink") ?? "link"];
+
+        MParticle.sharedInstance().logScreen(name, eventInfo: screenInfo)
+        call.resolve([
+            "value":"success",
+        ])
+    }
+
+    @objc func setUserAttribute(_ call: CAPPluginCall) {
+        let name = call.getString("attributeName") ?? "default name"
+        let value = call.getString("attributeValue") ?? "default value"
+
+        implementation.currentUser().setUserAttribute(name, value: value)
+        call.resolve([
+            "value":"success",
+        ])
+    }
+
     @objc func echo(_ call: CAPPluginCall) {
         let value = call.getString("value") ?? ""
         dump("i am ios:")
@@ -70,9 +90,10 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func helloMP(_ call: CAPPluginCall) {
-        dump("helloMP iOS")
-        call.resolve([
-            "value": implementation.echo("hello from mParticle")
-        ])
+        call.unimplemented("Not implemented on iOS.")
+        // dump("helloMP iOS")
+        // call.resolve([
+        //     "value": implementation.echo("hello from mParticle")
+        // ])
     }
 }
