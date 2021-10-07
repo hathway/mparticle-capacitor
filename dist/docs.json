@@ -1,0 +1,144 @@
+{
+  "api": {
+    "name": "MParticleCapacitorPlugin",
+    "slug": "mparticlecapacitorplugin",
+    "docs": "",
+    "tags": [],
+    "methods": [
+      {
+        "name": "echo",
+        "signature": "(options: { value: string; }) => any",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "",
+            "type": "{ value: string; }"
+          }
+        ],
+        "returns": "any",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "echo"
+      },
+      {
+        "name": "helloMP",
+        "signature": "() => any",
+        "parameters": [],
+        "returns": "any",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "hellomp"
+      },
+      {
+        "name": "mParticleInit",
+        "signature": "(call: any) => any",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "any",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "mparticleinit"
+      },
+      {
+        "name": "logMParticleEvent",
+        "signature": "(call: any) => any",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "any",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "logmparticleevent"
+      },
+      {
+        "name": "logMParticlePageView",
+        "signature": "(call: any) => any",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "any",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "logmparticlepageview"
+      },
+      {
+        "name": "setUserAttribute",
+        "signature": "(call: any) => any",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "any",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "setuserattribute"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'mParticleInit', listenerFunc: mParticleInitListener) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "\"mParticleInit\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(info: any) => any"
+          }
+        ],
+        "returns": "any",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [
+          "mParticleInitListener",
+          "PluginListenerHandle"
+        ],
+        "slug": "addlistener"
+      }
+    ],
+    "properties": []
+  },
+  "interfaces": [
+    {
+      "name": "PluginListenerHandle",
+      "slug": "pluginlistenerhandle",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "remove",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "() => any"
+        }
+      ]
+    }
+  ],
+  "enums": []
+}

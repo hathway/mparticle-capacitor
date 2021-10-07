@@ -33,7 +33,7 @@ public class MParticleCapacitorPlugin extends Plugin {
     }
 
     @PluginMethod
-    public void logMPEvent(PluginCall call) {
+    public void logMParticleEvent(PluginCall call) {
         call.unimplemented("Not implemented on Android.");
     }
 
@@ -44,6 +44,11 @@ public class MParticleCapacitorPlugin extends Plugin {
 
     @PluginMethod
     public void setUserAttribute(PluginCall call) {
+        call.unimplemented("Not implemented on Android.");
+    }
+
+    @PluginMethod
+    public void setUserAttributeList(PluginCall call) {
         call.unimplemented("Not implemented on Android.");
     }
 

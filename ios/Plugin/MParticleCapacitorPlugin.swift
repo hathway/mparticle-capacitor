@@ -42,7 +42,7 @@ public class MParticleCapacitorPlugin: CAPPlugin {
         ])
     }
 
-    @objc func logMPEvent(_ call: CAPPluginCall) {
+    @objc func logMParticleEvent(_ call: CAPPluginCall) {
         let name = call.getString("eventName") ?? "default name"
         let type =  UInt(call.getInt("eventType") ?? 0)
         let props = call.getObject("eventProperties") ?? [:]
@@ -74,7 +74,21 @@ public class MParticleCapacitorPlugin: CAPPlugin {
         let name = call.getString("attributeName") ?? "default name"
         let value = call.getString("attributeValue") ?? "default value"
 
-        implementation.currentUser().setUserAttribute(name, value: value)
+        implementation.currentUser()?.setUserAttribute(name, value: value)
+        call.resolve([
+            "value":"success",
+        ])
+    }
+
+    @objc func setUserAttributeList(_ call: CAPPluginCall) {
+        let name:String = call.getString("attributeName") ?? "default name"
+        let list = call.getArray("attributeValues") ?? []
+        let listArr:[String] = []
+        for str in list {
+            listArr.append(str.as[String])
+        }
+
+        implementation.currentUser()?.setUserAttributeList(name, values: listArr)
         call.resolve([
             "value":"success",
         ])
