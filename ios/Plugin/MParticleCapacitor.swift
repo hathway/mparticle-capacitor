@@ -6,7 +6,7 @@ import mParticle_Apple_SDK;
         return value
     }
 
-    @objc public func currentUser() -> AnyObject {
-        return MParticle.sharedInstance().identity.currentUser
-    }
+    // @objc public func currentUser() -> AnyObject {
+    //     return MParticle.sharedInstance().identity.currentUser
+    // }
 }

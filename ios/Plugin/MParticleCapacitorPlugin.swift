@@ -71,13 +71,14 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func setUserAttribute(_ call: CAPPluginCall) {
-        let name = call.getString("attributeName") ?? "default name"
-        let value = call.getString("attributeValue") ?? "default value"
+        call.unimplemented("Not implemented on iOS.")
+        // let name = call.getString("attributeName") ?? "default name"
+        // let value = call.getString("attributeValue") ?? "default value"
 
-        implementation.currentUser().setUserAttribute(name, value: value)
-        call.resolve([
-            "value":"success",
-        ])
+        // implementation.currentUser().setUserAttribute(name, value: value)
+        // call.resolve([
+        //     "value":"success",
+        // ])
     }
 
     @objc func echo(_ call: CAPPluginCall) {
