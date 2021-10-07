@@ -8,7 +8,7 @@ export interface MParticleCapacitorPlugin {
     }>;
     helloMP(): Promise<string>;
     mParticleInit(call: any): Promise<any>;
-    logMPEvent(call: any): Promise<any>;
+    logMParticleEvent(call: any): Promise<any>;
     logMParticlePageView(call: any): Promise<any>;
     setUserAttribute(call: any): Promise<any>;
     addListener(eventName: 'mParticleInit', listenerFunc: mParticleInitListener): Promise<PluginListenerHandle> & PluginListenerHandle;

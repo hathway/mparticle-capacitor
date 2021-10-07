@@ -13,7 +13,7 @@ export class MParticleCapacitorWeb extends WebPlugin {
         console.log('web MPinit', call, mParticleConfig);
         return mParticle.init(call.mParticleKey, mParticleConfig);
     }
-    async logMPEvent(call) {
+    async logMParticleEvent(call) {
         console.log('event fired', call);
         return mParticle.logEvent(call.eventName, call.eventType, call.eventProperties);
     }

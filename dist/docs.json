@@ -48,7 +48,7 @@
         "slug": "mparticleinit"
       },
       {
-        "name": "logMPEvent",
+        "name": "logMParticleEvent",
         "signature": "(call: any) => any",
         "parameters": [
           {
@@ -61,7 +61,7 @@
         "tags": [],
         "docs": "",
         "complexTypes": [],
-        "slug": "logmpevent"
+        "slug": "logmparticleevent"
       },
       {
         "name": "logMParticlePageView",

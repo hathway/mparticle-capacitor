@@ -34,7 +34,7 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle) {
             console.log('web MPinit', call, mParticleConfig);
             return mParticle__default['default'].init(call.mParticleKey, mParticleConfig);
         }
-        async logMPEvent(call) {
+        async logMParticleEvent(call) {
             console.log('event fired', call);
             return mParticle__default['default'].logEvent(call.eventName, call.eventType, call.eventProperties);
         }

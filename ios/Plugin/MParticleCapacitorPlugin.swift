@@ -42,7 +42,7 @@ public class MParticleCapacitorPlugin: CAPPlugin {
         ])
     }
 
-    @objc func logMPEvent(_ call: CAPPluginCall) {
+    @objc func logMParticleEvent(_ call: CAPPluginCall) {
         let name = call.getString("eventName") ?? "default name"
         let type =  UInt(call.getInt("eventType") ?? 0)
         let props = call.getObject("eventProperties") ?? [:]
