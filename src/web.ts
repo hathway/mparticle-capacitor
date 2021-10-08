@@ -19,7 +19,7 @@ export class MParticleCapacitorWeb
     return mParticle.init(call.mParticleKey, mParticleConfig);
   }
 
-  async logMPEvent(call:any): Promise<any> {
+  async logMParticleEvent(call:any): Promise<any> {
     console.log('event fired',call);
     return mParticle.logEvent(call.eventName, call.eventType, call.eventProperties);
   }
