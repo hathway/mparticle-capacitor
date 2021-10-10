@@ -19,6 +19,10 @@ export class MParticleCapacitorWeb
     return mParticle.init(call.mParticleKey, mParticleConfig);
   }
 
+  async loginMParticleUser(call:any): Promise<any> {
+    return mParticle.Identity.login(this.identityRequest(call.email, call.customerId));
+  }
+
   async logMParticleEvent(call:any): Promise<any> {
     console.log('event fired',call);
     return mParticle.logEvent(call.eventName, call.eventType, call.eventProperties);
@@ -32,12 +36,21 @@ export class MParticleCapacitorWeb
     ); 
   }
 
+  async setUserAttribute(call:any): Promise<any> {
+    return this.currentUser.setUserAttribute(call.attributeName, call.attributeValue);
+  }
+
   public get currentUser() {
     return mParticle.Identity.getCurrentUser();
   }
 
-  async setUserAttribute(call:any): Promise<any> {
-    return this.currentUser.setUserAttribute(call.attributeName, call.attributeValue);
+  private identityRequest(email: string, customerId: string): any {
+    return {
+      userIdentities: {
+        email,
+        customerid: customerId
+      },
+    };
   }
 
   async echo(options: { value: string }): Promise<{ value: string }> {

@@ -96,6 +96,22 @@
         "slug": "setuserattribute"
       },
       {
+        "name": "loginMParticleUser",
+        "signature": "(call: any) => any",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "any",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "loginmparticleuser"
+      },
+      {
         "name": "addListener",
         "signature": "(eventName: 'mParticleInit', listenerFunc: mParticleInitListener) => Promise<PluginListenerHandle> & PluginListenerHandle",
         "parameters": [

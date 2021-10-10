@@ -19,6 +19,7 @@ npx cap sync
 * [`logMParticleEvent(...)`](#logmparticleevent)
 * [`logMParticlePageView(...)`](#logmparticlepageview)
 * [`setUserAttribute(...)`](#setuserattribute)
+* [`loginMParticleUser(...)`](#loginmparticleuser)
 * [`addListener(...)`](#addlistener)
 * [Interfaces](#interfaces)
 
@@ -102,6 +103,21 @@ logMParticlePageView(call: any) => any
 
 ```typescript
 setUserAttribute(call: any) => any
+```
+
+| Param      | Type             |
+| ---------- | ---------------- |
+| **`call`** | <code>any</code> |
+
+**Returns:** <code>any</code>
+
+--------------------
+
+
+### loginMParticleUser(...)
+
+```typescript
+loginMParticleUser(call: any) => any
 ```
 
 | Param      | Type             |

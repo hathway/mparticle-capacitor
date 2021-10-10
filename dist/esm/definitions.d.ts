@@ -11,6 +11,7 @@ export interface MParticleCapacitorPlugin {
     logMParticleEvent(call: any): Promise<any>;
     logMParticlePageView(call: any): Promise<any>;
     setUserAttribute(call: any): Promise<any>;
+    loginMParticleUser(call: any): Promise<any>;
     addListener(eventName: 'mParticleInit', listenerFunc: mParticleInitListener): Promise<PluginListenerHandle> & PluginListenerHandle;
 }
 export declare enum MParticleEventType {

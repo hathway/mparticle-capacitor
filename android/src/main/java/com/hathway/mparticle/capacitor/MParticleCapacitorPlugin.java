@@ -96,12 +96,25 @@ public class MParticleCapacitorPlugin extends Plugin {
 
     @PluginMethod
     public void setUserAttribute(PluginCall call) {
-        call.unimplemented("Not implemented on Android.");
+        // call.unimplemented("Not implemented on Android.");
+        String name = call.getString("attributeName");
+        String value = call.getString("attributeValue");
+        implementation.currentUser().setUserAttribute(name,value);
+        call.resolve(new JSObject());
     }
 
     @PluginMethod
     public void setUserAttributeList(PluginCall call) {
         call.unimplemented("Not implemented on Android.");
+    }
+
+    @PluginMethod
+    public void loginMParticleUser(PluginCall call) {
+        // call.unimplemented("Not implemented on Android.");
+        String email = call.getString("email");
+        String customerId = call.getString("customerId");
+        MParticle.getInstance().Identity().login(implementation.identityRequest(email,customerId));
+        call.resolve(new JSObject());
     }
 
     // @PluginMethod

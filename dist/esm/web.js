@@ -13,6 +13,9 @@ export class MParticleCapacitorWeb extends WebPlugin {
         console.log('web MPinit', call, mParticleConfig);
         return mParticle.init(call.mParticleKey, mParticleConfig);
     }
+    async loginMParticleUser(call) {
+        return mParticle.Identity.login(this.identityRequest(call.email, call.customerId));
+    }
     async logMParticleEvent(call) {
         console.log('event fired', call);
         return mParticle.logEvent(call.eventName, call.eventType, call.eventProperties);
@@ -20,11 +23,19 @@ export class MParticleCapacitorWeb extends WebPlugin {
     async logMParticlePageView(call) {
         return mParticle.logPageView(call.pageName, { page: call.pageLink });
     }
+    async setUserAttribute(call) {
+        return this.currentUser.setUserAttribute(call.attributeName, call.attributeValue);
+    }
     get currentUser() {
         return mParticle.Identity.getCurrentUser();
     }
-    async setUserAttribute(call) {
-        return this.currentUser.setUserAttribute(call.attributeName, call.attributeValue);
+    identityRequest(email, customerId) {
+        return {
+            userIdentities: {
+                email,
+                customerid: customerId
+            },
+        };
     }
     async echo(options) {
         console.log('ECHO', options);

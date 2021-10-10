@@ -12,4 +12,5 @@ CAP_PLUGIN(MParticleCapacitorPlugin, "MParticleCapacitor",
            CAP_PLUGIN_METHOD(logMParticlePageView, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(setUserAttribute, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(setUserAttributeList, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(loginMParticleUser, CAPPluginReturnPromise);
 )

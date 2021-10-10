@@ -42,6 +42,13 @@ public class MParticleCapacitorPlugin: CAPPlugin {
         ])
     }
 
+    @objc func loginMParticleUser(_ call: CAPPluginCall) {
+        // call.unimplemented("Not implemented on iOS.")
+        let email = call.getString("email") ?? "email"
+        let customerId = call.getString("customerId") ?? "id"
+        MParticle.sharedInstance().identity.login(implementation.identityRequest(email,customerId)!, completion: implementation.identityCallback)
+    }
+
     @objc func logMParticleEvent(_ call: CAPPluginCall) {
         let name = call.getString("eventName") ?? "default name"
         let type =  UInt(call.getInt("eventType") ?? 0)
@@ -71,15 +78,14 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func setUserAttribute(_ call: CAPPluginCall) {
-        call.unimplemented("Not implemented on iOS.")
+        // call.unimplemented("Not implemented on iOS.")
+        let name = call.getString("attributeName") ?? "default name"
+        let value = call.getString("attributeValue") ?? "default value"
 
-        // let name = call.getString("attributeName") ?? "default name"
-        // let value = call.getString("attributeValue") ?? "default value"
-
-        // implementation.currentUser()?.setUserAttribute(name, value: value)
-        // call.resolve([
-        //     "value":"success",
-        // ])
+        implementation.currentUser()?.setUserAttribute(name, value: value)
+        call.resolve([
+            "value":"success",
+        ])
     }
 
     @objc func setUserAttributeList(_ call: CAPPluginCall) {
