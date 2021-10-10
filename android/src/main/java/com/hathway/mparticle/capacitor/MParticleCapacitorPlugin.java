@@ -85,7 +85,13 @@ public class MParticleCapacitorPlugin extends Plugin {
 
     @PluginMethod
     public void logMParticlePageView(PluginCall call) {
-        call.unimplemented("Not implemented on Android.");
+        // call.unimplemented("Not implemented on Android.");
+        String name = call.getString("pageName");
+        String link = call.getString("pageLink");
+        Map<String, String> screenInfo = new HashMap<String, String>();
+        screenInfo.put("page", link);
+        MParticle.getInstance().logScreen(name, screenInfo );
+        call.resolve(new JSObject());
     }
 
     @PluginMethod
