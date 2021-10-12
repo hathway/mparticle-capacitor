@@ -43,11 +43,22 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func loginMParticleUser(_ call: CAPPluginCall) {
-        // call.unimplemented("Not implemented on iOS.")
         let email = call.getString("email") ?? "email"
         let customerId = call.getString("customerId") ?? "id"
         MParticle.sharedInstance().identity.login(implementation.identityRequest(email,customerId)!, completion: implementation.identityCallback)
+        call.resolve([
+            "value":"success",
+        ])
     }
+
+    @objc func logoutMParticleUser(_ call: CAPPluginCall) {
+        // call.unimplemented("Not implemented on iOS.")
+        MParticle.sharedInstance().identity.logout(completion: implementation.identityCallback)
+        call.resolve([
+            "value":"success",
+        ])
+    }
+
 
     @objc func logMParticleEvent(_ call: CAPPluginCall) {
         let name = call.getString("eventName") ?? "default name"

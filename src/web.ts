@@ -23,12 +23,22 @@ export class MParticleCapacitorWeb
     return mParticle.Identity.login(this.identityRequest(call.email, call.customerId));
   }
 
+  async logoutMParticleUser(call?:any): Promise<any>{
+    const identityCallback = (result:any) => {
+      if (result.getUser()) {
+        console.log('logging out of mParticle',call);
+      }
+    };
+    return mParticle.Identity.logout(<any>{}, identityCallback);
+  }
+
   async logMParticleEvent(call:any): Promise<any> {
     console.log('event fired',call);
     return mParticle.logEvent(call.eventName, call.eventType, call.eventProperties);
   }
 
   async logMParticlePageView(call:any): Promise<any> {
+    console.log(mParticle,call);
     return mParticle.logPageView(
       call.pageName,
       { page: call.pageLink }, // pageLink comes in as window.location.toString()

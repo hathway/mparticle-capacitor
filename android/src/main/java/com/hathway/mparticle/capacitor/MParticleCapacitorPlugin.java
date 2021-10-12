@@ -117,6 +117,13 @@ public class MParticleCapacitorPlugin extends Plugin {
         call.resolve(new JSObject());
     }
 
+    @PluginMethod
+    public void logoutMParticleUser(PluginCall call) {
+        // call.unimplemented("Not implemented on Android.");
+        MParticle.getInstance().Identity().logout(IdentityApiRequest.withEmptyUser().build());
+        call.resolve(new JSObject());
+    }
+
     // @PluginMethod
     // public void mParticleInit(PluginCall call) {
     //     MParticleOptions options = MParticleOptions.builder(this)
