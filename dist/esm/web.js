@@ -1,5 +1,7 @@
 import { WebPlugin } from '@capacitor/core';
 import mParticle from '@mparticle/web-sdk';
+// @ts-ignore
+import mParticleBraze from '@mparticle/web-appboy-kit';
 export class MParticleCapacitorWeb extends WebPlugin {
     async mParticleInit(call) {
         call.mParticleKey = 'us1-5ab5289891733e44b00e610dc69e4746';
@@ -10,7 +12,8 @@ export class MParticleCapacitorWeb extends WebPlugin {
                 planVersion: 2
             }
         };
-        console.log('web MPinit', call, mParticleConfig);
+        console.log('web MPinit', call, mParticleConfig, mParticleBraze);
+        mParticleBraze.register(mParticleConfig);
         return mParticle.init(call.mParticleKey, mParticleConfig);
     }
     async loginMParticleUser(call) {

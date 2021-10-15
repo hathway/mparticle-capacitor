@@ -7,7 +7,7 @@
     "methods": [
       {
         "name": "echo",
-        "signature": "(options: { value: string; }) => any",
+        "signature": "(options: { value: string; }) => Promise<{ value: string; }>",
         "parameters": [
           {
             "name": "options",
@@ -15,7 +15,7 @@
             "type": "{ value: string; }"
           }
         ],
-        "returns": "any",
+        "returns": "Promise<{ value: string; }>",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -23,9 +23,9 @@
       },
       {
         "name": "helloMP",
-        "signature": "() => any",
+        "signature": "() => Promise<string>",
         "parameters": [],
-        "returns": "any",
+        "returns": "Promise<string>",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -33,7 +33,7 @@
       },
       {
         "name": "mParticleInit",
-        "signature": "(call: any) => any",
+        "signature": "(call: any) => Promise<any>",
         "parameters": [
           {
             "name": "call",
@@ -41,7 +41,7 @@
             "type": "any"
           }
         ],
-        "returns": "any",
+        "returns": "Promise<any>",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -49,7 +49,7 @@
       },
       {
         "name": "logMParticleEvent",
-        "signature": "(call: any) => any",
+        "signature": "(call: any) => Promise<any>",
         "parameters": [
           {
             "name": "call",
@@ -57,7 +57,7 @@
             "type": "any"
           }
         ],
-        "returns": "any",
+        "returns": "Promise<any>",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -65,7 +65,7 @@
       },
       {
         "name": "logMParticlePageView",
-        "signature": "(call: any) => any",
+        "signature": "(call: any) => Promise<any>",
         "parameters": [
           {
             "name": "call",
@@ -73,7 +73,7 @@
             "type": "any"
           }
         ],
-        "returns": "any",
+        "returns": "Promise<any>",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -81,7 +81,7 @@
       },
       {
         "name": "setUserAttribute",
-        "signature": "(call: any) => any",
+        "signature": "(call: any) => Promise<any>",
         "parameters": [
           {
             "name": "call",
@@ -89,7 +89,7 @@
             "type": "any"
           }
         ],
-        "returns": "any",
+        "returns": "Promise<any>",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -97,7 +97,7 @@
       },
       {
         "name": "loginMParticleUser",
-        "signature": "(call: any) => any",
+        "signature": "(call: any) => Promise<any>",
         "parameters": [
           {
             "name": "call",
@@ -105,7 +105,7 @@
             "type": "any"
           }
         ],
-        "returns": "any",
+        "returns": "Promise<any>",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -113,7 +113,7 @@
       },
       {
         "name": "logoutMParticleUser",
-        "signature": "(call?: any) => any",
+        "signature": "(call?: any) => Promise<any>",
         "parameters": [
           {
             "name": "call",
@@ -121,7 +121,7 @@
             "type": "any"
           }
         ],
-        "returns": "any",
+        "returns": "Promise<any>",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -142,12 +142,12 @@
             "type": "(info: any) => any"
           }
         ],
-        "returns": "any",
+        "returns": "Promise<PluginListenerHandle> & PluginListenerHandle",
         "tags": [],
         "docs": "",
         "complexTypes": [
-          "mParticleInitListener",
-          "PluginListenerHandle"
+          "PluginListenerHandle",
+          "mParticleInitListener"
         ],
         "slug": "addlistener"
       }
@@ -167,7 +167,7 @@
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "() => any"
+          "type": "() => Promise<void>"
         }
       ]
     }

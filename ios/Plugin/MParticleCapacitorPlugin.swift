@@ -1,6 +1,6 @@
 import Foundation
 import Capacitor
-import mParticle_Apple_SDK;
+import mParticle_Apple_SDK
 
 /**
  * Please read the Capacitor iOS Plugin Development Guide
@@ -19,6 +19,7 @@ public class MParticleCapacitorPlugin: CAPPlugin {
         dump("************************* HERE *******************")
         dump(identityRequest)
         options.identifyRequest = identityRequest
+        options.logLevel = MPILogLevel.verbose
         dump(options.onIdentifyComplete)
         options.onIdentifyComplete =  {(result: MPIdentityApiResult?, error: Error?) in
             if (result?.user != nil) {
@@ -30,6 +31,11 @@ public class MParticleCapacitorPlugin: CAPPlugin {
                 //handle failure - see below
             }
         }
+        // let apikey = "6089995d-5e37-4267-bddd-350065756267"
+        // var appboyOptions: [String:Any] {
+        //     return [:]
+        // }
+        // Appboy.start(withApiKey: apikey, in: application, withLaunchOptions: launchOptions, withAppboyOptions: appboyOptions)
 
         MParticle.sharedInstance().start(with: options)
 

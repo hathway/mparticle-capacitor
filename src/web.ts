@@ -1,6 +1,8 @@
 import { WebPlugin } from '@capacitor/core';
 import type { MParticleCapacitorPlugin } from './definitions';
 import mParticle from '@mparticle/web-sdk';
+// @ts-ignore
+import mParticleBraze from '@mparticle/web-appboy-kit';
 
 export class MParticleCapacitorWeb
   extends WebPlugin
@@ -15,7 +17,8 @@ export class MParticleCapacitorWeb
         planVersion: 2
       }
     };
-    console.log('web MPinit',call,mParticleConfig);
+    console.log('web MPinit',call,mParticleConfig,mParticleBraze);
+    mParticleBraze.register(mParticleConfig);
     return mParticle.init(call.mParticleKey, mParticleConfig);
   }
 

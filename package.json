@@ -52,6 +52,7 @@
     "@ionic/prettier-config": "^1.0.1",
     "@ionic/swiftlint-config": "^1.1.2",
     "@types/mparticle__web-sdk": "^2.14.0",
+    "@types/node": "^16.11.0",
     "eslint": "^7.11.0",
     "prettier": "~2.2.0",
     "prettier-plugin-java": "~1.0.0",
@@ -77,6 +78,7 @@
     }
   },
   "dependencies": {
+    "@mparticle/web-appboy-kit": "^2.0.6",
     "@mparticle/web-sdk": "^2.14.1"
   }
 }

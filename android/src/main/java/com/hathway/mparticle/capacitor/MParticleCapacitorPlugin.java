@@ -10,6 +10,8 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 import com.mparticle.MParticle;
 import com.mparticle.MParticleOptions;
 import com.mparticle.MParticle.EventType;
+import com.mparticle.MParticle.ServiceProviders;
+import com.mparticle.identity.IdentityApiRequest;
 import com.mparticle.*;
 import java.util.*;
 import org.json.JSONException;
@@ -43,8 +45,11 @@ public class MParticleCapacitorPlugin extends Plugin {
                     "BCBZ7JzoS5i_mVmiWWsq12JspNQt_tF7G5iiNgIT4FJXO1kwGlB6rvgRRtDbPOc2"
                     )
                 .environment(MParticle.Environment.Development)
+                .logLevel(MParticle.LogLevel.DEBUG)
                 .build();
         MParticle.start(options);
+        System.out.println("******************** APPBOY VAR HERE ************");
+        System.out.println(MParticle.getInstance().isKitActive(ServiceProviders.APPBOY));
         call.resolve(new JSObject());
     }
 

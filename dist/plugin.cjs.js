@@ -4,10 +4,12 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var core = require('@capacitor/core');
 var mParticle = require('@mparticle/web-sdk');
+var mParticleBraze = require('@mparticle/web-appboy-kit');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var mParticle__default = /*#__PURE__*/_interopDefaultLegacy(mParticle);
+var mParticleBraze__default = /*#__PURE__*/_interopDefaultLegacy(mParticleBraze);
 
 exports.MParticleEventType = void 0;
 (function (MParticleEventType) {
@@ -35,7 +37,8 @@ class MParticleCapacitorWeb extends core.WebPlugin {
                 planVersion: 2
             }
         };
-        console.log('web MPinit', call, mParticleConfig);
+        console.log('web MPinit', call, mParticleConfig, mParticleBraze__default["default"]);
+        mParticleBraze__default["default"].register(mParticleConfig);
         return mParticle__default["default"].init(call.mParticleKey, mParticleConfig);
     }
     async loginMParticleUser(call) {
