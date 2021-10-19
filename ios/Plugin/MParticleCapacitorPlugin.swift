@@ -10,39 +10,40 @@ import mParticle_Apple_SDK
 public class MParticleCapacitorPlugin: CAPPlugin {
     private let implementation = MParticleCapacitor()
 
+    // public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    //     // Override point for customization after application launch.
+    //     dump("MADE IT HERE APPLICATION IN CAPPLUGIN")
+    //     let options = MParticleOptions(key: "us1-279d6248523ab840bb39cfc8d4799691",
+    //                                 secret: "wNbwpQ7Rh-W4AHB_Cr2M59YZcFoDiFS8uaOhIB8-MV82Nehtn6zgdbVErbA-ncS7")
+    //     options.logLevel = MPILogLevel.verbose
+    //     MParticle.sharedInstance().start(with: options)
+    //     return true
+    // }
+
     @objc func mParticleInit(_ call: CAPPluginCall) {
+        // call.unimplemented("not implemented for testing")
+        dump("************ INSIDE CAPACITOR PLUGIN mParticleInit")
         let options = MParticleOptions(key: "us1-279d6248523ab840bb39cfc8d4799691",
                                     secret: "wNbwpQ7Rh-W4AHB_Cr2M59YZcFoDiFS8uaOhIB8-MV82Nehtn6zgdbVErbA-ncS7")
-        let identityRequest = MPIdentityApiRequest.withEmptyUser()
-        identityRequest.email = "foos@wearehathway.com"
-        identityRequest.customerId = "12345690"
-        dump("************************* HERE *******************")
-        dump(identityRequest)
-        options.identifyRequest = identityRequest
-        options.logLevel = MPILogLevel.verbose
-        dump(options.onIdentifyComplete)
-        options.onIdentifyComplete =  {(result: MPIdentityApiResult?, error: Error?) in
-            if (result?.user != nil) {
-                dump("**************************MADE IT")
-                dump(result)
-                result?.user.setUserAttribute("example attribute key", value: "example attribute value")
-            } else {
-                dump("**************************FAILED")
-                //handle failure - see below
-            }
-        }
-        // let apikey = "6089995d-5e37-4267-bddd-350065756267"
-        // var appboyOptions: [String:Any] {
-        //     return [:]
+        // let identityRequest = MPIdentityApiRequest.withEmptyUser()
+        // identityRequest.email = "foos@wearehathway.com"
+        // identityRequest.customerId = "12345690"
+        // dump("************************* HERE *******************")
+        // dump(identityRequest)
+        // options.identifyRequest = identityRequest
+        // dump(options.onIdentifyComplete)
+        // options.onIdentifyComplete =  {(result: MPIdentityApiResult?, error: Error?) in
+        //     if (result?.user != nil) {
+        //         // dump("**************************MADE IT")
+        //         dump(result)
+        //         result?.user.setUserAttribute("example attribute key", value: "example attribute value")
+        //     } else {
+        //         dump("**************************FAILED")
+        //         //handle failure - see below
+        //     }
         // }
-        // Appboy.start(withApiKey: apikey, in: application, withLaunchOptions: launchOptions, withAppboyOptions: appboyOptions)
-
+        options.logLevel = MPILogLevel.verbose
         MParticle.sharedInstance().start(with: options)
-
-        // self.notifyListeners("mParticleInit", data: ["value":"I am init'd"])
-        // let value = call.getString("value") ?? ""
-        // dump("i am ios mparticleinit call:")
-        // dump(value)
         call.resolve([
             "value": "ios mparticle initialized"
         ])

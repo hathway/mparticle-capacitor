@@ -34,7 +34,7 @@ DEPENDENCIES:
   - "Capacitor (from `../node_modules/@capacitor/ios`)"
   - "CapacitorCordova (from `../node_modules/@capacitor/ios`)"
   - mParticle-Appboy (~> 8)
-  - mParticle-Apple-SDK (~> 8)
+  - mParticle-Apple-SDK (~> 8.5)
 
 SPEC REPOS:
   trunk:
@@ -57,6 +57,6 @@ SPEC CHECKSUMS:
   mParticle-Apple-SDK: 982774ac43c1fc996b503e76e375cc128caa2d5e
   SDWebImage: 4ea20cca2986adc5aacde07aa686742fd4c67a37
 
-PODFILE CHECKSUM: cf22a9b2df41071979997de34d630831d20d9850
+PODFILE CHECKSUM: e723b5153da877e71e0e2e967c33735e36930ce9
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.11.2

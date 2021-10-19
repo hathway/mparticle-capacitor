@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "5B1D7F534CBB535AE5C7AF113E112118"
-               BuildableName = "mParticle-Apple-SDK.framework"
+               BuildableName = "mParticle_Apple_SDK.framework"
                BlueprintName = "mParticle-Apple-SDK"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
