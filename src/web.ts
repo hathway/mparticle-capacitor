@@ -26,10 +26,10 @@ export class MParticleCapacitorWeb
     return mParticle.Identity.login(this.identityRequest(call.email, call.customerId));
   }
 
-  async logoutMParticleUser(call?:any): Promise<any>{
+  async logoutMParticleUser(_call:any): Promise<any>{
     const identityCallback = (result:any) => {
       if (result.getUser()) {
-        console.log('logging out of mParticle',call);
+        // console.log('logging out of mParticle',_call);
       }
     };
     return mParticle.Identity.logout(<any>{}, identityCallback);
@@ -51,6 +51,10 @@ export class MParticleCapacitorWeb
 
   async setUserAttribute(call:any): Promise<any> {
     return this.currentUser.setUserAttribute(call.attributeName, call.attributeValue);
+  }
+
+  async setUserAttributeList(call:any): Promise<any> {
+    return this.currentUser.setUserAttributeList(call.attributeName, call.attributeValues);
   }
 
   async getUserAttributeLists(_call:any): Promise<any> {
