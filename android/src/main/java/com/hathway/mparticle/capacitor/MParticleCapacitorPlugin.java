@@ -48,8 +48,8 @@ public class MParticleCapacitorPlugin extends Plugin {
                 .logLevel(MParticle.LogLevel.DEBUG)
                 .build();
         MParticle.start(options);
-        System.out.println("******************** APPBOY VAR HERE ************");
-        System.out.println(MParticle.getInstance().isKitActive(ServiceProviders.APPBOY));
+        // System.out.println("******************** APPBOY VAR HERE ************");
+        // System.out.println(MParticle.getInstance().isKitActive(ServiceProviders.APPBOY));
         call.resolve(new JSObject());
     }
 
@@ -106,6 +106,11 @@ public class MParticleCapacitorPlugin extends Plugin {
         String value = call.getString("attributeValue");
         implementation.currentUser().setUserAttribute(name,value);
         call.resolve(new JSObject());
+    }
+
+    @PluginMethod
+    public void getUserAttributeList(PluginCall call) {
+        call.unimplemented("Not implemented on Android.");
     }
 
     @PluginMethod

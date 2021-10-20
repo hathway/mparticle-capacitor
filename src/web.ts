@@ -53,6 +53,10 @@ export class MParticleCapacitorWeb
     return this.currentUser.setUserAttribute(call.attributeName, call.attributeValue);
   }
 
+  async getUserAttributeLists(_call:any): Promise<any> {
+    return this.currentUser.getUserAttributesLists();
+  }
+
   public get currentUser() {
     return mParticle.Identity.getCurrentUser();
   }
