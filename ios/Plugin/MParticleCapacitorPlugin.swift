@@ -108,9 +108,9 @@ public class MParticleCapacitorPlugin: CAPPlugin {
 
     @objc func getUserAttributeList(_ call: CAPPluginCall) {
         call.unimplemented("Not implemented on iOS.")
-        call.resolve([
-            "value":implementation.currentUser()?.userAttributes,
-        ])
+        // call.resolve([
+        //     "value":implementation.currentUser()?.userAttributes,
+        // ])
     }
 
     @objc func setUserAttributeList(_ call: CAPPluginCall) {
