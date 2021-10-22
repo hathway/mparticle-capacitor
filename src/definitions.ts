@@ -19,6 +19,8 @@ export interface MParticleCapacitorPlugin {
   addMParticleProduct(call:any): Promise<any>;
   removeMParticleProduct(call:any): Promise<any>;
 
+  submitPurchaseEvent(call:any): Promise<any>;
+
   loginMParticleUser(call:any): Promise<any>;
   logoutMParticleUser(call?:any): Promise<any>;
 
