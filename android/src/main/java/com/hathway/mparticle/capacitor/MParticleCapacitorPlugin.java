@@ -213,12 +213,39 @@ public class MParticleCapacitorPlugin extends Plugin {
         .transactionAttributes(attributes)
         .build();
         MParticle.getInstance().logEvent(event);
-
     }
 
     @PluginMethod
     public void submitPurchaseEvent(PluginCall call) {
-        call.unimplemented("Not implemented on Android.");
+        // call.unimplemented("Not implemented on Android.");
+        Map<String, String> customAttributes = new HashMap<String, String>();
+        JSObject temp = call.getObject("customAttributes");
+        Iterator<String> iter = temp.keys();
+        while (iter.hasNext()) {
+            String key = iter.next();
+            try {
+                Object value = temp.get(key);
+                customAttributes.put(key, value.toString());
+                } catch (JSONException e) {
+                // Something went wrong!
+            }
+        }
+
+        List<Product> productsArr = new ArrayList<Product>();
+        JSObject products_tmp = call.getObject("productData");
+        Iterator<String> p_iter = products_tmp.keys();
+        while (p_iter.hasNext()) {
+            String key = iter.next();
+            productsArr.add(implementation.createMParticleProduct(products_tmp.getJSObject(key)));
+        }
+
+        TransactionAttributes attributes = new TransactionAttributes();
+        CommerceEvent event = new CommerceEvent.Builder(Product.REMOVE_FROM_CART, productsArr.get(0))
+        .products(productsArr)
+        .customAttributes(customAttributes)    
+        .transactionAttributes(attributes)
+        .build();
+        MParticle.getInstance().logEvent(event);
     }
 
     @PluginMethod
