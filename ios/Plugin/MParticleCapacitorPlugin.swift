@@ -170,14 +170,10 @@ public class MParticleCapacitorPlugin: CAPPlugin {
         // call.unimplemented("Not implemented on iOS.")
         let product_tmp = call.getObject("product") ?? [:]
         let cust_attr = call.getObject("customAttributes") ?? [:]
-        let trans_tmp = call.getObject("transactionAttributes") ?? [:]
 
         let action =  MPCommerceEventAction.removeFromCart
         let product = implementation.createMParticleProduct(product_tmp as AnyObject)
         let attributes = MPTransactionAttributes.init()
-        attributes.transactionId = trans_tmp["Id"] as! String ?? ""
-        attributes.revenue = trans_tmp["Revenue"] as! NSNumber ?? 0
-        attributes.tax = trans_tmp["Tax"] as! NSNumber ?? 0
 
         let event = MPCommerceEvent.init(action: action, product: product)
         event.customAttributes = cust_attr
@@ -191,17 +187,27 @@ public class MParticleCapacitorPlugin: CAPPlugin {
 
     @objc func submitPurchaseEvent(_ call: CAPPluginCall) {
         call.unimplemented("Not implemented on iOS.")
-        // let product_tmp = call.getObject("productData") ?? [:]
-        // let attr_tmp = call.getObject("customAttributes") ?? [:]
-        // //  Do a for loop and add each element to an array using createMPProduct to make the data type
-        // let action =  MPCommerceEventAction.Checkout
-        // let attributes = MPTransactionAttributes.init()
-        // let event = MPCommerceEvent.init(action: action, product: product)
-        // event.transactionAttributes = attributes
-        // MParticle.sharedInstance().logEvent(event)
-        // call.resolve([
-        //     "value":"success",
-        // ])
+        let products_tmp = call.getObject("productData") ?? [:]
+        let cust_attr = call.getObject("customAttributes") ?? [:]
+        let trans_tmp = call.getObject("transactionAttributes") ?? [:]
+
+        let action =  MPCommerceEventAction.checkout
+        let event = MPCommerceEvent.init(action: action)
+        for product in products_tmp {
+            event?.addProduct(implementation.createMParticleProduct(product as AnyObject))
+        }
+
+        let attributes = MPTransactionAttributes.init()
+        attributes.transactionId = trans_tmp["Id"] as? String
+        attributes.revenue = trans_tmp["Revenue"] as? NSNumber
+        attributes.tax = trans_tmp["Tax"] as? NSNumber
+        
+        event?.customAttributes = cust_attr
+        event?.transactionAttributes = attributes
+        MParticle.sharedInstance().logEvent(event!)
+        call.resolve([
+            "value":"success",
+        ])
     }
 
     @objc func echo(_ call: CAPPluginCall) {
