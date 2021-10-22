@@ -58,7 +58,32 @@ export class MParticleCapacitorWeb
   }
 
   async getUserAttributeLists(_call:any): Promise<any> {
+    console.log("0w",this.currentUser.getAllUserAttributes())
+    console.log("1w",this.currentUser.getUserAttributesLists())
     return this.currentUser.getUserAttributesLists();
+  }
+
+  async updateMParticleCart(call:any): Promise<any> {
+    const productToUpdate = this.createMParticleProduct(call.product);
+    return this.logProductAction(call.eventType, productToUpdate, call.customAttributes, null, null);
+  }
+
+  async addMParticleProduct(call:any): Promise<any> { 
+    const product = this.createMParticleProduct(call.productData);
+    return this.logProductAction(mParticle.ProductActionType.AddToCart, product, call.customAttributes, null, null);
+  }
+
+  async removeMParticleProduct(call:any): Promise<any> {
+    const productToRemove = this.createMParticleProduct(call.product);
+    return this.logProductAction(mParticle.ProductActionType.RemoveFromCart, productToRemove, call.customAttributes, null, null);
+  } 
+
+  async submitPurchaseEvent(productData: any,  customAttributes: any, transactionAttributes:any, _customFlags?:any): Promise<any>{
+    let productArray:any = [];
+    productData.forEach((element:any) => {
+      productArray.push(this.createMParticleProduct(element));
+    });
+    this.logProductAction(mParticle.ProductActionType.Checkout,  productArray, customAttributes, transactionAttributes, null);
   }
 
   public get currentUser() {
@@ -72,6 +97,30 @@ export class MParticleCapacitorWeb
         customerid: customerId
       },
     };
+  }
+
+  private createMParticleProduct(productData: any) {
+    return mParticle.eCommerce.createProduct(
+      productData.name, //productName
+      productData.sku, //productSku
+      productData.cost, //productPrice
+      productData.quantity,  //quantity
+      undefined, // variant
+      undefined, // category
+      undefined, // brand
+      undefined, // position
+      undefined, // couponCode
+      productData.attributes
+    );
+  }
+
+  private logProductAction(eventType:any, product:any, customAttributes:any, transactionAttributes?:any, customFlags?:any) {
+    mParticle.eCommerce.logProductAction(
+      eventType,
+      product, // product created on mparticle
+      customAttributes, // mimData
+      customFlags,
+      transactionAttributes);
   }
 
   async echo(options: { value: string }): Promise<{ value: string }> {

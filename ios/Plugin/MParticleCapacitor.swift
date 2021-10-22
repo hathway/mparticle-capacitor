@@ -18,11 +18,6 @@ import mParticle_Apple_SDK;
         return identityRequest
     }
 
-    // @objc public func identityCallback() -> MPIdentityApiResultCallback {
-    //     dump("id callback")
-    //     return MPIdentityApiResultCallback 
-    // }
-
     let identityCallback = {(result: MPIdentityApiResult?, error: Error?) in
         if (result?.user != nil) {
             //IDSync request succeeded, mutate attributes or query for the MPID as needed
@@ -46,5 +41,23 @@ import mParticle_Apple_SDK;
                 break;
             }
         }
+    }
+
+    @objc public func createMParticleProduct(_ productData:AnyObject) -> MPProduct {
+        // let product = MPProduct(
+        //     name: productData.name ?? "",
+        //     sku: productData.sku ?? "",
+        //     quantity: productData.quantity ?? 0,
+        //     price: productData.cost as NSNumber ?? nil
+        // )
+        let dataDict = productData as! [String: Any]
+        let product = MPProduct.init(
+            name: dataDict["name"] as! String ?? "",
+            sku: dataDict["sku"] as! String ?? "",
+            quantity: dataDict["quantity"] as! NSNumber ?? 0,
+            price: dataDict["cost"] as! NSNumber ?? nil
+        )
+        product["attributes"] = dataDict["attributes"] ?? nil
+        return product
     }
 }

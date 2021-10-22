@@ -39,11 +39,9 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle, mParticle
         async loginMParticleUser(call) {
             return mParticle__default["default"].Identity.login(this.identityRequest(call.email, call.customerId));
         }
-        async logoutMParticleUser(call) {
+        async logoutMParticleUser(_call) {
             const identityCallback = (result) => {
-                if (result.getUser()) {
-                    console.log('logging out of mParticle', call);
-                }
+                if (result.getUser()) ;
             };
             return mParticle__default["default"].Identity.logout({}, identityCallback);
         }
@@ -57,6 +55,14 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle, mParticle
         }
         async setUserAttribute(call) {
             return this.currentUser.setUserAttribute(call.attributeName, call.attributeValue);
+        }
+        async setUserAttributeList(call) {
+            return this.currentUser.setUserAttributeList(call.attributeName, call.attributeValues);
+        }
+        async getUserAttributeLists(_call) {
+            console.log("0w", this.currentUser.getAllUserAttributes());
+            console.log("1w", this.currentUser.getUserAttributesLists());
+            return this.currentUser.getUserAttributesLists();
         }
         get currentUser() {
             return mParticle__default["default"].Identity.getCurrentUser();

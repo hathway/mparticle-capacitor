@@ -19,10 +19,10 @@ export class MParticleCapacitorWeb extends WebPlugin {
     async loginMParticleUser(call) {
         return mParticle.Identity.login(this.identityRequest(call.email, call.customerId));
     }
-    async logoutMParticleUser(call) {
+    async logoutMParticleUser(_call) {
         const identityCallback = (result) => {
             if (result.getUser()) {
-                console.log('logging out of mParticle', call);
+                // console.log('logging out of mParticle',_call);
             }
         };
         return mParticle.Identity.logout({}, identityCallback);
@@ -37,6 +37,14 @@ export class MParticleCapacitorWeb extends WebPlugin {
     }
     async setUserAttribute(call) {
         return this.currentUser.setUserAttribute(call.attributeName, call.attributeValue);
+    }
+    async setUserAttributeList(call) {
+        return this.currentUser.setUserAttributeList(call.attributeName, call.attributeValues);
+    }
+    async getUserAttributeLists(_call) {
+        console.log("0w", this.currentUser.getAllUserAttributes());
+        console.log("1w", this.currentUser.getUserAttributesLists());
+        return this.currentUser.getUserAttributesLists();
     }
     get currentUser() {
         return mParticle.Identity.getCurrentUser();

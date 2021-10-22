@@ -4,10 +4,12 @@ import mParticle from '@mparticle/web-sdk';
 export declare class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacitorPlugin {
     mParticleInit(call: any): Promise<any>;
     loginMParticleUser(call: any): Promise<any>;
-    logoutMParticleUser(call?: any): Promise<any>;
+    logoutMParticleUser(_call: any): Promise<any>;
     logMParticleEvent(call: any): Promise<any>;
     logMParticlePageView(call: any): Promise<any>;
     setUserAttribute(call: any): Promise<any>;
+    setUserAttributeList(call: any): Promise<any>;
+    getUserAttributeLists(_call: any): Promise<any>;
     get currentUser(): mParticle.User;
     private identityRequest;
     echo(options: {

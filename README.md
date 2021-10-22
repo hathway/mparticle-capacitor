@@ -19,6 +19,8 @@ npx cap sync
 * [`logMParticleEvent(...)`](#logmparticleevent)
 * [`logMParticlePageView(...)`](#logmparticlepageview)
 * [`setUserAttribute(...)`](#setuserattribute)
+* [`setUserAttributeList(...)`](#setuserattributelist)
+* [`getUserAttributeLists(...)`](#getuserattributelists)
 * [`loginMParticleUser(...)`](#loginmparticleuser)
 * [`logoutMParticleUser(...)`](#logoutmparticleuser)
 * [`addListener(...)`](#addlistener)
@@ -109,6 +111,36 @@ setUserAttribute(call: any) => Promise<any>
 | Param      | Type             |
 | ---------- | ---------------- |
 | **`call`** | <code>any</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### setUserAttributeList(...)
+
+```typescript
+setUserAttributeList(call: any) => Promise<any>
+```
+
+| Param      | Type             |
+| ---------- | ---------------- |
+| **`call`** | <code>any</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### getUserAttributeLists(...)
+
+```typescript
+getUserAttributeLists(_call: any) => Promise<any>
+```
+
+| Param       | Type             |
+| ----------- | ---------------- |
+| **`_call`** | <code>any</code> |
 
 **Returns:** <code>Promise&lt;any&gt;</code>
 

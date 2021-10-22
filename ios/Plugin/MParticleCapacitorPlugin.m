@@ -14,5 +14,9 @@ CAP_PLUGIN(MParticleCapacitorPlugin, "MParticleCapacitor",
            CAP_PLUGIN_METHOD(setUserAttributeList, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(loginMParticleUser, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(logoutMParticleUser, CAPPluginReturnPromise);
-           CAP_PLUGIN_METHOD(getUserAttributeList, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(getUserAttributeLists, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(updateMParticleCart, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(addMParticleProduct, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(removeMParticleProduct, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(submitPurchaseEvent, CAPPluginReturnPromise);
 )

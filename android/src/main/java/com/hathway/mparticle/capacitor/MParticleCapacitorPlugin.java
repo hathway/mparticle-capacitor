@@ -109,12 +109,32 @@ public class MParticleCapacitorPlugin extends Plugin {
     }
 
     @PluginMethod
-    public void getUserAttributeList(PluginCall call) {
+    public void getUserAttributeLists(PluginCall call) {
         call.unimplemented("Not implemented on Android.");
     }
 
     @PluginMethod
     public void setUserAttributeList(PluginCall call) {
+        call.unimplemented("Not implemented on Android.");
+    }
+
+    @PluginMethod
+    public void updateMParticleCart(PluginCall call) {
+        call.unimplemented("Not implemented on Android.");
+    }
+
+    @PluginMethod
+    public void addMParticleProduct(PluginCall call) {
+        call.unimplemented("Not implemented on Android.");
+    }
+
+    @PluginMethod
+    public void removeMParticleProduct(PluginCall call) {
+        call.unimplemented("Not implemented on Android.");
+    }
+
+    @PluginMethod
+    public void submitPurchaseEvent(PluginCall call) {
         call.unimplemented("Not implemented on Android.");
     }
 
