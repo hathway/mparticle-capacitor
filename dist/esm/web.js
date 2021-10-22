@@ -46,6 +46,25 @@ export class MParticleCapacitorWeb extends WebPlugin {
         console.log("1w", this.currentUser.getUserAttributesLists());
         return this.currentUser.getUserAttributesLists();
     }
+    async updateMParticleCart(call) {
+        const productToUpdate = this.createMParticleProduct(call.product);
+        return this.logProductAction(call.eventType, productToUpdate, call.customAttributes, null, null);
+    }
+    async addMParticleProduct(call) {
+        const product = this.createMParticleProduct(call.productData);
+        return this.logProductAction(mParticle.ProductActionType.AddToCart, product, call.customAttributes, null, null);
+    }
+    async removeMParticleProduct(call) {
+        const productToRemove = this.createMParticleProduct(call.product);
+        return this.logProductAction(mParticle.ProductActionType.RemoveFromCart, productToRemove, call.customAttributes, null, null);
+    }
+    async submitPurchaseEvent(productData, customAttributes, transactionAttributes, _customFlags) {
+        let productArray = [];
+        productData.forEach((element) => {
+            productArray.push(this.createMParticleProduct(element));
+        });
+        this.logProductAction(mParticle.ProductActionType.Checkout, productArray, customAttributes, transactionAttributes, null);
+    }
     get currentUser() {
         return mParticle.Identity.getCurrentUser();
     }
@@ -56,6 +75,23 @@ export class MParticleCapacitorWeb extends WebPlugin {
                 customerid: customerId
             },
         };
+    }
+    createMParticleProduct(productData) {
+        return mParticle.eCommerce.createProduct(productData.name, //productName
+        productData.sku, //productSku
+        productData.cost, //productPrice
+        productData.quantity, //quantity
+        undefined, // variant
+        undefined, // category
+        undefined, // brand
+        undefined, // position
+        undefined, // couponCode
+        productData.attributes);
+    }
+    logProductAction(eventType, product, customAttributes, transactionAttributes, customFlags) {
+        mParticle.eCommerce.logProductAction(eventType, product, // product created on mparticle
+        customAttributes, // mimData
+        customFlags, transactionAttributes);
     }
     async echo(options) {
         console.log('ECHO', options);

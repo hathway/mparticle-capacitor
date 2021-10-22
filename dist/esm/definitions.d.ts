@@ -13,6 +13,9 @@ export interface MParticleCapacitorPlugin {
     setUserAttribute(call: any): Promise<any>;
     setUserAttributeList(call: any): Promise<any>;
     getUserAttributeLists(_call: any): Promise<any>;
+    updateMParticleCart(call: any): Promise<any>;
+    addMParticleProduct(call: any): Promise<any>;
+    removeMParticleProduct(call: any): Promise<any>;
     loginMParticleUser(call: any): Promise<any>;
     logoutMParticleUser(call?: any): Promise<any>;
     addListener(eventName: 'mParticleInit', listenerFunc: mParticleInitListener): Promise<PluginListenerHandle> & PluginListenerHandle;

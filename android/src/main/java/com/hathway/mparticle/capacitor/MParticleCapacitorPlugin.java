@@ -239,7 +239,10 @@ public class MParticleCapacitorPlugin extends Plugin {
             productsArr.add(implementation.createMParticleProduct(products_tmp.getJSObject(key)));
         }
 
-        TransactionAttributes attributes = new TransactionAttributes();
+        JSObject t_attributes = call.getObject("transactionAttributes");
+        TransactionAttributes attributes = new TransactionAttributes(t_attributes.getString("Id"))
+        .setRevenue((double) t_attributes.getInteger("Revenue"))
+        .setTax((double) t_attributes.getInteger("Tax"));
         CommerceEvent event = new CommerceEvent.Builder(Product.REMOVE_FROM_CART, productsArr.get(0))
         .products(productsArr)
         .customAttributes(customAttributes)    

@@ -128,6 +128,54 @@
         "slug": "getuserattributelists"
       },
       {
+        "name": "updateMParticleCart",
+        "signature": "(call: any) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "updatemparticlecart"
+      },
+      {
+        "name": "addMParticleProduct",
+        "signature": "(call: any) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "addmparticleproduct"
+      },
+      {
+        "name": "removeMParticleProduct",
+        "signature": "(call: any) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "removemparticleproduct"
+      },
+      {
         "name": "loginMParticleUser",
         "signature": "(call: any) => Promise<any>",
         "parameters": [

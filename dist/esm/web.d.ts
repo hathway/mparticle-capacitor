@@ -10,8 +10,14 @@ export declare class MParticleCapacitorWeb extends WebPlugin implements MParticl
     setUserAttribute(call: any): Promise<any>;
     setUserAttributeList(call: any): Promise<any>;
     getUserAttributeLists(_call: any): Promise<any>;
+    updateMParticleCart(call: any): Promise<any>;
+    addMParticleProduct(call: any): Promise<any>;
+    removeMParticleProduct(call: any): Promise<any>;
+    submitPurchaseEvent(productData: any, customAttributes: any, transactionAttributes: any, _customFlags?: any): Promise<any>;
     get currentUser(): mParticle.User;
     private identityRequest;
+    private createMParticleProduct;
+    private logProductAction;
     echo(options: {
         value: string;
     }): Promise<{

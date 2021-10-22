@@ -21,6 +21,9 @@ npx cap sync
 * [`setUserAttribute(...)`](#setuserattribute)
 * [`setUserAttributeList(...)`](#setuserattributelist)
 * [`getUserAttributeLists(...)`](#getuserattributelists)
+* [`updateMParticleCart(...)`](#updatemparticlecart)
+* [`addMParticleProduct(...)`](#addmparticleproduct)
+* [`removeMParticleProduct(...)`](#removemparticleproduct)
 * [`loginMParticleUser(...)`](#loginmparticleuser)
 * [`logoutMParticleUser(...)`](#logoutmparticleuser)
 * [`addListener(...)`](#addlistener)
@@ -141,6 +144,51 @@ getUserAttributeLists(_call: any) => Promise<any>
 | Param       | Type             |
 | ----------- | ---------------- |
 | **`_call`** | <code>any</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### updateMParticleCart(...)
+
+```typescript
+updateMParticleCart(call: any) => Promise<any>
+```
+
+| Param      | Type             |
+| ---------- | ---------------- |
+| **`call`** | <code>any</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### addMParticleProduct(...)
+
+```typescript
+addMParticleProduct(call: any) => Promise<any>
+```
+
+| Param      | Type             |
+| ---------- | ---------------- |
+| **`call`** | <code>any</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### removeMParticleProduct(...)
+
+```typescript
+removeMParticleProduct(call: any) => Promise<any>
+```
+
+| Param      | Type             |
+| ---------- | ---------------- |
+| **`call`** | <code>any</code> |
 
 **Returns:** <code>Promise&lt;any&gt;</code>
 
