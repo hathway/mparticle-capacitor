@@ -16,6 +16,7 @@ export interface MParticleCapacitorPlugin {
     updateMParticleCart(call: any): Promise<any>;
     addMParticleProduct(call: any): Promise<any>;
     removeMParticleProduct(call: any): Promise<any>;
+    submitPurchaseEvent(call: any): Promise<any>;
     loginMParticleUser(call: any): Promise<any>;
     logoutMParticleUser(call?: any): Promise<any>;
     addListener(eventName: 'mParticleInit', listenerFunc: mParticleInitListener): Promise<PluginListenerHandle> & PluginListenerHandle;

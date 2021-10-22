@@ -176,6 +176,22 @@
         "slug": "removemparticleproduct"
       },
       {
+        "name": "submitPurchaseEvent",
+        "signature": "(call: any) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "submitpurchaseevent"
+      },
+      {
         "name": "loginMParticleUser",
         "signature": "(call: any) => Promise<any>",
         "parameters": [

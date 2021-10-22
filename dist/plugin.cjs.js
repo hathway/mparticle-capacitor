@@ -81,12 +81,12 @@ class MParticleCapacitorWeb extends core.WebPlugin {
         const productToRemove = this.createMParticleProduct(call.product);
         return this.logProductAction(mParticle__default["default"].ProductActionType.RemoveFromCart, productToRemove, call.customAttributes, null, null);
     }
-    async submitPurchaseEvent(productData, customAttributes, transactionAttributes, _customFlags) {
+    async submitPurchaseEvent(call) {
         let productArray = [];
-        productData.forEach((element) => {
+        (call.productData).forEach((element) => {
             productArray.push(this.createMParticleProduct(element));
         });
-        this.logProductAction(mParticle__default["default"].ProductActionType.Checkout, productArray, customAttributes, transactionAttributes, null);
+        return this.logProductAction(mParticle__default["default"].ProductActionType.Checkout, productArray, call.customAttributes, call.transactionAttributes, null);
     }
     get currentUser() {
         return mParticle__default["default"].Identity.getCurrentUser();

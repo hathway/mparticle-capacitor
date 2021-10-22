@@ -78,12 +78,12 @@ export class MParticleCapacitorWeb
     return this.logProductAction(mParticle.ProductActionType.RemoveFromCart, productToRemove, call.customAttributes, null, null);
   } 
 
-  async submitPurchaseEvent(productData: any,  customAttributes: any, transactionAttributes:any, _customFlags?:any): Promise<any>{
+  async submitPurchaseEvent(call:any): Promise<any>{
     let productArray:any = [];
-    productData.forEach((element:any) => {
+    (call.productData).forEach((element:any) => {
       productArray.push(this.createMParticleProduct(element));
     });
-    this.logProductAction(mParticle.ProductActionType.Checkout,  productArray, customAttributes, transactionAttributes, null);
+    return this.logProductAction(mParticle.ProductActionType.Checkout,  productArray, call.customAttributes, call.transactionAttributes, null);
   }
 
   public get currentUser() {

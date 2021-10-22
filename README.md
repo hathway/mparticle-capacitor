@@ -24,6 +24,7 @@ npx cap sync
 * [`updateMParticleCart(...)`](#updatemparticlecart)
 * [`addMParticleProduct(...)`](#addmparticleproduct)
 * [`removeMParticleProduct(...)`](#removemparticleproduct)
+* [`submitPurchaseEvent(...)`](#submitpurchaseevent)
 * [`loginMParticleUser(...)`](#loginmparticleuser)
 * [`logoutMParticleUser(...)`](#logoutmparticleuser)
 * [`addListener(...)`](#addlistener)
@@ -184,6 +185,21 @@ addMParticleProduct(call: any) => Promise<any>
 
 ```typescript
 removeMParticleProduct(call: any) => Promise<any>
+```
+
+| Param      | Type             |
+| ---------- | ---------------- |
+| **`call`** | <code>any</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### submitPurchaseEvent(...)
+
+```typescript
+submitPurchaseEvent(call: any) => Promise<any>
 ```
 
 | Param      | Type             |
