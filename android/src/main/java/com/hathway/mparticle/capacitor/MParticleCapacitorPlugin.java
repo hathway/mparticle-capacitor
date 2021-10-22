@@ -12,6 +12,10 @@ import com.mparticle.MParticleOptions;
 import com.mparticle.MParticle.EventType;
 import com.mparticle.MParticle.ServiceProviders;
 import com.mparticle.identity.IdentityApiRequest;
+import com.mparticle.commerce.Product;
+import com.mparticle.commerce.CommerceEvent;
+import com.mparticle.commerce.CommerceEvent.Builder;
+import com.mparticle.commerce.TransactionAttributes;
 import com.mparticle.*;
 import java.util.*;
 import org.json.JSONException;
@@ -120,17 +124,79 @@ public class MParticleCapacitorPlugin extends Plugin {
 
     @PluginMethod
     public void updateMParticleCart(PluginCall call) {
-        call.unimplemented("Not implemented on Android.");
+        // call.unimplemented("Not implemented on Android.");
+        int type = call.getInt("eventType");
+        JSObject product_tmp = call.getObject("product");
+        Map<String, String> customAttributes = new HashMap<String, String>();
+        JSObject temp = call.getObject("customAttributes");
+        Iterator<String> iter = temp.keys();
+        while (iter.hasNext()) {
+            String key = iter.next();
+            try {
+                Object value = temp.get(key);
+                customAttributes.put(key, value.toString());
+                } catch (JSONException e) {
+                // Something went wrong!
+            }
+        }
+        Product product = implementation.createMParticleProduct(product_tmp);
+        TransactionAttributes attributes = new TransactionAttributes();
+        CommerceEvent event = new CommerceEvent.Builder(implementation.getProductEventType(type), product)
+        .customAttributes(customAttributes)    
+        .transactionAttributes(attributes)
+        .build();
+        MParticle.getInstance().logEvent(event);
     }
 
     @PluginMethod
     public void addMParticleProduct(PluginCall call) {
-        call.unimplemented("Not implemented on Android.");
+        // call.unimplemented("Not implemented on Android.");
+        JSObject product_tmp = call.getObject("product");
+        Map<String, String> customAttributes = new HashMap<String, String>();
+        JSObject temp = call.getObject("customAttributes");
+        Iterator<String> iter = temp.keys();
+        while (iter.hasNext()) {
+            String key = iter.next();
+            try {
+                Object value = temp.get(key);
+                customAttributes.put(key, value.toString());
+                } catch (JSONException e) {
+                // Something went wrong!
+            }
+        }
+        Product product = implementation.createMParticleProduct(product_tmp);
+        TransactionAttributes attributes = new TransactionAttributes();
+        CommerceEvent event = new CommerceEvent.Builder(Product.ADD_TO_CART, product)
+        .customAttributes(customAttributes)    
+        .transactionAttributes(attributes)
+        .build();
+        MParticle.getInstance().logEvent(event);
     }
 
     @PluginMethod
     public void removeMParticleProduct(PluginCall call) {
-        call.unimplemented("Not implemented on Android.");
+        // call.unimplemented("Not implemented on Android.");
+        JSObject product_tmp = call.getObject("product");
+        Map<String, String> customAttributes = new HashMap<String, String>();
+        JSObject temp = call.getObject("customAttributes");
+        Iterator<String> iter = temp.keys();
+        while (iter.hasNext()) {
+            String key = iter.next();
+            try {
+                Object value = temp.get(key);
+                customAttributes.put(key, value.toString());
+                } catch (JSONException e) {
+                // Something went wrong!
+            }
+        }
+        Product product = implementation.createMParticleProduct(product_tmp);
+        TransactionAttributes attributes = new TransactionAttributes();
+        CommerceEvent event = new CommerceEvent.Builder(Product.REMOVE_FROM_CART, product)
+        .customAttributes(customAttributes)    
+        .transactionAttributes(attributes)
+        .build();
+        MParticle.getInstance().logEvent(event);
+
     }
 
     @PluginMethod
