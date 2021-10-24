@@ -1,5 +1,6 @@
 import Foundation
 import mParticle_Apple_SDK;
+import Capacitor
 
 @objc public class MParticleCapacitor: NSObject {
 
@@ -52,12 +53,16 @@ import mParticle_Apple_SDK;
         // )
         let dataDict = productData as! [String: Any]
         let product = MPProduct.init(
-            name: dataDict["name"] as! String ?? "",
-            sku: dataDict["sku"] as! String ?? "",
-            quantity: dataDict["quantity"] as! NSNumber ?? 0,
-            price: dataDict["cost"] as! NSNumber ?? nil
+            name: dataDict["name"] as! String,
+            sku: "\(dataDict["sku"] ?? 0)",
+            quantity: dataDict["quantity"] as! NSNumber,
+            price: (dataDict["cost"] as? NSNumber) ?? nil
         )
-        product["attributes"] = dataDict["attributes"] ?? nil
+         if let attrs = dataDict["attributes"] as? Dictionary<String, JSValue> {
+             for attr in attrs {
+                product[attr.key] = "\(attr.value)"
+            }
+         }
         return product
     }
 }
