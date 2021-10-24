@@ -185,21 +185,28 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func submitPurchaseEvent(_ call: CAPPluginCall) {
-        call.unimplemented("Not implemented on iOS.")
-        let products_tmp = call.getObject("productData") ?? [:]
+//        call.unimplemented("Not implemented on iOS.")
+        let products_tmp = call.getArray("productData") ?? []
         let cust_attr = call.getObject("customAttributes") ?? [:]
         let trans_tmp = call.getObject("transactionAttributes") ?? [:]
+        
+        dump(cust_attr)
 
         let action =  MPCommerceEventAction.checkout
         let event = MPCommerceEvent.init(action: action)
+        dump(products_tmp)
         for product in products_tmp {
+            dump(product)
             event?.addProduct(implementation.createMParticleProduct(product as AnyObject))
         }
 
+        dump(trans_tmp)
         let attributes = MPTransactionAttributes.init()
         attributes.transactionId = trans_tmp["Id"] as? String
         attributes.revenue = trans_tmp["Revenue"] as? NSNumber
         attributes.tax = trans_tmp["Tax"] as? NSNumber
+        
+        dump(attributes)
         
         event?.customAttributes = cust_attr
         event?.transactionAttributes = attributes
