@@ -40,3 +40,17 @@ export enum MParticleEventType {
   Social = 7,
   Other = 8
 }
+
+export enum MParticleProductActionType {
+  Unknown = 0,
+  AddToCart = 1,
+  RemoveFromCart = 2,
+  Checkout = 3,
+  CheckoutOption = 4,
+  Click = 5,
+  ViewDetail = 6,
+  Purchase = 7,
+  Refund = 8,
+  AddToWishlist = 9,
+  RemoveFromWishlist = 10,
+}
