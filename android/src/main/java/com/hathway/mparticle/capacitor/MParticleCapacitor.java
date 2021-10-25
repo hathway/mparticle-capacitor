@@ -1,5 +1,7 @@
 package com.hathway.mparticle.capacitor;
 import java.util.Dictionary;
+
+import com.getcapacitor.JSArray;
 import com.getcapacitor.JSObject;
 
 import com.mparticle.MParticle;
@@ -38,6 +40,20 @@ public class MParticleCapacitor {
         }
     }
 
+    public List<JSObject> toList(JSArray array) throws JSONException {
+        List<JSObject> items = new ArrayList<>();
+//        Object o = null;
+        for (int i = 0; i < array.length(); i++) {
+//            o = array.get(i);
+            try {
+                items.add((JSObject) (array.get(i)));
+            } catch (Exception ex) {
+                throw new JSONException("Not all items are instances of the given type");
+            }
+        }
+        return items;
+    }
+
     public MParticleUser currentUser() {
         return MParticle.getInstance().Identity().getCurrentUser();
     }
@@ -67,7 +83,7 @@ public class MParticleCapacitor {
         return new Product.Builder(
             (String) productData.getString("name"),
             (String) productData.getString("sku"),
-            (double) productData.getInteger("price"))
+            (double) productData.getInteger("cost"))
             .quantity((double) productData.getInteger("quantity"))
             .customAttributes((Map<String,String>) customAttributes)
             .build();

@@ -1,5 +1,6 @@
 package com.hathway.mparticle.capacitor;
 
+import com.getcapacitor.JSArray;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
@@ -19,6 +20,7 @@ import com.mparticle.commerce.TransactionAttributes;
 import com.mparticle.*;
 import java.util.*;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 @CapacitorPlugin(name = "MParticleCapacitor")
 public class MParticleCapacitorPlugin extends Plugin {
@@ -216,7 +218,7 @@ public class MParticleCapacitorPlugin extends Plugin {
     }
 
     @PluginMethod
-    public void submitPurchaseEvent(PluginCall call) {
+    public void submitPurchaseEvent(PluginCall call) throws JSONException {
         // call.unimplemented("Not implemented on Android.");
         Map<String, String> customAttributes = new HashMap<String, String>();
         JSObject temp = call.getObject("customAttributes");
@@ -231,19 +233,22 @@ public class MParticleCapacitorPlugin extends Plugin {
             }
         }
 
-        List<Product> productsArr = new ArrayList<Product>();
-        JSObject products_tmp = call.getObject("productData");
-        Iterator<String> p_iter = products_tmp.keys();
-        while (p_iter.hasNext()) {
-            String key = iter.next();
-            productsArr.add(implementation.createMParticleProduct(products_tmp.getJSObject(key)));
+        List<Product> productsArr = new ArrayList<>();
+        JSArray products_tmp = call.getArray("productData");
+//        List<JSObject> arr_tmp = implementation.toList(products_tmp);
+        for (int i = 0; i < products_tmp.length(); i++) {
+            productsArr.add(implementation.createMParticleProduct(JSObject.fromJSONObject((JSONObject) products_tmp.get(i))));
         }
+//        for (JSObject product : arr_tmp) {
+//            System.out.println(product);
+//            productsArr.add(implementation.createMParticleProduct(product));
+//        }
 
         JSObject t_attributes = call.getObject("transactionAttributes");
         TransactionAttributes attributes = new TransactionAttributes(t_attributes.getString("Id"))
         .setRevenue((double) t_attributes.getInteger("Revenue"))
         .setTax((double) t_attributes.getInteger("Tax"));
-        CommerceEvent event = new CommerceEvent.Builder(Product.REMOVE_FROM_CART, productsArr.get(0))
+        CommerceEvent event = new CommerceEvent.Builder(Product.CHECKOUT, productsArr.get(0))
         .products(productsArr)
         .customAttributes(customAttributes)    
         .transactionAttributes(attributes)
