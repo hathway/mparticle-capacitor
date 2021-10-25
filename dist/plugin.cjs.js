@@ -22,6 +22,20 @@ exports.MParticleEventType = void 0;
     MParticleEventType[MParticleEventType["Social"] = 7] = "Social";
     MParticleEventType[MParticleEventType["Other"] = 8] = "Other";
 })(exports.MParticleEventType || (exports.MParticleEventType = {}));
+exports.MParticleProductActionType = void 0;
+(function (MParticleProductActionType) {
+    MParticleProductActionType[MParticleProductActionType["Unknown"] = 0] = "Unknown";
+    MParticleProductActionType[MParticleProductActionType["AddToCart"] = 1] = "AddToCart";
+    MParticleProductActionType[MParticleProductActionType["RemoveFromCart"] = 2] = "RemoveFromCart";
+    MParticleProductActionType[MParticleProductActionType["Checkout"] = 3] = "Checkout";
+    MParticleProductActionType[MParticleProductActionType["CheckoutOption"] = 4] = "CheckoutOption";
+    MParticleProductActionType[MParticleProductActionType["Click"] = 5] = "Click";
+    MParticleProductActionType[MParticleProductActionType["ViewDetail"] = 6] = "ViewDetail";
+    MParticleProductActionType[MParticleProductActionType["Purchase"] = 7] = "Purchase";
+    MParticleProductActionType[MParticleProductActionType["Refund"] = 8] = "Refund";
+    MParticleProductActionType[MParticleProductActionType["AddToWishlist"] = 9] = "AddToWishlist";
+    MParticleProductActionType[MParticleProductActionType["RemoveFromWishlist"] = 10] = "RemoveFromWishlist";
+})(exports.MParticleProductActionType || (exports.MParticleProductActionType = {}));
 
 const MParticleCapacitor = core.registerPlugin('MParticleCapacitor', {
     web: () => Promise.resolve().then(function () { return web; }).then(m => new m.MParticleCapacitorWeb()),

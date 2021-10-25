@@ -134,7 +134,7 @@ public class MParticleCapacitorPlugin: CAPPlugin {
         // call.unimplemented("Not implemented on iOS.")
         let product_tmp = call.getObject("product") ?? [:]
         let cust_attr = call.getObject("customAttributes") ?? [:]
-        let type_tmp = UInt(call.getInt("eventType") ?? 0) - 1
+        let type_tmp = UInt(call.getInt("eventType") ?? 1) - 1 // TODO: Need to edit enum types
 
         let action = MPCommerceEventAction.init(rawValue:type_tmp) ?? MPCommerceEventAction.addToCart
         let product = implementation.createMParticleProduct(product_tmp as AnyObject)
@@ -192,7 +192,7 @@ public class MParticleCapacitorPlugin: CAPPlugin {
         
         dump(cust_attr)
 
-        let action =  MPCommerceEventAction.checkout
+        let action =  MPCommerceEventAction.purchase
         let event = MPCommerceEvent.init(action: action)
         dump(products_tmp)
         for product in products_tmp {

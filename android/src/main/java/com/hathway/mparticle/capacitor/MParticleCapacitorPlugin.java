@@ -116,9 +116,14 @@ public class MParticleCapacitorPlugin extends Plugin {
 
     @PluginMethod
     public void getUserAttributeLists(PluginCall call) {
-        call.unimplemented("Not implemented on Android.");
-        // System.out.println(implementation.currentUser().getUserAttributes().toString());
-        // call.resolve(new JSObject(implementation.currentUser().getUserAttributes()));
+        // call.unimplemented("Not implemented on Android.");
+        System.out.println(implementation.currentUser().getUserAttributes().toString());
+        Map<String,Object> attrs = implementation.currentUser().getUserAttributes();
+        JSObject ret = new JSObject();
+        for (String key : attrs.keySet()) {
+            ret.put(key,attrs.get(key));
+        }
+        call.resolve(ret);
     }
 
     @PluginMethod
@@ -248,7 +253,7 @@ public class MParticleCapacitorPlugin extends Plugin {
         TransactionAttributes attributes = new TransactionAttributes(t_attributes.getString("Id"))
         .setRevenue((double) t_attributes.getInteger("Revenue"))
         .setTax((double) t_attributes.getInteger("Tax"));
-        CommerceEvent event = new CommerceEvent.Builder(Product.CHECKOUT, productsArr.get(0))
+        CommerceEvent event = new CommerceEvent.Builder(Product.PURCHASE, productsArr.get(0))
         .products(productsArr)
         .customAttributes(customAttributes)    
         .transactionAttributes(attributes)
