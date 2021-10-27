@@ -21,6 +21,13 @@ public class MParticleCapacitor {
         return value;
     }
 
+    public String getSecret(String key) {
+        if (key == "us1-8c8c91aa9ec62c46bb6d33502d11bac1") {
+            return "BCBZ7JzoS5i_mVmiWWsq12JspNQt_tF7G5iiNgIT4FJXO1kwGlB6rvgRRtDbPOc2";
+        }
+        return "";
+    }
+
     public EventType getEventType(int ord) {
         for (EventType e : EventType.values()) {
             if (e.ordinal() == ord) {

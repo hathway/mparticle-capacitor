@@ -8,6 +8,13 @@ import Capacitor
         return value
     }
 
+    @objc public func getSecret(_ value: String) -> String {
+        if (value == "us1-279d6248523ab840bb39cfc8d4799691") {
+            return "wNbwpQ7Rh-W4AHB_Cr2M59YZcFoDiFS8uaOhIB8-MV82Nehtn6zgdbVErbA-ncS7"
+        }
+        return value
+    }
+
     @objc public func currentUser() -> MParticleUser? {
         return MParticle.sharedInstance().identity.currentUser
     }

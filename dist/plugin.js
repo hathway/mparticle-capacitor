@@ -38,7 +38,7 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle, mParticle
 
     class MParticleCapacitorWeb extends core.WebPlugin {
         async mParticleInit(call) {
-            call.mParticleKey = 'us1-5ab5289891733e44b00e610dc69e4746';
+            call.mParticleKey = call.key;
             const mParticleConfig = {
                 isDevelopmentMode: true,
                 dataPlan: {

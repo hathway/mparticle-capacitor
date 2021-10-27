@@ -9,7 +9,7 @@ export class MParticleCapacitorWeb
   implements MParticleCapacitorPlugin {
 
   async mParticleInit(call:any): Promise<any> {
-    call.mParticleKey = 'us1-5ab5289891733e44b00e610dc69e4746';
+    call.mParticleKey = call.key;
     const mParticleConfig = {
       isDevelopmentMode: true,
       dataPlan: {

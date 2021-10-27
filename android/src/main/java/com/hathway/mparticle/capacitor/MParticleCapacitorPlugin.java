@@ -45,10 +45,12 @@ public class MParticleCapacitorPlugin extends Plugin {
 
     @PluginMethod
     public void mParticleInit(PluginCall call) {
+        String key = call.getString("key");
+
         MParticleOptions options = MParticleOptions.builder(this.getContext())
                 .credentials(
-                    "us1-8c8c91aa9ec62c46bb6d33502d11bac1", 
-                    "BCBZ7JzoS5i_mVmiWWsq12JspNQt_tF7G5iiNgIT4FJXO1kwGlB6rvgRRtDbPOc2"
+                    key, 
+                    implementation.getSecret(key)
                     )
                 .environment(MParticle.Environment.Development)
                 .logLevel(MParticle.LogLevel.DEBUG)
@@ -83,6 +85,7 @@ public class MParticleCapacitorPlugin extends Plugin {
                 // Something went wrong!
             }
         }
+        
         String name = call.getString("eventName");
         int type = call.getInt("eventType");
 
@@ -114,35 +117,35 @@ public class MParticleCapacitorPlugin extends Plugin {
         call.resolve(new JSObject());
     }
 
-    @PluginMethod
-    public void getUserAttributeLists(PluginCall call) {
-        // call.unimplemented("Not implemented on Android.");
-        System.out.println(implementation.currentUser().getUserAttributes().toString());
-        Map<String,Object> attrs = implementation.currentUser().getUserAttributes();
-        JSObject ret = new JSObject();
-        for (String key : attrs.keySet()) {
-            ret.put(key,attrs.get(key));
-        }
-        call.resolve(ret);
-    }
+    // @PluginMethod
+    // public void getUserAttributeLists(PluginCall call) {
+    //     // call.unimplemented("Not implemented on Android.");
+    //     System.out.println(implementation.currentUser().getUserAttributes().toString());
+    //     Map<String,Object> attrs = implementation.currentUser().getUserAttributes();
+    //     JSObject ret = new JSObject();
+    //     for (String key : attrs.keySet()) {
+    //         ret.put(key,attrs.get(key));
+    //     }
+    //     call.resolve(ret);
+    // }
 
     @PluginMethod
     public void setUserAttributeList(PluginCall call) {
         // call.unimplemented("Not implemented on Android.");
         String name = call.getString("attributeName");
-        Map<String, String> customAttributes = new HashMap<String, String>();
-        JSObject temp = call.getObject("attributeValues");
-        Iterator<String> iter = temp.keys();
-        while (iter.hasNext()) {
-            String key = iter.next();
-            try {
-                Object value = temp.get(key);
-                customAttributes.put(key, value.toString());
-                } catch (JSONException e) {
-                // Something went wrong!
-            }
-        }
-        implementation.currentUser().setUserAttributeList(name,customAttributes);
+        // Map<String, String> customAttributes = new HashMap<String, String>();
+        JSArray list = call.getArray("attributeValues");
+        // Iterator<String> iter = temp.keys();
+        // while (iter.hasNext()) {
+        //     String key = iter.next();
+        //     try {
+        //         Object value = temp.get(key);
+        //         customAttributes.put(key, value.toString());
+        //         } catch (JSONException e) {
+        //         // Something went wrong!
+        //     }
+        // }
+        implementation.currentUser().setUserAttributeList(name,list);
         call.resolve(new JSObject());
     }
 

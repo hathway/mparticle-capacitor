@@ -23,8 +23,9 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     @objc func mParticleInit(_ call: CAPPluginCall) {
         // call.unimplemented("not implemented for testing")
         dump("************ INSIDE CAPACITOR PLUGIN mParticleInit")
-        let options = MParticleOptions(key: "us1-279d6248523ab840bb39cfc8d4799691",
-                                    secret: "wNbwpQ7Rh-W4AHB_Cr2M59YZcFoDiFS8uaOhIB8-MV82Nehtn6zgdbVErbA-ncS7")
+        let key = call.getString("key") ?? ""
+        let options = MParticleOptions(key: key,
+                                    secret: implementation.getSecret(key))
         // let identityRequest = MPIdentityApiRequest.withEmptyUser()
         // identityRequest.email = "foos@wearehathway.com"
         // identityRequest.customerId = "12345690"
@@ -106,25 +107,22 @@ public class MParticleCapacitorPlugin: CAPPlugin {
         ])
     }
 
-    @objc func getUserAttributeLists(_ call: CAPPluginCall) {
-        // call.unimplemented("Not implemented on iOS.")
-        dump("********************** HERE GETATTRIBUTES *************")
-        // dump(implementation.currentUser()?.userSegments(1000,endpointId:"")
-        dump(implementation.currentUser()?.userAttributes)
-        call.resolve(
-            implementation.currentUser()?.userAttributes ?? [:]
-        )
-    }
+    // @objc func getUserAttributeLists(_ call: CAPPluginCall) {
+    //     // call.unimplemented("Not implemented on iOS.")
+    //     dump("********************** HERE GETATTRIBUTES *************")
+    //     // dump(implementation.currentUser()?.userSegments(1000,endpointId:"")
+    //     dump(implementation.currentUser()?.userAttributes)
+    //     call.resolve(
+    //         implementation.currentUser()?.userAttributes ?? [:]
+    //     )
+    // }
 
     @objc func setUserAttributeList(_ call: CAPPluginCall) {
         // call.unimplemented("Not implemented on iOS.")
         let name:String = call.getString("attributeName") ?? "default name"
-        let list = call.getObject("attributeValues") ?? [:]
-        var listArr:[String] = []
-        for str in list {
-            listArr.append(str as String)
-        }
-        implementation.currentUser()?.setUserAttributeList(name, values: listArr)
+        let list:[String] = call.getArray("attributeValues") as? [String] ?? []
+        dump(list)
+        implementation.currentUser()?.setUserAttributeList(name, values: list)
         call.resolve([
             "value":"success",
         ])
