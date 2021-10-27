@@ -16,9 +16,17 @@ npx cap sync
 * [`echo(...)`](#echo)
 * [`helloMP()`](#hellomp)
 * [`mParticleInit(...)`](#mparticleinit)
-* [`logMPEvent(...)`](#logmpevent)
+* [`logMParticleEvent(...)`](#logmparticleevent)
 * [`logMParticlePageView(...)`](#logmparticlepageview)
 * [`setUserAttribute(...)`](#setuserattribute)
+* [`setUserAttributeList(...)`](#setuserattributelist)
+* [`getUserAttributeLists(...)`](#getuserattributelists)
+* [`updateMParticleCart(...)`](#updatemparticlecart)
+* [`addMParticleProduct(...)`](#addmparticleproduct)
+* [`removeMParticleProduct(...)`](#removemparticleproduct)
+* [`submitPurchaseEvent(...)`](#submitpurchaseevent)
+* [`loginMParticleUser(...)`](#loginmparticleuser)
+* [`logoutMParticleUser(...)`](#logoutmparticleuser)
 * [`addListener(...)`](#addlistener)
 * [Interfaces](#interfaces)
 
@@ -30,14 +38,14 @@ npx cap sync
 ### echo(...)
 
 ```typescript
-echo(options: { value: string; }) => any
+echo(options: { value: string; }) => Promise<{ value: string; }>
 ```
 
 | Param         | Type                            |
 | ------------- | ------------------------------- |
 | **`options`** | <code>{ value: string; }</code> |
 
-**Returns:** <code>any</code>
+**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
 
 --------------------
 
@@ -45,10 +53,10 @@ echo(options: { value: string; }) => any
 ### helloMP()
 
 ```typescript
-helloMP() => any
+helloMP() => Promise<string>
 ```
 
-**Returns:** <code>any</code>
+**Returns:** <code>Promise&lt;string&gt;</code>
 
 --------------------
 
@@ -56,29 +64,29 @@ helloMP() => any
 ### mParticleInit(...)
 
 ```typescript
-mParticleInit(call: any) => any
+mParticleInit(call: any) => Promise<any>
 ```
 
 | Param      | Type             |
 | ---------- | ---------------- |
 | **`call`** | <code>any</code> |
 
-**Returns:** <code>any</code>
+**Returns:** <code>Promise&lt;any&gt;</code>
 
 --------------------
 
 
-### logMPEvent(...)
+### logMParticleEvent(...)
 
 ```typescript
-logMPEvent(call: any) => any
+logMParticleEvent(call: any) => Promise<any>
 ```
 
 | Param      | Type             |
 | ---------- | ---------------- |
 | **`call`** | <code>any</code> |
 
-**Returns:** <code>any</code>
+**Returns:** <code>Promise&lt;any&gt;</code>
 
 --------------------
 
@@ -86,14 +94,14 @@ logMPEvent(call: any) => any
 ### logMParticlePageView(...)
 
 ```typescript
-logMParticlePageView(call: any) => any
+logMParticlePageView(call: any) => Promise<any>
 ```
 
 | Param      | Type             |
 | ---------- | ---------------- |
 | **`call`** | <code>any</code> |
 
-**Returns:** <code>any</code>
+**Returns:** <code>Promise&lt;any&gt;</code>
 
 --------------------
 
@@ -101,14 +109,134 @@ logMParticlePageView(call: any) => any
 ### setUserAttribute(...)
 
 ```typescript
-setUserAttribute(call: any) => any
+setUserAttribute(call: any) => Promise<any>
 ```
 
 | Param      | Type             |
 | ---------- | ---------------- |
 | **`call`** | <code>any</code> |
 
-**Returns:** <code>any</code>
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### setUserAttributeList(...)
+
+```typescript
+setUserAttributeList(call: any) => Promise<any>
+```
+
+| Param      | Type             |
+| ---------- | ---------------- |
+| **`call`** | <code>any</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### getUserAttributeLists(...)
+
+```typescript
+getUserAttributeLists(_call: any) => Promise<any>
+```
+
+| Param       | Type             |
+| ----------- | ---------------- |
+| **`_call`** | <code>any</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### updateMParticleCart(...)
+
+```typescript
+updateMParticleCart(call: any) => Promise<any>
+```
+
+| Param      | Type             |
+| ---------- | ---------------- |
+| **`call`** | <code>any</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### addMParticleProduct(...)
+
+```typescript
+addMParticleProduct(call: any) => Promise<any>
+```
+
+| Param      | Type             |
+| ---------- | ---------------- |
+| **`call`** | <code>any</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### removeMParticleProduct(...)
+
+```typescript
+removeMParticleProduct(call: any) => Promise<any>
+```
+
+| Param      | Type             |
+| ---------- | ---------------- |
+| **`call`** | <code>any</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### submitPurchaseEvent(...)
+
+```typescript
+submitPurchaseEvent(call: any) => Promise<any>
+```
+
+| Param      | Type             |
+| ---------- | ---------------- |
+| **`call`** | <code>any</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### loginMParticleUser(...)
+
+```typescript
+loginMParticleUser(call: any) => Promise<any>
+```
+
+| Param      | Type             |
+| ---------- | ---------------- |
+| **`call`** | <code>any</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### logoutMParticleUser(...)
+
+```typescript
+logoutMParticleUser(call?: any) => Promise<any>
+```
+
+| Param      | Type             |
+| ---------- | ---------------- |
+| **`call`** | <code>any</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
 
 --------------------
 
@@ -124,7 +252,7 @@ addListener(eventName: 'mParticleInit', listenerFunc: mParticleInitListener) => 
 | **`eventName`**    | <code>"mParticleInit"</code>       |
 | **`listenerFunc`** | <code>(info: any) =&gt; any</code> |
 
-**Returns:** <code>any</code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
 
 --------------------
 
@@ -134,8 +262,8 @@ addListener(eventName: 'mParticleInit', listenerFunc: mParticleInitListener) => 
 
 #### PluginListenerHandle
 
-| Prop         | Type                      |
-| ------------ | ------------------------- |
-| **`remove`** | <code>() =&gt; any</code> |
+| Prop         | Type                                      |
+| ------------ | ----------------------------------------- |
+| **`remove`** | <code>() =&gt; Promise&lt;void&gt;</code> |
 
 </docgen-api>

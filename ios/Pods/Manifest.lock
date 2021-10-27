@@ -1,19 +1,47 @@
 PODS:
-  - Capacitor (3.2.3):
+  - Appboy-iOS-SDK (4.3.4):
+    - Appboy-iOS-SDK/UI (= 4.3.4)
+  - Appboy-iOS-SDK/ContentCards (4.3.4):
+    - Appboy-iOS-SDK/Core
+    - SDWebImage (< 6, >= 5.8.2)
+  - Appboy-iOS-SDK/Core (4.3.4)
+  - Appboy-iOS-SDK/InAppMessage (4.3.4):
+    - Appboy-iOS-SDK/Core
+    - SDWebImage (< 6, >= 5.8.2)
+  - Appboy-iOS-SDK/NewsFeed (4.3.4):
+    - Appboy-iOS-SDK/Core
+    - SDWebImage (< 6, >= 5.8.2)
+  - Appboy-iOS-SDK/UI (4.3.4):
+    - Appboy-iOS-SDK/ContentCards
+    - Appboy-iOS-SDK/Core
+    - Appboy-iOS-SDK/InAppMessage
+    - Appboy-iOS-SDK/NewsFeed
+  - Capacitor (3.2.4):
     - CapacitorCordova
-  - CapacitorCordova (3.2.3)
+  - CapacitorCordova (3.2.4)
+  - mParticle-Appboy (8.0.11):
+    - Appboy-iOS-SDK (~> 4.3)
+    - Appboy-tvOS-SDK (~> 3.27)
+    - mParticle-Apple-SDK/mParticle (~> 8.0)
   - mParticle-Apple-SDK (8.5.3):
     - mParticle-Apple-SDK/mParticle (= 8.5.3)
   - mParticle-Apple-SDK/mParticle (8.5.3)
+  - SDWebImage (5.12.0):
+    - SDWebImage/Core (= 5.12.0)
+  - SDWebImage/Core (5.12.0)
 
 DEPENDENCIES:
   - "Capacitor (from `../node_modules/@capacitor/ios`)"
   - "CapacitorCordova (from `../node_modules/@capacitor/ios`)"
-  - mParticle-Apple-SDK (~> 8)
+  - mParticle-Appboy (~> 8)
+  - mParticle-Apple-SDK (~> 8.5)
 
 SPEC REPOS:
   trunk:
+    - Appboy-iOS-SDK
+    - mParticle-Appboy
     - mParticle-Apple-SDK
+    - SDWebImage
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -22,10 +50,13 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@capacitor/ios"
 
 SPEC CHECKSUMS:
-  Capacitor: 525175245027732c4f9bc7c5209176c1acef854a
-  CapacitorCordova: e571f22d5672cea00d703d82eafb09adf257980d
+  Appboy-iOS-SDK: dd22a28a003c5a1331080ecec398eaa4d7ef4569
+  Capacitor: 07f746722420584674243fe6bb2e02d243a02a08
+  CapacitorCordova: 16f118e79d7c20eb659565b1ed9133e2b730f747
+  mParticle-Appboy: cdd2aee8df3d997dc1a3c8a239e2542477bdbb9d
   mParticle-Apple-SDK: 982774ac43c1fc996b503e76e375cc128caa2d5e
+  SDWebImage: 4ea20cca2986adc5aacde07aa686742fd4c67a37
 
-PODFILE CHECKSUM: b0c7766e532f72de2eae714ff39dcf3f04cc751d
+PODFILE CHECKSUM: e723b5153da877e71e0e2e967c33735e36930ce9
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.11.2

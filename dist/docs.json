@@ -1,0 +1,272 @@
+{
+  "api": {
+    "name": "MParticleCapacitorPlugin",
+    "slug": "mparticlecapacitorplugin",
+    "docs": "",
+    "tags": [],
+    "methods": [
+      {
+        "name": "echo",
+        "signature": "(options: { value: string; }) => Promise<{ value: string; }>",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "",
+            "type": "{ value: string; }"
+          }
+        ],
+        "returns": "Promise<{ value: string; }>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "echo"
+      },
+      {
+        "name": "helloMP",
+        "signature": "() => Promise<string>",
+        "parameters": [],
+        "returns": "Promise<string>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "hellomp"
+      },
+      {
+        "name": "mParticleInit",
+        "signature": "(call: any) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "mparticleinit"
+      },
+      {
+        "name": "logMParticleEvent",
+        "signature": "(call: any) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "logmparticleevent"
+      },
+      {
+        "name": "logMParticlePageView",
+        "signature": "(call: any) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "logmparticlepageview"
+      },
+      {
+        "name": "setUserAttribute",
+        "signature": "(call: any) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "setuserattribute"
+      },
+      {
+        "name": "setUserAttributeList",
+        "signature": "(call: any) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "setuserattributelist"
+      },
+      {
+        "name": "getUserAttributeLists",
+        "signature": "(_call: any) => Promise<any>",
+        "parameters": [
+          {
+            "name": "_call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "getuserattributelists"
+      },
+      {
+        "name": "updateMParticleCart",
+        "signature": "(call: any) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "updatemparticlecart"
+      },
+      {
+        "name": "addMParticleProduct",
+        "signature": "(call: any) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "addmparticleproduct"
+      },
+      {
+        "name": "removeMParticleProduct",
+        "signature": "(call: any) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "removemparticleproduct"
+      },
+      {
+        "name": "submitPurchaseEvent",
+        "signature": "(call: any) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "submitpurchaseevent"
+      },
+      {
+        "name": "loginMParticleUser",
+        "signature": "(call: any) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "loginmparticleuser"
+      },
+      {
+        "name": "logoutMParticleUser",
+        "signature": "(call?: any) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "logoutmparticleuser"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'mParticleInit', listenerFunc: mParticleInitListener) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "\"mParticleInit\""
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(info: any) => any"
+          }
+        ],
+        "returns": "Promise<PluginListenerHandle> & PluginListenerHandle",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [
+          "PluginListenerHandle",
+          "mParticleInitListener"
+        ],
+        "slug": "addlistener"
+      }
+    ],
+    "properties": []
+  },
+  "interfaces": [
+    {
+      "name": "PluginListenerHandle",
+      "slug": "pluginlistenerhandle",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "remove",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "() => Promise<void>"
+        }
+      ]
+    }
+  ],
+  "enums": []
+}

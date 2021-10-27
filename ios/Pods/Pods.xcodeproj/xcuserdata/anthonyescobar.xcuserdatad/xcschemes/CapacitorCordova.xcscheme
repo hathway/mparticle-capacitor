@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "400AE44335852A2D8D746557E21E8EB0"
-               BuildableName = "CapacitorCordova.framework"
+               BuildableName = "Cordova.framework"
                BlueprintName = "CapacitorCordova"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
