@@ -146,9 +146,6 @@ class MParticleCapacitorWeb extends core.WebPlugin {
         console.log('ECHO', options);
         return options;
     }
-    async helloMP() {
-        return 'hello from mParticle';
-    }
 }
 
 var web = /*#__PURE__*/Object.freeze({

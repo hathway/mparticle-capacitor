@@ -6,7 +6,6 @@ export interface MParticleCapacitorPlugin {
     }): Promise<{
         value: string;
     }>;
-    helloMP(): Promise<string>;
     mParticleInit(call: any): Promise<any>;
     logMParticleEvent(call: any): Promise<any>;
     logMParticlePageView(call: any): Promise<any>;

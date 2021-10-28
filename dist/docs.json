@@ -22,16 +22,6 @@
         "slug": "echo"
       },
       {
-        "name": "helloMP",
-        "signature": "() => Promise<string>",
-        "parameters": [],
-        "returns": "Promise<string>",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [],
-        "slug": "hellomp"
-      },
-      {
         "name": "mParticleInit",
         "signature": "(call: any) => Promise<any>",
         "parameters": [

@@ -24,5 +24,4 @@ export declare class MParticleCapacitorWeb extends WebPlugin implements MParticl
     }): Promise<{
         value: string;
     }>;
-    helloMP(): Promise<string>;
 }

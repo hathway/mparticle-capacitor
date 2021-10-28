@@ -40,7 +40,6 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 <docgen-index>
 
 * [`echo(...)`](#echo)
-* [`helloMP()`](#hellomp)
 * [`mParticleInit(...)`](#mparticleinit)
 * [`logMParticleEvent(...)`](#logmparticleevent)
 * [`logMParticlePageView(...)`](#logmparticlepageview)
@@ -73,17 +72,6 @@ echo(options: { value: string; }) => Promise<{ value: string; }>
 | **`options`** | <code>{ value: string; }</code> |
 
 **Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
-
---------------------
-
-
-### helloMP()
-
-```typescript
-helloMP() => Promise<string>
-```
-
-**Returns:** <code>Promise&lt;string&gt;</code>
 
 --------------------
 

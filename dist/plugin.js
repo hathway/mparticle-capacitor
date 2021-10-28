@@ -141,9 +141,6 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle, mParticle
             console.log('ECHO', options);
             return options;
         }
-        async helloMP() {
-            return 'hello from mParticle';
-        }
     }
 
     var web = /*#__PURE__*/Object.freeze({

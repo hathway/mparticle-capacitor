@@ -109,8 +109,5 @@ export class MParticleCapacitorWeb extends WebPlugin {
         console.log('ECHO', options);
         return options;
     }
-    async helloMP() {
-        return 'hello from mParticle';
-    }
 }
 //# sourceMappingURL=web.js.map
