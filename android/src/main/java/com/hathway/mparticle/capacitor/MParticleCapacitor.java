@@ -26,6 +26,10 @@ public class MParticleCapacitor {
             return "BCBZ7JzoS5i_mVmiWWsq12JspNQt_tF7G5iiNgIT4FJXO1kwGlB6rvgRRtDbPOc2";
         } else if (key == "us1-0a82ff0dafd00d4088ebe5d4c8bcda09") {
             return "7DNQIuP16VI_f1pBSgR81CSZxVhr53V-tRLKF3hFYrUwrR5wWdFYpJ95ORAjto_l";
+        } else if (key == "us1-e44ce0c8c9665c4db9f8f83647fd0fad") {
+            return "lBxFCdyAY6esGXaLIE_1l79NxVVhQa-vGgUyL9zm2j4gE4GWikogzpv_tPQOfKqG";
+        } else if (key == "us1-ed05ce06f30fd5409ddfdd62bb460e36") {
+            return "3IQDvenyAjPgjJyZBANVehU_pBRkw2aWgmV0h9STYxYrU1lngY8sfwVr73OcDF7q";
         }
         return "";
     }

@@ -60,7 +60,6 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle, mParticle
             return mParticle__default["default"].Identity.logout({}, identityCallback);
         }
         async registerMParticleUser(call) {
-            console.log("inside registerMParticleUser", call);
             return mParticle__default["default"].Identity.login(this.identityRequest(call.email, call.customerId), function (result) {
                 if (!result)
                     return;
@@ -84,11 +83,6 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle, mParticle
         }
         async setUserAttributeList(call) {
             return this.currentUser.setUserAttributeList(call.attributeName, call.attributeValues);
-        }
-        async getUserAttributeLists(_call) {
-            console.log("0w", this.currentUser.getAllUserAttributes());
-            console.log("1w", this.currentUser.getUserAttributesLists());
-            return this.currentUser.getUserAttributesLists();
         }
         async updateMParticleCart(call) {
             const productToUpdate = this.createMParticleProduct(call.product);

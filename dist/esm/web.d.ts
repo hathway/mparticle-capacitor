@@ -10,7 +10,6 @@ export declare class MParticleCapacitorWeb extends WebPlugin implements MParticl
     logMParticlePageView(call: any): Promise<any>;
     setUserAttribute(call: any): Promise<any>;
     setUserAttributeList(call: any): Promise<any>;
-    getUserAttributeLists(_call: any): Promise<any>;
     updateMParticleCart(call: any): Promise<any>;
     addMParticleProduct(call: any): Promise<any>;
     removeMParticleProduct(call: any): Promise<any>;

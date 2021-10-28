@@ -28,7 +28,6 @@ export class MParticleCapacitorWeb extends WebPlugin {
         return mParticle.Identity.logout({}, identityCallback);
     }
     async registerMParticleUser(call) {
-        console.log("inside registerMParticleUser", call);
         return mParticle.Identity.login(this.identityRequest(call.email, call.customerId), function (result) {
             if (!result)
                 return;
@@ -52,11 +51,6 @@ export class MParticleCapacitorWeb extends WebPlugin {
     }
     async setUserAttributeList(call) {
         return this.currentUser.setUserAttributeList(call.attributeName, call.attributeValues);
-    }
-    async getUserAttributeLists(_call) {
-        console.log("0w", this.currentUser.getAllUserAttributes());
-        console.log("1w", this.currentUser.getUserAttributesLists());
-        return this.currentUser.getUserAttributesLists();
     }
     async updateMParticleCart(call) {
         const productToUpdate = this.createMParticleProduct(call.product);

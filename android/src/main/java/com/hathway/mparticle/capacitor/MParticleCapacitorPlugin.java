@@ -42,7 +42,6 @@ public class MParticleCapacitorPlugin extends Plugin {
     public void mParticleInit(PluginCall call) {
         // call.unimplemented("Not implemented on Android.");
         String key = call.getString("key");
-
         MParticleOptions options = MParticleOptions.builder(this.getContext())
                 .credentials(
                     key, 

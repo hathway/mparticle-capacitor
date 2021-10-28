@@ -13,6 +13,10 @@ import Capacitor
             return "wNbwpQ7Rh-W4AHB_Cr2M59YZcFoDiFS8uaOhIB8-MV82Nehtn6zgdbVErbA-ncS7"
         } else if (value == "us1-8f90c2f3b594d842a381ecfd0c48e3d4") {
             return "s9v9vHIIdGejfjM4rkTy9l3C5GzDZFiDyzXeHG3pkv1XUzNgLPSIFXtgFyf3Z9gS"
+        } else if (value == "us1-887d1179105c1242b116c1d06f4b64ab") {
+            return "qbJ8hQ2uPRi2umU4FJrJdyROK1GXs5ByGPzxf48KWZAosN4bnb0l-XJFe8ZbXfE1"
+        } else if (value == "us1-b132b53006362f44a25a0d17c710ea33") {
+            return "r_iPlAytcRdf0LzwpvEdz10BUIwMzi_zBddVMKqQbEWHvHZZ_MaCSt3mkXgWO8ft"
         }
         return value
     }

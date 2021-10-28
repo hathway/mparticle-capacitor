@@ -102,22 +102,6 @@
         "slug": "setuserattributelist"
       },
       {
-        "name": "getUserAttributeLists",
-        "signature": "(_call: any) => Promise<any>",
-        "parameters": [
-          {
-            "name": "_call",
-            "docs": "",
-            "type": "any"
-          }
-        ],
-        "returns": "Promise<any>",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [],
-        "slug": "getuserattributelists"
-      },
-      {
         "name": "updateMParticleCart",
         "signature": "(call: any) => Promise<any>",
         "parameters": [

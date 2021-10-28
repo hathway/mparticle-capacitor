@@ -36,7 +36,6 @@ export class MParticleCapacitorWeb
   }
 
   async registerMParticleUser(call:any): Promise<any> {
-    console.log("inside registerMParticleUser", call);
     return mParticle.Identity.login(this.identityRequest(call.email, call.customerId), function(result:any) {
       if (!result) return;
       let currentUser = result.getUser();
@@ -66,12 +65,6 @@ export class MParticleCapacitorWeb
 
   async setUserAttributeList(call:any): Promise<any> {
     return this.currentUser.setUserAttributeList(call.attributeName, call.attributeValues);
-  }
-
-  async getUserAttributeLists(_call:any): Promise<any> {
-    console.log("0w",this.currentUser.getAllUserAttributes())
-    console.log("1w",this.currentUser.getUserAttributesLists())
-    return this.currentUser.getUserAttributesLists();
   }
 
   async updateMParticleCart(call:any): Promise<any> {

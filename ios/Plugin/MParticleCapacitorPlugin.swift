@@ -46,7 +46,6 @@ public class MParticleCapacitorPlugin: CAPPlugin {
         let userAttributes = call.getObject("userAttributes") ?? [:]
 
         MParticle.sharedInstance().identity.login(implementation.identityRequest(email,customerId)!, completion: { (result: MPIdentityApiResult?, error: Error?) -> () in
-            print(result)
             if (result?.user != nil) {
                 for (key,value) in userAttributes {
                     result?.user.setUserAttribute(key, value: value)

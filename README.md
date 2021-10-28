@@ -45,7 +45,6 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 * [`logMParticlePageView(...)`](#logmparticlepageview)
 * [`setUserAttribute(...)`](#setuserattribute)
 * [`setUserAttributeList(...)`](#setuserattributelist)
-* [`getUserAttributeLists(...)`](#getuserattributelists)
 * [`updateMParticleCart(...)`](#updatemparticlecart)
 * [`addMParticleProduct(...)`](#addmparticleproduct)
 * [`removeMParticleProduct(...)`](#removemparticleproduct)
@@ -143,21 +142,6 @@ setUserAttributeList(call: any) => Promise<any>
 | Param      | Type             |
 | ---------- | ---------------- |
 | **`call`** | <code>any</code> |
-
-**Returns:** <code>Promise&lt;any&gt;</code>
-
---------------------
-
-
-### getUserAttributeLists(...)
-
-```typescript
-getUserAttributeLists(_call: any) => Promise<any>
-```
-
-| Param       | Type             |
-| ----------- | ---------------- |
-| **`_call`** | <code>any</code> |
 
 **Returns:** <code>Promise&lt;any&gt;</code>
 
