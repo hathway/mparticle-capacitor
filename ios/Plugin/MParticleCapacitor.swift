@@ -54,12 +54,6 @@ import Capacitor
     }
 
     @objc public func createMParticleProduct(_ productData:AnyObject) -> MPProduct {
-        // let product = MPProduct(
-        //     name: productData.name ?? "",
-        //     sku: productData.sku ?? "",
-        //     quantity: productData.quantity ?? 0,
-        //     price: productData.cost as NSNumber ?? nil
-        // )
         let dataDict = productData as! [String: Any]
         let product = MPProduct.init(
             name: dataDict["name"] as! String,

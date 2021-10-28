@@ -49,27 +49,12 @@ public class MParticleCapacitor {
         }
     }
 
-    public List<JSObject> toList(JSArray array) throws JSONException {
-        List<JSObject> items = new ArrayList<>();
-//        Object o = null;
-        for (int i = 0; i < array.length(); i++) {
-//            o = array.get(i);
-            try {
-                items.add((JSObject) (array.get(i)));
-            } catch (Exception ex) {
-                throw new JSONException("Not all items are instances of the given type");
-            }
-        }
-        return items;
-    }
-
     public MParticleUser currentUser() {
         return MParticle.getInstance().Identity().getCurrentUser();
     }
 
     public IdentityApiRequest identityRequest(String email, String customerId) {
         IdentityApiRequest identityRequest = IdentityApiRequest.withEmptyUser()
-        //the IdentityApiRequest provides several convenience methods for common identity types
         .email(email)
         .customerId(customerId)
         .build();

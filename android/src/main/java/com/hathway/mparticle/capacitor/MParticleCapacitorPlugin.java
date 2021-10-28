@@ -39,13 +39,6 @@ public class MParticleCapacitorPlugin extends Plugin {
     }
 
     @PluginMethod
-    public void helloMP(PluginCall call) {
-        JSObject ret = new JSObject();
-        ret.put("value", implementation.echo("helloMP Android"));
-        call.resolve(ret);
-    }
-
-    @PluginMethod
     public void mParticleInit(PluginCall call) {
         // call.unimplemented("Not implemented on Android.");
         String key = call.getString("key");
@@ -59,14 +52,11 @@ public class MParticleCapacitorPlugin extends Plugin {
                 .logLevel(MParticle.LogLevel.DEBUG)
                 .build();
         MParticle.start(options);
-        // System.out.println("******************** APPBOY VAR HERE ************");
-        // System.out.println(MParticle.getInstance().isKitActive(ServiceProviders.APPBOY));
         call.resolve(new JSObject());
     }
 
     @PluginMethod
     public void logMParticleEvent(PluginCall call) {
-        // call.unimplemented("Not implemented on Android.");
         Map<String, String> customAttributes = new HashMap<String, String>();
         JSObject temp = call.getObject("eventProperties");
         Iterator<String> iter = temp.keys();
@@ -93,7 +83,6 @@ public class MParticleCapacitorPlugin extends Plugin {
 
     @PluginMethod
     public void logMParticlePageView(PluginCall call) {
-        // call.unimplemented("Not implemented on Android.");
         String name = call.getString("pageName");
         String link = call.getString("pageLink");
         Map<String, String> screenInfo = new HashMap<String, String>();
@@ -104,7 +93,6 @@ public class MParticleCapacitorPlugin extends Plugin {
 
     @PluginMethod
     public void setUserAttribute(PluginCall call) {
-        // call.unimplemented("Not implemented on Android.");
         String name = call.getString("attributeName");
         String value = call.getString("attributeValue");
         implementation.currentUser().setUserAttribute(name,value);
@@ -113,7 +101,6 @@ public class MParticleCapacitorPlugin extends Plugin {
 
     @PluginMethod
     public void setUserAttributeList(PluginCall call) {
-        // call.unimplemented("Not implemented on Android.");
         String name = call.getString("attributeName");
         JSArray list = call.getArray("attributeValues");
         implementation.currentUser().setUserAttributeList(name,list);
@@ -122,7 +109,6 @@ public class MParticleCapacitorPlugin extends Plugin {
 
     @PluginMethod
     public void updateMParticleCart(PluginCall call) {
-        // call.unimplemented("Not implemented on Android.");
         int type = call.getInt("eventType");
         JSObject product_tmp = call.getObject("product");
         Map<String, String> customAttributes = new HashMap<String, String>();
@@ -148,7 +134,6 @@ public class MParticleCapacitorPlugin extends Plugin {
 
     @PluginMethod
     public void addMParticleProduct(PluginCall call) {
-        // call.unimplemented("Not implemented on Android.");
         JSObject product_tmp = call.getObject("product");
         Map<String, String> customAttributes = new HashMap<String, String>();
         JSObject temp = call.getObject("customAttributes");
@@ -173,7 +158,6 @@ public class MParticleCapacitorPlugin extends Plugin {
 
     @PluginMethod
     public void removeMParticleProduct(PluginCall call) {
-        // call.unimplemented("Not implemented on Android.");
         JSObject product_tmp = call.getObject("product");
         Map<String, String> customAttributes = new HashMap<String, String>();
         JSObject temp = call.getObject("customAttributes");
@@ -198,7 +182,6 @@ public class MParticleCapacitorPlugin extends Plugin {
 
     @PluginMethod
     public void submitPurchaseEvent(PluginCall call) throws JSONException {
-        // call.unimplemented("Not implemented on Android.");
         Map<String, String> customAttributes = new HashMap<String, String>();
         JSObject temp = call.getObject("customAttributes");
         Iterator<String> iter = temp.keys();
@@ -232,7 +215,6 @@ public class MParticleCapacitorPlugin extends Plugin {
 
     @PluginMethod
     public void loginMParticleUser(PluginCall call) {
-        // call.unimplemented("Not implemented on Android.");
         String email = call.getString("email");
         String customerId = call.getString("customerId");
         MParticle.getInstance().Identity().login(implementation.identityRequest(email,customerId));
@@ -241,14 +223,12 @@ public class MParticleCapacitorPlugin extends Plugin {
 
     @PluginMethod
     public void logoutMParticleUser(PluginCall call) {
-        // call.unimplemented("Not implemented on Android.");
         MParticle.getInstance().Identity().logout(IdentityApiRequest.withEmptyUser().build());
         call.resolve(new JSObject());
     }
 
     @PluginMethod
     public void registerMParticleUser(PluginCall call) {
-        // call.unimplemented("Not implemented on Android.");
         String email = call.getString("email");
         String customerId = call.getString("customerId");
         MParticle.getInstance().Identity().login(implementation.identityRequest(email,customerId))

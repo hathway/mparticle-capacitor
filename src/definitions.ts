@@ -4,7 +4,6 @@ export type mParticleInitListener = (info:any) => any;
 
 export interface MParticleCapacitorPlugin {
   echo(options: { value: string }): Promise<{ value: string }>;
-  helloMP(): Promise<string>;
 
   mParticleInit(call:any): Promise<any>;
 

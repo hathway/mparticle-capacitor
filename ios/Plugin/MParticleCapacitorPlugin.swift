@@ -49,9 +49,6 @@ public class MParticleCapacitorPlugin: CAPPlugin {
             print(result)
             if (result?.user != nil) {
                 for (key,value) in userAttributes {
-                    dump("**************************** KEY VAL REGISTER *********************")
-                    dump(key)
-                    dump(value)
                     result?.user.setUserAttribute(key, value: value)
                 }
             } else {
@@ -103,7 +100,6 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func setUserAttribute(_ call: CAPPluginCall) {
-        // call.unimplemented("Not implemented on iOS.")
         let name = call.getString("attributeName") ?? "default name"
         let value = call.getString("attributeValue") ?? "default value"
 
@@ -114,7 +110,6 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func setUserAttributeList(_ call: CAPPluginCall) {
-        // call.unimplemented("Not implemented on iOS.")
         let name:String = call.getString("attributeName") ?? "default name"
         let list:[String] = call.getArray("attributeValues") as? [String] ?? []
         dump(list)
@@ -125,7 +120,6 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func updateMParticleCart(_ call: CAPPluginCall) {
-        // call.unimplemented("Not implemented on iOS.")
         let product_tmp = call.getObject("product") ?? [:]
         let cust_attr = call.getObject("customAttributes") ?? [:]
         let type_tmp = UInt(call.getInt("eventType") ?? 1) - 1 // TODO: Need to edit enum types
@@ -143,7 +137,6 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func addMParticleProduct(_ call: CAPPluginCall) {
-        // call.unimplemented("Not implemented on iOS.")
         let product_tmp = call.getObject("product") ?? [:]
         let cust_attr = call.getObject("customAttributes") ?? [:]
 
@@ -160,7 +153,6 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func removeMParticleProduct(_ call: CAPPluginCall) {
-        // call.unimplemented("Not implemented on iOS.")
         let product_tmp = call.getObject("product") ?? [:]
         let cust_attr = call.getObject("customAttributes") ?? [:]
 
@@ -179,29 +171,21 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func submitPurchaseEvent(_ call: CAPPluginCall) {
-        // call.unimplemented("Not implemented on iOS.")
         let products_tmp = call.getArray("productData") ?? []
         let cust_attr = call.getObject("customAttributes") ?? [:]
         let trans_tmp = call.getObject("transactionAttributes") ?? [:]
         
-        dump(cust_attr)
-
         let action =  MPCommerceEventAction.purchase
         let event = MPCommerceEvent.init(action: action)
-        dump(products_tmp)
         for product in products_tmp {
-            dump(product)
             event?.addProduct(implementation.createMParticleProduct(product as AnyObject))
         }
 
-        dump(trans_tmp)
         let attributes = MPTransactionAttributes.init()
         attributes.transactionId = trans_tmp["Id"] as? String
         attributes.revenue = trans_tmp["Revenue"] as? NSNumber
         attributes.tax = trans_tmp["Tax"] as? NSNumber
-        
-        dump(attributes)
-        
+                
         event?.customAttributes = cust_attr
         event?.transactionAttributes = attributes
         MParticle.sharedInstance().logEvent(event!)
@@ -212,18 +196,8 @@ public class MParticleCapacitorPlugin: CAPPlugin {
 
     @objc func echo(_ call: CAPPluginCall) {
         let value = call.getString("value") ?? ""
-        dump("i am ios:")
-        dump(value)
         call.resolve([
             "value": implementation.echo(value)
         ])
-    }
-
-    @objc func helloMP(_ call: CAPPluginCall) {
-        call.unimplemented("Not implemented on iOS.")
-        // dump("helloMP iOS")
-        // call.resolve([
-        //     "value": implementation.echo("hello from mParticle")
-        // ])
     }
 }

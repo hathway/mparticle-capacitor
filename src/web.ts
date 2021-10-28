@@ -138,9 +138,4 @@ export class MParticleCapacitorWeb
     console.log('ECHO', options);
     return options;
   }
-  
-  async helloMP(): Promise<string> {
-    return 'hello from mParticle';
-  }
-
 }
