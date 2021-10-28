@@ -9,6 +9,32 @@ npm install mparticle-capacitor
 npx cap sync
 ```
 
+## Baze Integration
+
+There are some custom settings that need to be included in your project for mParticle to route data to Braze.
+
+### Android
+
+Android will complain about not finding a package unless you include this repo in your `app/build.gradle`:
+<code>
+repositories {
+    maven { url "https://appboy.github.io/appboy-android-sdk/sdk" }
+    ...
+}
+</code>
+
+### iOS
+
+Initilize mParticle in the app directly instead of the plugin, Appboy/Braze needs the permissions mParticle will pass to it through this.
+`AppDelegate.swift`
+<code>
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        let options = MParticleOptions(key: {{your key here}}, secret: {{matching secret here}})
+        MParticle.sharedInstance().start(with: options)
+        return true
+}
+</code>
+
 ## API
 
 <docgen-index>
