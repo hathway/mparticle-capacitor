@@ -23,11 +23,6 @@ export interface MParticleCapacitorPlugin {
   loginMParticleUser(call:any): Promise<any>;
   logoutMParticleUser(call?:any): Promise<any>;
   registerMParticleUser(call:any): Promise<any>;
-
-  addListener(
-    eventName: 'mParticleInit',
-    listenerFunc: mParticleInitListener,
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
 }
 
 export enum MParticleEventType {
