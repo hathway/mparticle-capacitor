@@ -61,11 +61,11 @@ import Capacitor
             quantity: dataDict["quantity"] as! NSNumber,
             price: (dataDict["cost"] as? NSNumber) ?? nil
         )
-         if let attrs = dataDict["attributes"] as? Dictionary<String, JSValue> {
-             for attr in attrs {
+        if let attrs = dataDict["attributes"] as? Dictionary<String, JSValue> {
+            for attr in attrs {
                 product[attr.key] = "\(attr.value)"
             }
-         }
+        }
         return product
     }
 }
