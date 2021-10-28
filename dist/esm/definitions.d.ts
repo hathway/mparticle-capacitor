@@ -1,4 +1,3 @@
-import type { PluginListenerHandle } from '@capacitor/core';
 export declare type mParticleInitListener = (info: any) => any;
 export interface MParticleCapacitorPlugin {
     echo(options: {
@@ -19,7 +18,6 @@ export interface MParticleCapacitorPlugin {
     loginMParticleUser(call: any): Promise<any>;
     logoutMParticleUser(call?: any): Promise<any>;
     registerMParticleUser(call: any): Promise<any>;
-    addListener(eventName: 'mParticleInit', listenerFunc: mParticleInitListener): Promise<PluginListenerHandle> & PluginListenerHandle;
 }
 export declare enum MParticleEventType {
     Navigation = 1,

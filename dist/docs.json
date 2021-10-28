@@ -228,51 +228,10 @@
         "docs": "",
         "complexTypes": [],
         "slug": "registermparticleuser"
-      },
-      {
-        "name": "addListener",
-        "signature": "(eventName: 'mParticleInit', listenerFunc: mParticleInitListener) => Promise<PluginListenerHandle> & PluginListenerHandle",
-        "parameters": [
-          {
-            "name": "eventName",
-            "docs": "",
-            "type": "\"mParticleInit\""
-          },
-          {
-            "name": "listenerFunc",
-            "docs": "",
-            "type": "(info: any) => any"
-          }
-        ],
-        "returns": "Promise<PluginListenerHandle> & PluginListenerHandle",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [
-          "PluginListenerHandle",
-          "mParticleInitListener"
-        ],
-        "slug": "addlistener"
       }
     ],
     "properties": []
   },
-  "interfaces": [
-    {
-      "name": "PluginListenerHandle",
-      "slug": "pluginlistenerhandle",
-      "docs": "",
-      "tags": [],
-      "methods": [],
-      "properties": [
-        {
-          "name": "remove",
-          "tags": [],
-          "docs": "",
-          "complexTypes": [],
-          "type": "() => Promise<void>"
-        }
-      ]
-    }
-  ],
+  "interfaces": [],
   "enums": []
 }

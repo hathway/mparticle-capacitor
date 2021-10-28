@@ -53,8 +53,6 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 * [`loginMParticleUser(...)`](#loginmparticleuser)
 * [`logoutMParticleUser(...)`](#logoutmparticleuser)
 * [`registerMParticleUser(...)`](#registermparticleuser)
-* [`addListener(...)`](#addlistener)
-* [Interfaces](#interfaces)
 
 </docgen-index>
 
@@ -269,31 +267,5 @@ registerMParticleUser(call: any) => Promise<any>
 **Returns:** <code>Promise&lt;any&gt;</code>
 
 --------------------
-
-
-### addListener(...)
-
-```typescript
-addListener(eventName: 'mParticleInit', listenerFunc: mParticleInitListener) => Promise<PluginListenerHandle> & PluginListenerHandle
-```
-
-| Param              | Type                               |
-| ------------------ | ---------------------------------- |
-| **`eventName`**    | <code>"mParticleInit"</code>       |
-| **`listenerFunc`** | <code>(info: any) =&gt; any</code> |
-
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
-
---------------------
-
-
-### Interfaces
-
-
-#### PluginListenerHandle
-
-| Prop         | Type                                      |
-| ------------ | ----------------------------------------- |
-| **`remove`** | <code>() =&gt; Promise&lt;void&gt;</code> |
 
 </docgen-api>

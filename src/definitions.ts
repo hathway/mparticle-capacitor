@@ -1,5 +1,3 @@
-import type { PluginListenerHandle } from '@capacitor/core';
-
 export type mParticleInitListener = (info:any) => any;
 
 export interface MParticleCapacitorPlugin {
