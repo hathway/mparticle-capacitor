@@ -11,6 +11,8 @@ import Capacitor
     @objc public func getSecret(_ value: String) -> String {
         if (value == "us1-279d6248523ab840bb39cfc8d4799691") {
             return "wNbwpQ7Rh-W4AHB_Cr2M59YZcFoDiFS8uaOhIB8-MV82Nehtn6zgdbVErbA-ncS7"
+        } else if (value == "us1-8f90c2f3b594d842a381ecfd0c48e3d4") {
+            return "s9v9vHIIdGejfjM4rkTy9l3C5GzDZFiDyzXeHG3pkv1XUzNgLPSIFXtgFyf3Z9gS"
         }
         return value
     }
@@ -29,7 +31,7 @@ import Capacitor
     let identityCallback = {(result: MPIdentityApiResult?, error: Error?) in
         if (result?.user != nil) {
             //IDSync request succeeded, mutate attributes or query for the MPID as needed
-            result?.user.setUserAttribute("example attribute key", value: "example attribute value")
+            // result?.user.setUserAttribute("example attribute key", value: "example attribute value")
         } else {
             NSLog(error!.localizedDescription)
             let resultCode = MPIdentityErrorResponseCode(rawValue: UInt((error! as NSError).code))

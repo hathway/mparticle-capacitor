@@ -64,6 +64,18 @@ class MParticleCapacitorWeb extends core.WebPlugin {
         };
         return mParticle__default["default"].Identity.logout({}, identityCallback);
     }
+    async registerMParticleUser(call) {
+        console.log("inside registerMParticleUser", call);
+        return mParticle__default["default"].Identity.login(this.identityRequest(call.email, call.customerId), function (result) {
+            if (!result)
+                return;
+            let currentUser = result.getUser();
+            for (let [key, value] of Object.entries(call.userAttributes)) {
+                if (key && value)
+                    currentUser.setUserAttribute(key, value);
+            }
+        });
+    }
     async logMParticleEvent(call) {
         console.log('event fired', call);
         return mParticle__default["default"].logEvent(call.eventName, call.eventType, call.eventProperties);

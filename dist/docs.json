@@ -224,6 +224,22 @@
         "slug": "logoutmparticleuser"
       },
       {
+        "name": "registerMParticleUser",
+        "signature": "(call: any) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "registermparticleuser"
+      },
+      {
         "name": "addListener",
         "signature": "(eventName: 'mParticleInit', listenerFunc: mParticleInitListener) => Promise<PluginListenerHandle> & PluginListenerHandle",
         "parameters": [

@@ -10,44 +10,17 @@ import mParticle_Apple_SDK
 public class MParticleCapacitorPlugin: CAPPlugin {
     private let implementation = MParticleCapacitor()
 
-    // public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    //     // Override point for customization after application launch.
-    //     dump("MADE IT HERE APPLICATION IN CAPPLUGIN")
-    //     let options = MParticleOptions(key: "us1-279d6248523ab840bb39cfc8d4799691",
-    //                                 secret: "wNbwpQ7Rh-W4AHB_Cr2M59YZcFoDiFS8uaOhIB8-MV82Nehtn6zgdbVErbA-ncS7")
-    //     options.logLevel = MPILogLevel.verbose
-    //     MParticle.sharedInstance().start(with: options)
-    //     return true
-    // }
-
     @objc func mParticleInit(_ call: CAPPluginCall) {
-        // call.unimplemented("not implemented for testing")
-        dump("************ INSIDE CAPACITOR PLUGIN mParticleInit")
-        let key = call.getString("key") ?? ""
-        let options = MParticleOptions(key: key,
-                                    secret: implementation.getSecret(key))
-        // let identityRequest = MPIdentityApiRequest.withEmptyUser()
-        // identityRequest.email = "foos@wearehathway.com"
-        // identityRequest.customerId = "12345690"
-        // dump("************************* HERE *******************")
-        // dump(identityRequest)
-        // options.identifyRequest = identityRequest
-        // dump(options.onIdentifyComplete)
-        // options.onIdentifyComplete =  {(result: MPIdentityApiResult?, error: Error?) in
-        //     if (result?.user != nil) {
-        //         // dump("**************************MADE IT")
-        //         dump(result)
-        //         result?.user.setUserAttribute("example attribute key", value: "example attribute value")
-        //     } else {
-        //         dump("**************************FAILED")
-        //         //handle failure - see below
-        //     }
-        // }
-        options.logLevel = MPILogLevel.verbose
-        MParticle.sharedInstance().start(with: options)
-        call.resolve([
-            "value": "ios mparticle initialized"
-        ])
+        call.unimplemented("Moved for Braze compatability")
+        // let key = call.getString("key") ?? ""
+        // let options = MParticleOptions(key: key,
+        //                             secret: implementation.getSecret(key))
+        // options.logLevel = MPILogLevel.verbose
+        // options.proxyAppDelegate = false
+        // MParticle.sharedInstance().start(with: options)
+        // call.resolve([
+        //     "value": "ios mparticle initialized"
+        // ])
     }
 
     @objc func loginMParticleUser(_ call: CAPPluginCall) {
@@ -67,16 +40,49 @@ public class MParticleCapacitorPlugin: CAPPlugin {
         ])
     }
 
+    @objc func registerMParticleUser(_ call: CAPPluginCall) {
+        let email = call.getString("email") ?? "email"
+        let customerId = call.getString("customerId") ?? "id"
+        let userAttributes = call.getObject("userAttributes") ?? [:]
+
+        MParticle.sharedInstance().identity.login(implementation.identityRequest(email,customerId)!, completion: { (result: MPIdentityApiResult?, error: Error?) -> () in
+            print(result)
+            if (result?.user != nil) {
+                for (key,value) in userAttributes {
+                    dump("**************************** KEY VAL REGISTER *********************")
+                    dump(key)
+                    dump(value)
+                    result?.user.setUserAttribute(key, value: value)
+                }
+            } else {
+                NSLog(error!.localizedDescription)
+                let resultCode = MPIdentityErrorResponseCode(rawValue: UInt((error! as NSError).code))
+                switch (resultCode!) {
+                case .clientNoConnection,
+                    .clientSideTimeout:
+                    //retry the IDSync request
+                    break;
+                case .requestInProgress,
+                    .retry:
+                    //inspect your implementation if this occurs frequency
+                    //otherwise retry the IDSync request
+                    break;
+                default:
+                    // inspect error.localizedDescription to determine why the request failed
+                    // this typically means an implementation issue
+                    break;
+                }
+            }
+        })
+        call.resolve([
+            "value":"success",
+        ])
+    }
 
     @objc func logMParticleEvent(_ call: CAPPluginCall) {
         let name = call.getString("eventName") ?? "default name"
         let type =  UInt(call.getInt("eventType") ?? 0)
         let props = call.getObject("eventProperties") ?? [:]
-        // dump("**************** logEvent Called ***************")
-        // dump(call.getString("eventName"))
-        // dump(call.getInt("eventType"))
-        // dump(call.getObject("eventProperties"))
-        // dump("***********************************************")
         if let event = MPEvent(name: name, type: MPEventType.init(rawValue:type) ?? MPEventType.other) {
             event.customAttributes = props
             MParticle.sharedInstance().logEvent(event)
@@ -106,16 +112,6 @@ public class MParticleCapacitorPlugin: CAPPlugin {
             "value":"success",
         ])
     }
-
-    // @objc func getUserAttributeLists(_ call: CAPPluginCall) {
-    //     // call.unimplemented("Not implemented on iOS.")
-    //     dump("********************** HERE GETATTRIBUTES *************")
-    //     // dump(implementation.currentUser()?.userSegments(1000,endpointId:"")
-    //     dump(implementation.currentUser()?.userAttributes)
-    //     call.resolve(
-    //         implementation.currentUser()?.userAttributes ?? [:]
-    //     )
-    // }
 
     @objc func setUserAttributeList(_ call: CAPPluginCall) {
         // call.unimplemented("Not implemented on iOS.")
@@ -183,7 +179,7 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func submitPurchaseEvent(_ call: CAPPluginCall) {
-//        call.unimplemented("Not implemented on iOS.")
+        // call.unimplemented("Not implemented on iOS.")
         let products_tmp = call.getArray("productData") ?? []
         let cust_attr = call.getObject("customAttributes") ?? [:]
         let trans_tmp = call.getObject("transactionAttributes") ?? [:]

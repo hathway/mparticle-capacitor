@@ -5,6 +5,7 @@ export declare class MParticleCapacitorWeb extends WebPlugin implements MParticl
     mParticleInit(call: any): Promise<any>;
     loginMParticleUser(call: any): Promise<any>;
     logoutMParticleUser(_call: any): Promise<any>;
+    registerMParticleUser(call: any): Promise<any>;
     logMParticleEvent(call: any): Promise<any>;
     logMParticlePageView(call: any): Promise<any>;
     setUserAttribute(call: any): Promise<any>;

@@ -27,6 +27,7 @@ npx cap sync
 * [`submitPurchaseEvent(...)`](#submitpurchaseevent)
 * [`loginMParticleUser(...)`](#loginmparticleuser)
 * [`logoutMParticleUser(...)`](#logoutmparticleuser)
+* [`registerMParticleUser(...)`](#registermparticleuser)
 * [`addListener(...)`](#addlistener)
 * [Interfaces](#interfaces)
 
@@ -230,6 +231,21 @@ loginMParticleUser(call: any) => Promise<any>
 
 ```typescript
 logoutMParticleUser(call?: any) => Promise<any>
+```
+
+| Param      | Type             |
+| ---------- | ---------------- |
+| **`call`** | <code>any</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### registerMParticleUser(...)
+
+```typescript
+registerMParticleUser(call: any) => Promise<any>
 ```
 
 | Param      | Type             |

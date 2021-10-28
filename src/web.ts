@@ -35,6 +35,17 @@ export class MParticleCapacitorWeb
     return mParticle.Identity.logout(<any>{}, identityCallback);
   }
 
+  async registerMParticleUser(call:any): Promise<any> {
+    console.log("inside registerMParticleUser", call);
+    return mParticle.Identity.login(this.identityRequest(call.email, call.customerId), function(result:any) {
+      if (!result) return;
+      let currentUser = result.getUser();
+      for (let [key, value] of Object.entries(call.userAttributes)) {
+        if (key && value) currentUser.setUserAttribute(key, value);
+      }      
+    });
+  }
+
   async logMParticleEvent(call:any): Promise<any> {
     console.log('event fired',call);
     return mParticle.logEvent(call.eventName, call.eventType, call.eventProperties);

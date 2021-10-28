@@ -24,6 +24,8 @@ public class MParticleCapacitor {
     public String getSecret(String key) {
         if (key == "us1-8c8c91aa9ec62c46bb6d33502d11bac1") {
             return "BCBZ7JzoS5i_mVmiWWsq12JspNQt_tF7G5iiNgIT4FJXO1kwGlB6rvgRRtDbPOc2";
+        } else if (key == "us1-0a82ff0dafd00d4088ebe5d4c8bcda09") {
+            return "7DNQIuP16VI_f1pBSgR81CSZxVhr53V-tRLKF3hFYrUwrR5wWdFYpJ95ORAjto_l";
         }
         return "";
     }
