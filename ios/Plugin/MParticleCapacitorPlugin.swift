@@ -13,8 +13,9 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     @objc func mParticleInit(_ call: CAPPluginCall) {
         call.unimplemented("Moved for Braze compatability")
         // let key = call.getString("key") ?? ""
+        // let secret = call.getString("secret") ?? ""
         // let options = MParticleOptions(key: key,
-        //                             secret: implementation.getSecret(key))
+        //                             secret: secret)
         // options.logLevel = MPILogLevel.verbose
         // options.proxyAppDelegate = false
         // MParticle.sharedInstance().start(with: options)

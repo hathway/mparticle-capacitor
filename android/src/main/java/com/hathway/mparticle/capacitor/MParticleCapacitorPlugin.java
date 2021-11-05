@@ -40,12 +40,13 @@ public class MParticleCapacitorPlugin extends Plugin {
 
     @PluginMethod
     public void mParticleInit(PluginCall call) {
-        call.unimplemented("Not implemented on Android.");
+        call.unimplemented("Moved for Braze compatability.");
         // String key = call.getString("key");
+        // String secret = call.getString("secret");
         // MParticleOptions options = MParticleOptions.builder(this.getContext())
         //         .credentials(
         //             key, 
-        //             implementation.getSecret(key)
+        //             secret
         //             )
         //         .environment(MParticle.Environment.Development)
         //         .logLevel(MParticle.LogLevel.DEBUG)
