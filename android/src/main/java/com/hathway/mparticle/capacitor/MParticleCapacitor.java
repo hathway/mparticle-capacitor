@@ -55,14 +55,16 @@ public class MParticleCapacitor {
     public Product createMParticleProduct(JSObject productData) {
         Map<String, String> customAttributes = new HashMap<String, String>();
         JSObject temp = productData.getJSObject("attributes");
-        Iterator<String> iter = temp.keys();
-        while (iter.hasNext()) {
-            String key = iter.next();
-            try {
-                Object value = temp.get(key);
-                customAttributes.put(key, value.toString());
-                } catch (JSONException e) {
-                // Something went wrong!
+        if (temp != null) {
+            Iterator<String> iter = temp.keys();
+            while (iter.hasNext()) {
+                String key = iter.next();
+                try {
+                    Object value = temp.get(key);
+                    customAttributes.put(key, value.toString());
+                    } catch (JSONException e) {
+                    // Something went wrong!
+                }
             }
         }
         return new Product.Builder(

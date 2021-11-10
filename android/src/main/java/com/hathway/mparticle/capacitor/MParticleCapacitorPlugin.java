@@ -59,17 +59,18 @@ public class MParticleCapacitorPlugin extends Plugin {
     public void logMParticleEvent(PluginCall call) {
         Map<String, String> customAttributes = new HashMap<String, String>();
         JSObject temp = call.getObject("eventProperties");
-        Iterator<String> iter = temp.keys();
-        while (iter.hasNext()) {
-            String key = iter.next();
-            try {
-                Object value = temp.get(key);
-                customAttributes.put(key, value.toString());
-                } catch (JSONException e) {
-                // Something went wrong!
+        if (temp != null) {
+            Iterator<String> iter = temp.keys();
+            while (iter.hasNext()) {
+                String key = iter.next();
+                try {
+                    Object value = temp.get(key);
+                    customAttributes.put(key, value.toString());
+                    } catch (JSONException e) {
+                    // Something went wrong!
+                }
             }
         }
-        
         String name = call.getString("eventName");
         int type = call.getInt("eventType");
 
@@ -113,14 +114,16 @@ public class MParticleCapacitorPlugin extends Plugin {
         JSObject product_tmp = call.getObject("product");
         Map<String, String> customAttributes = new HashMap<String, String>();
         JSObject temp = call.getObject("customAttributes");
-        Iterator<String> iter = temp.keys();
-        while (iter.hasNext()) {
-            String key = iter.next();
-            try {
-                Object value = temp.get(key);
-                customAttributes.put(key, value.toString());
-                } catch (JSONException e) {
-                // Something went wrong!
+        if (temp != null) {
+            Iterator<String> iter = temp.keys();
+            while (iter.hasNext()) {
+                String key = iter.next();
+                try {
+                    Object value = temp.get(key);
+                    customAttributes.put(key, value.toString());
+                    } catch (JSONException e) {
+                    // Something went wrong!
+                }
             }
         }
         Product product = implementation.createMParticleProduct(product_tmp);
@@ -137,14 +140,16 @@ public class MParticleCapacitorPlugin extends Plugin {
         JSObject product_tmp = call.getObject("product");
         Map<String, String> customAttributes = new HashMap<String, String>();
         JSObject temp = call.getObject("customAttributes");
-        Iterator<String> iter = temp.keys();
-        while (iter.hasNext()) {
-            String key = iter.next();
-            try {
-                Object value = temp.get(key);
-                customAttributes.put(key, value.toString());
-                } catch (JSONException e) {
-                // Something went wrong!
+        if (temp != null) {
+            Iterator<String> iter = temp.keys();
+            while (iter.hasNext()) {
+                String key = iter.next();
+                try {
+                    Object value = temp.get(key);
+                    customAttributes.put(key, value.toString());
+                    } catch (JSONException e) {
+                    // Something went wrong!
+                }
             }
         }
         Product product = implementation.createMParticleProduct(product_tmp);
@@ -161,14 +166,16 @@ public class MParticleCapacitorPlugin extends Plugin {
         JSObject product_tmp = call.getObject("product");
         Map<String, String> customAttributes = new HashMap<String, String>();
         JSObject temp = call.getObject("customAttributes");
-        Iterator<String> iter = temp.keys();
-        while (iter.hasNext()) {
-            String key = iter.next();
-            try {
-                Object value = temp.get(key);
-                customAttributes.put(key, value.toString());
-                } catch (JSONException e) {
-                // Something went wrong!
+        if (temp != null) {
+            Iterator<String> iter = temp.keys();
+            while (iter.hasNext()) {
+                String key = iter.next();
+                try {
+                    Object value = temp.get(key);
+                    customAttributes.put(key, value.toString());
+                    } catch (JSONException e) {
+                    // Something went wrong!
+                }
             }
         }
         Product product = implementation.createMParticleProduct(product_tmp);
@@ -184,14 +191,16 @@ public class MParticleCapacitorPlugin extends Plugin {
     public void submitPurchaseEvent(PluginCall call) throws JSONException {
         Map<String, String> customAttributes = new HashMap<String, String>();
         JSObject temp = call.getObject("customAttributes");
-        Iterator<String> iter = temp.keys();
-        while (iter.hasNext()) {
-            String key = iter.next();
-            try {
-                Object value = temp.get(key);
-                customAttributes.put(key, value.toString());
-                } catch (JSONException e) {
-                // Something went wrong!
+        if (temp != null) {
+            Iterator<String> iter = temp.keys();
+            while (iter.hasNext()) {
+                String key = iter.next();
+                try {
+                    Object value = temp.get(key);
+                    customAttributes.put(key, value.toString());
+                    } catch (JSONException e) {
+                    // Something went wrong!
+                }
             }
         }
 
@@ -236,14 +245,16 @@ public class MParticleCapacitorPlugin extends Plugin {
             public void onSuccess(IdentityApiResult result) {
                 //proceed with login
                 JSObject temp = call.getObject("userAttributes");
-                Iterator<String> iter = temp.keys();
-                while (iter.hasNext()) {
-                    String key = iter.next();
-                    try {
-                        Object value = temp.get(key);
-                        result.getUser().setUserAttribute(key,value);
-                        } catch (JSONException e) {
-                        // Something went wrong!
+                if (temp != null) {
+                    Iterator<String> iter = temp.keys();
+                    while (iter.hasNext()) {
+                        String key = iter.next();
+                        try {
+                            Object value = temp.get(key);
+                            result.getUser().setUserAttribute(key,value);
+                            } catch (JSONException e) {
+                            // Something went wrong!
+                        }
                     }
                 }
             }
