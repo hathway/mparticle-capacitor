@@ -27,6 +27,7 @@ repositories {
 
 Initilize mParticle in the app directly instead of the plugin, Appboy/Braze needs the permissions mParticle will pass to it through this.
 `AppDelegate.swift`
+
 <code>
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let options = MParticleOptions(key: {{your key here}}, secret: {{matching secret here}})
@@ -34,6 +35,19 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
         return true
 }
 </code>
+
+#### swizzling (My token isn't getting to Braze)
+
+Look for functions that override or proxy the AppDelegate functions. ex:
+- https://firebase.google.com/docs/cloud-messaging/ios/client
+
+<code>
+The FCM SDK performs method swizzling in two key areas: mapping your APNs token to the FCM registration token and capturing analytics data during downstream message callback handling. Developers who prefer not to use swizzling can disable it by adding the flag FirebaseAppDelegateProxyEnabled in the app’s Info.plist file and setting it to NO (boolean value). Relevant areas of the guides provide code examples, both with and without method swizzling enabled.
+</code>
+
+solution is in your Info.plist: https://i.stack.imgur.com/XnMm0.png -> (via. https://firebase.google.com/docs/cloud-messaging/ios/client)
+
+in this case we dont want this to override ``` didRegisterForRemoteNotificationsWithDeviceToken ``` because MPartle has its own proxy functions. 
 
 ## API
 
