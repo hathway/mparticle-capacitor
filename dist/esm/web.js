@@ -12,7 +12,6 @@ export class MParticleCapacitorWeb extends WebPlugin {
                 planVersion: 2
             }
         };
-        // console.log('web MPinit',call,mParticleConfig,mParticleBraze);
         mParticleBraze.register(mParticleConfig);
         return mParticle.init(call.mParticleKey, mParticleConfig);
     }
@@ -39,11 +38,9 @@ export class MParticleCapacitorWeb extends WebPlugin {
         });
     }
     async logMParticleEvent(call) {
-        // console.log('event fired',call);
         return mParticle.logEvent(call.eventName, call.eventType, call.eventProperties);
     }
     async logMParticlePageView(call) {
-        // console.log(mParticle,call);
         return mParticle.logPageView(call.pageName, { page: call.pageLink });
     }
     async setUserAttribute(call) {
@@ -100,7 +97,6 @@ export class MParticleCapacitorWeb extends WebPlugin {
         customFlags, transactionAttributes);
     }
     async echo(options) {
-        // console.log('ECHO', options);
         return options;
     }
 }

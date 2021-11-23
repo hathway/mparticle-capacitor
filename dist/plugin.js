@@ -46,7 +46,6 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle, mParticle
                     planVersion: 2
                 }
             };
-            // console.log('web MPinit',call,mParticleConfig,mParticleBraze);
             mParticleBraze__default["default"].register(mParticleConfig);
             return mParticle__default["default"].init(call.mParticleKey, mParticleConfig);
         }
@@ -71,11 +70,9 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle, mParticle
             });
         }
         async logMParticleEvent(call) {
-            // console.log('event fired',call);
             return mParticle__default["default"].logEvent(call.eventName, call.eventType, call.eventProperties);
         }
         async logMParticlePageView(call) {
-            // console.log(mParticle,call);
             return mParticle__default["default"].logPageView(call.pageName, { page: call.pageLink });
         }
         async setUserAttribute(call) {
@@ -132,7 +129,6 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle, mParticle
             customFlags, transactionAttributes);
         }
         async echo(options) {
-            // console.log('ECHO', options);
             return options;
         }
     }

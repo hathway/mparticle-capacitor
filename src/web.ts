@@ -17,7 +17,6 @@ export class MParticleCapacitorWeb
         planVersion: 2
       }
     };
-    // console.log('web MPinit',call,mParticleConfig,mParticleBraze);
     mParticleBraze.register(mParticleConfig);
     return mParticle.init(call.mParticleKey, mParticleConfig);
   }
@@ -46,12 +45,10 @@ export class MParticleCapacitorWeb
   }
 
   async logMParticleEvent(call:any): Promise<any> {
-    // console.log('event fired',call);
     return mParticle.logEvent(call.eventName, call.eventType, call.eventProperties);
   }
 
   async logMParticlePageView(call:any): Promise<any> {
-    // console.log(mParticle,call);
     return mParticle.logPageView(
       call.pageName,
       { page: call.pageLink }, // pageLink comes in as window.location.toString()
@@ -128,7 +125,6 @@ export class MParticleCapacitorWeb
   }
 
   async echo(options: { value: string }): Promise<{ value: string }> {
-    // console.log('ECHO', options);
     return options;
   }
 }
