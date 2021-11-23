@@ -25,8 +25,8 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func loginMParticleUser(_ call: CAPPluginCall) {
-        let email = call.getString("email") ?? "email"
-        let customerId = call.getString("customerId") ?? "id"
+        let email = call.getString("email") ?? ""
+        let customerId = call.getString("customerId") ?? ""
         MParticle.sharedInstance().identity.login(implementation.identityRequest(email,customerId)!, completion: implementation.identityCallback)
         call.resolve([
             "value":"success",
@@ -42,8 +42,8 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func registerMParticleUser(_ call: CAPPluginCall) {
-        let email = call.getString("email") ?? "email"
-        let customerId = call.getString("customerId") ?? "id"
+        let email = call.getString("email") ?? ""
+        let customerId = call.getString("customerId") ?? ""
         let userAttributes = call.getObject("userAttributes") ?? [:]
 
         MParticle.sharedInstance().identity.login(implementation.identityRequest(email,customerId)!, completion: { (result: MPIdentityApiResult?, error: Error?) -> () in
@@ -77,7 +77,7 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func logMParticleEvent(_ call: CAPPluginCall) {
-        let name = call.getString("eventName") ?? "default name"
+        let name = call.getString("eventName") ?? ""
         let type =  UInt(call.getInt("eventType") ?? 0)
         let props = call.getObject("eventProperties") ?? [:]
         if let event = MPEvent(name: name, type: MPEventType.init(rawValue:type) ?? MPEventType.other) {
@@ -90,8 +90,8 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func logMParticlePageView(_ call: CAPPluginCall) {
-        let name = call.getString("pageName") ?? "default name"
-        let screenInfo = ["page": call.getString("pageLink") ?? "link"];
+        let name = call.getString("pageName") ?? ""
+        let screenInfo = ["page": call.getString("pageLink") ?? ""];
 
         MParticle.sharedInstance().logScreen(name, eventInfo: screenInfo)
         call.resolve([
@@ -100,8 +100,8 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func setUserAttribute(_ call: CAPPluginCall) {
-        let name = call.getString("attributeName") ?? "default name"
-        let value = call.getString("attributeValue") ?? "default value"
+        let name = call.getString("attributeName") ?? ""
+        let value = call.getString("attributeValue") ?? ""
 
         implementation.currentUser()?.setUserAttribute(name, value: value)
         call.resolve([
@@ -110,7 +110,7 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func setUserAttributeList(_ call: CAPPluginCall) {
-        let name:String = call.getString("attributeName") ?? "default name"
+        let name:String = call.getString("attributeName") ?? ""
         let list:[String] = call.getArray("attributeValues") as? [String] ?? []
         implementation.currentUser()?.setUserAttributeList(name, values: list)
         call.resolve([
