@@ -112,7 +112,6 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     @objc func setUserAttributeList(_ call: CAPPluginCall) {
         let name:String = call.getString("attributeName") ?? "default name"
         let list:[String] = call.getArray("attributeValues") as? [String] ?? []
-        dump(list)
         implementation.currentUser()?.setUserAttributeList(name, values: list)
         call.resolve([
             "value":"success",
