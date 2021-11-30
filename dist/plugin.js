@@ -40,7 +40,7 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle, mParticle
         async mParticleInit(call) {
             call.mParticleKey = call.key;
             const mParticleConfig = {
-                isDevelopmentMode: true,
+                isDevelopmentMode: call.production || false,
                 dataPlan: {
                     planId: 'master_data_plan',
                     planVersion: 2
