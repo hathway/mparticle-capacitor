@@ -45,7 +45,7 @@ class MParticleCapacitorWeb extends core.WebPlugin {
     async mParticleInit(call) {
         call.mParticleKey = call.key;
         const mParticleConfig = {
-            isDevelopmentMode: call.production || false,
+            isDevelopmentMode: !call.production || true,
             dataPlan: {
                 planId: 'master_data_plan',
                 planVersion: 2
