@@ -65,7 +65,7 @@ export class MParticleCapacitorWeb
   }
 
   async updateMParticleCart(call:any): Promise<any> {
-    const productToUpdate = this.createMParticleProduct(call.product);
+    const productToUpdate = this.createMParticleProduct(call.productData);
     return this.logProductAction(call.eventType, productToUpdate, call.customAttributes, null, null);
   }
 
@@ -75,7 +75,7 @@ export class MParticleCapacitorWeb
   }
 
   async removeMParticleProduct(call:any): Promise<any> {
-    const productToRemove = this.createMParticleProduct(call.product);
+    const productToRemove = this.createMParticleProduct(call.productData);
     return this.logProductAction(mParticle.ProductActionType.RemoveFromCart, productToRemove, call.customAttributes, null, null);
   } 
 

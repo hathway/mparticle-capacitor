@@ -82,7 +82,7 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle, mParticle
             return this.currentUser.setUserAttributeList(call.attributeName, call.attributeValues);
         }
         async updateMParticleCart(call) {
-            const productToUpdate = this.createMParticleProduct(call.product);
+            const productToUpdate = this.createMParticleProduct(call.productData);
             return this.logProductAction(call.eventType, productToUpdate, call.customAttributes, null, null);
         }
         async addMParticleProduct(call) {
@@ -90,7 +90,7 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle, mParticle
             return this.logProductAction(mParticle__default["default"].ProductActionType.AddToCart, product, call.customAttributes, null, null);
         }
         async removeMParticleProduct(call) {
-            const productToRemove = this.createMParticleProduct(call.product);
+            const productToRemove = this.createMParticleProduct(call.productData);
             return this.logProductAction(mParticle__default["default"].ProductActionType.RemoveFromCart, productToRemove, call.customAttributes, null, null);
         }
         async submitPurchaseEvent(call) {

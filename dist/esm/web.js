@@ -50,7 +50,7 @@ export class MParticleCapacitorWeb extends WebPlugin {
         return this.currentUser.setUserAttributeList(call.attributeName, call.attributeValues);
     }
     async updateMParticleCart(call) {
-        const productToUpdate = this.createMParticleProduct(call.product);
+        const productToUpdate = this.createMParticleProduct(call.productData);
         return this.logProductAction(call.eventType, productToUpdate, call.customAttributes, null, null);
     }
     async addMParticleProduct(call) {
@@ -58,7 +58,7 @@ export class MParticleCapacitorWeb extends WebPlugin {
         return this.logProductAction(mParticle.ProductActionType.AddToCart, product, call.customAttributes, null, null);
     }
     async removeMParticleProduct(call) {
-        const productToRemove = this.createMParticleProduct(call.product);
+        const productToRemove = this.createMParticleProduct(call.productData);
         return this.logProductAction(mParticle.ProductActionType.RemoveFromCart, productToRemove, call.customAttributes, null, null);
     }
     async submitPurchaseEvent(call) {
