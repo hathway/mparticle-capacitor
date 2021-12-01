@@ -119,7 +119,7 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func updateMParticleCart(_ call: CAPPluginCall) {
-        let product_tmp = call.getObject("product") ?? [:]
+        let product_tmp = call.getObject("productData") ?? [:]
         let cust_attr = call.getObject("customAttributes") ?? [:]
         let type_tmp = UInt(call.getInt("eventType") ?? 1) - 1 // TODO: Need to edit enum types
 
@@ -136,7 +136,7 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func addMParticleProduct(_ call: CAPPluginCall) {
-        let product_tmp = call.getObject("product") ?? [:]
+        let product_tmp = call.getObject("productData") ?? [:]
         let cust_attr = call.getObject("customAttributes") ?? [:]
 
         let action =  MPCommerceEventAction.addToCart
@@ -152,7 +152,7 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     }
 
     @objc func removeMParticleProduct(_ call: CAPPluginCall) {
-        let product_tmp = call.getObject("product") ?? [:]
+        let product_tmp = call.getObject("productData") ?? [:]
         let cust_attr = call.getObject("customAttributes") ?? [:]
 
         let action =  MPCommerceEventAction.removeFromCart
