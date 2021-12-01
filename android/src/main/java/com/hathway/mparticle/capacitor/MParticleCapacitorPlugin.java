@@ -111,7 +111,7 @@ public class MParticleCapacitorPlugin extends Plugin {
     @PluginMethod
     public void updateMParticleCart(PluginCall call) {
         int type = call.getInt("eventType");
-        JSObject product_tmp = call.getObject("product");
+        JSObject product_tmp = call.getObject("productData");
         Map<String, String> customAttributes = new HashMap<String, String>();
         JSObject temp = call.getObject("customAttributes");
         if (temp != null) {
@@ -137,7 +137,7 @@ public class MParticleCapacitorPlugin extends Plugin {
 
     @PluginMethod
     public void addMParticleProduct(PluginCall call) {
-        JSObject product_tmp = call.getObject("product");
+        JSObject product_tmp = call.getObject("productData");
         Map<String, String> customAttributes = new HashMap<String, String>();
         JSObject temp = call.getObject("customAttributes");
         if (temp != null) {
@@ -163,7 +163,7 @@ public class MParticleCapacitorPlugin extends Plugin {
 
     @PluginMethod
     public void removeMParticleProduct(PluginCall call) {
-        JSObject product_tmp = call.getObject("product");
+        JSObject product_tmp = call.getObject("productData");
         Map<String, String> customAttributes = new HashMap<String, String>();
         JSObject temp = call.getObject("customAttributes");
         if (temp != null) {
