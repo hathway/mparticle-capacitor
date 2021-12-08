@@ -8,7 +8,7 @@ export class MParticleCapacitorWeb
   extends WebPlugin
   implements MParticleCapacitorPlugin {
 
-  async mParticleInit(call: { key:any, production:any } ): Promise<any> {
+  async mParticleInit(call: { key:string, production:boolean } ): Promise<any> {
     const mParticleConfig = {
       isDevelopmentMode: !call.production || true,
       dataPlan: {
@@ -20,7 +20,7 @@ export class MParticleCapacitorWeb
     return mParticle.init(call.key, mParticleConfig);
   }
 
-  async loginMParticleUser(call: { email:any, customerId:any } ): Promise<any> {
+  async loginMParticleUser(call: { email:string, customerId:string } ): Promise<any> {
     return mParticle.Identity.login(this.identityRequest(call.email, call.customerId));
   }
 
@@ -33,7 +33,7 @@ export class MParticleCapacitorWeb
     return mParticle.Identity.logout(<any>{}, identityCallback);
   }
 
-  async registerMParticleUser(call: { email:any, customerId:any, userAttributes:any } ): Promise<any> {
+  async registerMParticleUser(call: { email:string, customerId:string, userAttributes:any } ): Promise<any> {
     return mParticle.Identity.login(this.identityRequest(call.email, call.customerId), function(result:any) {
       if (!result) return;
       let currentUser = result.getUser();

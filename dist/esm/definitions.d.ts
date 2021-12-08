@@ -6,9 +6,14 @@ export interface MParticleCapacitorPlugin {
         value: string;
     }>;
     mParticleInit(call: {
-        key: any;
-        production: any;
+        key: string;
+        production: boolean;
     }): Promise<any>;
+    loginMParticleUser(call: {
+        email: string;
+        customerId: string;
+    }): Promise<any>;
+    logoutMParticleUser(call?: any): Promise<any>;
     logMParticleEvent(call: {
         eventName: any;
         eventType: any;
@@ -19,8 +24,8 @@ export interface MParticleCapacitorPlugin {
         pageLink: any;
     }): Promise<any>;
     setUserAttribute(call: {
-        attributeName: any;
-        attributeValue: any;
+        attributeName: string;
+        attributeValue: string;
     }): Promise<any>;
     setUserAttributeList(call: {
         attributeName: any;
@@ -44,14 +49,9 @@ export interface MParticleCapacitorPlugin {
         customAttributes: any;
         transactionAttributes: any;
     }): Promise<any>;
-    loginMParticleUser(call: {
-        email: any;
-        customerId: any;
-    }): Promise<any>;
-    logoutMParticleUser(call?: any): Promise<any>;
     registerMParticleUser(call: {
-        email: any;
-        customerId: any;
+        email: string;
+        customerId: string;
         userAttributes: any;
     }): Promise<any>;
 }

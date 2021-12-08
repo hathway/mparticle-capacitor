@@ -3,12 +3,14 @@ export type mParticleInitListener = (info:any) => any;
 export interface MParticleCapacitorPlugin {
   echo(options: { value: string }): Promise<{ value: string }>;
 
-  mParticleInit(call: { key:any, production:any } ): Promise<any>;
+  mParticleInit(call: { key:string, production:boolean } ): Promise<any>;
+  loginMParticleUser(call: { email:string, customerId:string } ): Promise<any>;
+  logoutMParticleUser(call?:any): Promise<any>;
 
   logMParticleEvent(call: { eventName:any, eventType:any, eventProperties:any } ): Promise<any>;
   logMParticlePageView(call: { pageName:any, pageLink:any } ): Promise<any>;
 
-  setUserAttribute(call: { attributeName:any, attributeValue:any } ): Promise<any>;
+  setUserAttribute(call: { attributeName:string, attributeValue:string } ): Promise<any>;
   setUserAttributeList(call: { attributeName:any, attributeValues:any } ): Promise<any>;
 
   updateMParticleCart(call: { productData:any, customAttributes:any, eventType:any } ): Promise<any>;
@@ -17,9 +19,7 @@ export interface MParticleCapacitorPlugin {
 
   submitPurchaseEvent(call: { productData:any, customAttributes:any, transactionAttributes:any } ): Promise<any>;
 
-  loginMParticleUser(call: { email:any, customerId:any } ): Promise<any>;
-  logoutMParticleUser(call?:any): Promise<any>;
-  registerMParticleUser(call: { email:any, customerId:any, userAttributes:any } ): Promise<any>;
+  registerMParticleUser(call: { email:string, customerId:string, userAttributes:any } ): Promise<any>;
 }
 
 export enum MParticleEventType {

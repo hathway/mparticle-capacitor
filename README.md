@@ -144,6 +144,8 @@ solution is in your ```Info.plist```:
 
 * [`echo(...)`](#echo)
 * [`mParticleInit(...)`](#mparticleinit)
+* [`loginMParticleUser(...)`](#loginmparticleuser)
+* [`logoutMParticleUser(...)`](#logoutmparticleuser)
 * [`logMParticleEvent(...)`](#logmparticleevent)
 * [`logMParticlePageView(...)`](#logmparticlepageview)
 * [`setUserAttribute(...)`](#setuserattribute)
@@ -152,8 +154,6 @@ solution is in your ```Info.plist```:
 * [`addMParticleProduct(...)`](#addmparticleproduct)
 * [`removeMParticleProduct(...)`](#removemparticleproduct)
 * [`submitPurchaseEvent(...)`](#submitpurchaseevent)
-* [`loginMParticleUser(...)`](#loginmparticleuser)
-* [`logoutMParticleUser(...)`](#logoutmparticleuser)
 * [`registerMParticleUser(...)`](#registermparticleuser)
 
 </docgen-index>
@@ -179,12 +179,42 @@ echo(options: { value: string; }) => Promise<{ value: string; }>
 ### mParticleInit(...)
 
 ```typescript
-mParticleInit(call: { key: any; production: any; }) => Promise<any>
+mParticleInit(call: { key: string; production: boolean; }) => Promise<any>
 ```
 
-| Param      | Type                                        |
-| ---------- | ------------------------------------------- |
-| **`call`** | <code>{ key: any; production: any; }</code> |
+| Param      | Type                                               |
+| ---------- | -------------------------------------------------- |
+| **`call`** | <code>{ key: string; production: boolean; }</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### loginMParticleUser(...)
+
+```typescript
+loginMParticleUser(call: { email: string; customerId: string; }) => Promise<any>
+```
+
+| Param      | Type                                                |
+| ---------- | --------------------------------------------------- |
+| **`call`** | <code>{ email: string; customerId: string; }</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### logoutMParticleUser(...)
+
+```typescript
+logoutMParticleUser(call?: any) => Promise<any>
+```
+
+| Param      | Type             |
+| ---------- | ---------------- |
+| **`call`** | <code>any</code> |
 
 **Returns:** <code>Promise&lt;any&gt;</code>
 
@@ -224,12 +254,12 @@ logMParticlePageView(call: { pageName: any; pageLink: any; }) => Promise<any>
 ### setUserAttribute(...)
 
 ```typescript
-setUserAttribute(call: { attributeName: any; attributeValue: any; }) => Promise<any>
+setUserAttribute(call: { attributeName: string; attributeValue: string; }) => Promise<any>
 ```
 
-| Param      | Type                                                      |
-| ---------- | --------------------------------------------------------- |
-| **`call`** | <code>{ attributeName: any; attributeValue: any; }</code> |
+| Param      | Type                                                            |
+| ---------- | --------------------------------------------------------------- |
+| **`call`** | <code>{ attributeName: string; attributeValue: string; }</code> |
 
 **Returns:** <code>Promise&lt;any&gt;</code>
 
@@ -311,45 +341,15 @@ submitPurchaseEvent(call: { productData: any; customAttributes: any; transaction
 --------------------
 
 
-### loginMParticleUser(...)
-
-```typescript
-loginMParticleUser(call: { email: any; customerId: any; }) => Promise<any>
-```
-
-| Param      | Type                                          |
-| ---------- | --------------------------------------------- |
-| **`call`** | <code>{ email: any; customerId: any; }</code> |
-
-**Returns:** <code>Promise&lt;any&gt;</code>
-
---------------------
-
-
-### logoutMParticleUser(...)
-
-```typescript
-logoutMParticleUser(call?: any) => Promise<any>
-```
-
-| Param      | Type             |
-| ---------- | ---------------- |
-| **`call`** | <code>any</code> |
-
-**Returns:** <code>Promise&lt;any&gt;</code>
-
---------------------
-
-
 ### registerMParticleUser(...)
 
 ```typescript
-registerMParticleUser(call: { email: any; customerId: any; userAttributes: any; }) => Promise<any>
+registerMParticleUser(call: { email: string; customerId: string; userAttributes: any; }) => Promise<any>
 ```
 
-| Param      | Type                                                               |
-| ---------- | ------------------------------------------------------------------ |
-| **`call`** | <code>{ email: any; customerId: any; userAttributes: any; }</code> |
+| Param      | Type                                                                     |
+| ---------- | ------------------------------------------------------------------------ |
+| **`call`** | <code>{ email: string; customerId: string; userAttributes: any; }</code> |
 
 **Returns:** <code>Promise&lt;any&gt;</code>
 

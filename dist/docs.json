@@ -23,12 +23,12 @@
       },
       {
         "name": "mParticleInit",
-        "signature": "(call: { key: any; production: any; }) => Promise<any>",
+        "signature": "(call: { key: string; production: boolean; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "{ key: any; production: any; }"
+            "type": "{ key: string; production: boolean; }"
           }
         ],
         "returns": "Promise<any>",
@@ -36,6 +36,38 @@
         "docs": "",
         "complexTypes": [],
         "slug": "mparticleinit"
+      },
+      {
+        "name": "loginMParticleUser",
+        "signature": "(call: { email: string; customerId: string; }) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "{ email: string; customerId: string; }"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "loginmparticleuser"
+      },
+      {
+        "name": "logoutMParticleUser",
+        "signature": "(call?: any) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "logoutmparticleuser"
       },
       {
         "name": "logMParticleEvent",
@@ -71,12 +103,12 @@
       },
       {
         "name": "setUserAttribute",
-        "signature": "(call: { attributeName: any; attributeValue: any; }) => Promise<any>",
+        "signature": "(call: { attributeName: string; attributeValue: string; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "{ attributeName: any; attributeValue: any; }"
+            "type": "{ attributeName: string; attributeValue: string; }"
           }
         ],
         "returns": "Promise<any>",
@@ -166,45 +198,13 @@
         "slug": "submitpurchaseevent"
       },
       {
-        "name": "loginMParticleUser",
-        "signature": "(call: { email: any; customerId: any; }) => Promise<any>",
-        "parameters": [
-          {
-            "name": "call",
-            "docs": "",
-            "type": "{ email: any; customerId: any; }"
-          }
-        ],
-        "returns": "Promise<any>",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [],
-        "slug": "loginmparticleuser"
-      },
-      {
-        "name": "logoutMParticleUser",
-        "signature": "(call?: any) => Promise<any>",
-        "parameters": [
-          {
-            "name": "call",
-            "docs": "",
-            "type": "any"
-          }
-        ],
-        "returns": "Promise<any>",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [],
-        "slug": "logoutmparticleuser"
-      },
-      {
         "name": "registerMParticleUser",
-        "signature": "(call: { email: any; customerId: any; userAttributes: any; }) => Promise<any>",
+        "signature": "(call: { email: string; customerId: string; userAttributes: any; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "{ email: any; customerId: any; userAttributes: any; }"
+            "type": "{ email: string; customerId: string; userAttributes: any; }"
           }
         ],
         "returns": "Promise<any>",

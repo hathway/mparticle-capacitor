@@ -3,17 +3,17 @@ import type { MParticleCapacitorPlugin } from './definitions';
 import mParticle from '@mparticle/web-sdk';
 export declare class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacitorPlugin {
     mParticleInit(call: {
-        key: any;
-        production: any;
+        key: string;
+        production: boolean;
     }): Promise<any>;
     loginMParticleUser(call: {
-        email: any;
-        customerId: any;
+        email: string;
+        customerId: string;
     }): Promise<any>;
     logoutMParticleUser(_call: any): Promise<any>;
     registerMParticleUser(call: {
-        email: any;
-        customerId: any;
+        email: string;
+        customerId: string;
         userAttributes: any;
     }): Promise<any>;
     logMParticleEvent(call: {
