@@ -22,23 +22,13 @@
         "slug": "echo"
       },
       {
-        "name": "helloMP",
-        "signature": "() => Promise<string>",
-        "parameters": [],
-        "returns": "Promise<string>",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [],
-        "slug": "hellomp"
-      },
-      {
         "name": "mParticleInit",
-        "signature": "(call: any) => Promise<any>",
+        "signature": "(call: { key: string; production: boolean; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "any"
+            "type": "{ key: string; production: boolean; }"
           }
         ],
         "returns": "Promise<any>",
@@ -48,157 +38,13 @@
         "slug": "mparticleinit"
       },
       {
-        "name": "logMParticleEvent",
-        "signature": "(call: any) => Promise<any>",
-        "parameters": [
-          {
-            "name": "call",
-            "docs": "",
-            "type": "any"
-          }
-        ],
-        "returns": "Promise<any>",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [],
-        "slug": "logmparticleevent"
-      },
-      {
-        "name": "logMParticlePageView",
-        "signature": "(call: any) => Promise<any>",
-        "parameters": [
-          {
-            "name": "call",
-            "docs": "",
-            "type": "any"
-          }
-        ],
-        "returns": "Promise<any>",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [],
-        "slug": "logmparticlepageview"
-      },
-      {
-        "name": "setUserAttribute",
-        "signature": "(call: any) => Promise<any>",
-        "parameters": [
-          {
-            "name": "call",
-            "docs": "",
-            "type": "any"
-          }
-        ],
-        "returns": "Promise<any>",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [],
-        "slug": "setuserattribute"
-      },
-      {
-        "name": "setUserAttributeList",
-        "signature": "(call: any) => Promise<any>",
-        "parameters": [
-          {
-            "name": "call",
-            "docs": "",
-            "type": "any"
-          }
-        ],
-        "returns": "Promise<any>",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [],
-        "slug": "setuserattributelist"
-      },
-      {
-        "name": "getUserAttributeLists",
-        "signature": "(_call: any) => Promise<any>",
-        "parameters": [
-          {
-            "name": "_call",
-            "docs": "",
-            "type": "any"
-          }
-        ],
-        "returns": "Promise<any>",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [],
-        "slug": "getuserattributelists"
-      },
-      {
-        "name": "updateMParticleCart",
-        "signature": "(call: any) => Promise<any>",
-        "parameters": [
-          {
-            "name": "call",
-            "docs": "",
-            "type": "any"
-          }
-        ],
-        "returns": "Promise<any>",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [],
-        "slug": "updatemparticlecart"
-      },
-      {
-        "name": "addMParticleProduct",
-        "signature": "(call: any) => Promise<any>",
-        "parameters": [
-          {
-            "name": "call",
-            "docs": "",
-            "type": "any"
-          }
-        ],
-        "returns": "Promise<any>",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [],
-        "slug": "addmparticleproduct"
-      },
-      {
-        "name": "removeMParticleProduct",
-        "signature": "(call: any) => Promise<any>",
-        "parameters": [
-          {
-            "name": "call",
-            "docs": "",
-            "type": "any"
-          }
-        ],
-        "returns": "Promise<any>",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [],
-        "slug": "removemparticleproduct"
-      },
-      {
-        "name": "submitPurchaseEvent",
-        "signature": "(call: any) => Promise<any>",
-        "parameters": [
-          {
-            "name": "call",
-            "docs": "",
-            "type": "any"
-          }
-        ],
-        "returns": "Promise<any>",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [],
-        "slug": "submitpurchaseevent"
-      },
-      {
         "name": "loginMParticleUser",
-        "signature": "(call: any) => Promise<any>",
+        "signature": "(call: { email: string; customerId: string; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "any"
+            "type": "{ email: string; customerId: string; }"
           }
         ],
         "returns": "Promise<any>",
@@ -224,49 +70,152 @@
         "slug": "logoutmparticleuser"
       },
       {
-        "name": "addListener",
-        "signature": "(eventName: 'mParticleInit', listenerFunc: mParticleInitListener) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "name": "logMParticleEvent",
+        "signature": "(call: { eventName: any; eventType: any; eventProperties: any; }) => Promise<any>",
         "parameters": [
           {
-            "name": "eventName",
+            "name": "call",
             "docs": "",
-            "type": "\"mParticleInit\""
-          },
-          {
-            "name": "listenerFunc",
-            "docs": "",
-            "type": "(info: any) => any"
+            "type": "{ eventName: any; eventType: any; eventProperties: any; }"
           }
         ],
-        "returns": "Promise<PluginListenerHandle> & PluginListenerHandle",
+        "returns": "Promise<any>",
         "tags": [],
         "docs": "",
-        "complexTypes": [
-          "PluginListenerHandle",
-          "mParticleInitListener"
+        "complexTypes": [],
+        "slug": "logmparticleevent"
+      },
+      {
+        "name": "logMParticlePageView",
+        "signature": "(call: { pageName: any; pageLink: any; }) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "{ pageName: any; pageLink: any; }"
+          }
         ],
-        "slug": "addlistener"
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "logmparticlepageview"
+      },
+      {
+        "name": "setUserAttribute",
+        "signature": "(call: { attributeName: string; attributeValue: string; }) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "{ attributeName: string; attributeValue: string; }"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "setuserattribute"
+      },
+      {
+        "name": "setUserAttributeList",
+        "signature": "(call: { attributeName: any; attributeValues: any; }) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "{ attributeName: any; attributeValues: any; }"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "setuserattributelist"
+      },
+      {
+        "name": "updateMParticleCart",
+        "signature": "(call: { productData: any; customAttributes: any; eventType: any; }) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "{ productData: any; customAttributes: any; eventType: any; }"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "updatemparticlecart"
+      },
+      {
+        "name": "addMParticleProduct",
+        "signature": "(call: { productData: any; customAttributes: any; }) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "{ productData: any; customAttributes: any; }"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "addmparticleproduct"
+      },
+      {
+        "name": "removeMParticleProduct",
+        "signature": "(call: { productData: any; customAttributes: any; }) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "{ productData: any; customAttributes: any; }"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "removemparticleproduct"
+      },
+      {
+        "name": "submitPurchaseEvent",
+        "signature": "(call: { productData: any; customAttributes: any; transactionAttributes: any; }) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "{ productData: any; customAttributes: any; transactionAttributes: any; }"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "submitpurchaseevent"
+      },
+      {
+        "name": "registerMParticleUser",
+        "signature": "(call: { email: string; customerId: string; userAttributes: any; }) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "{ email: string; customerId: string; userAttributes: any; }"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "registermparticleuser"
       }
     ],
     "properties": []
   },
-  "interfaces": [
-    {
-      "name": "PluginListenerHandle",
-      "slug": "pluginlistenerhandle",
-      "docs": "",
-      "tags": [],
-      "methods": [],
-      "properties": [
-        {
-          "name": "remove",
-          "tags": [],
-          "docs": "",
-          "complexTypes": [],
-          "type": "() => Promise<void>"
-        }
-      ]
-    }
-  ],
+  "interfaces": [],
   "enums": []
 }

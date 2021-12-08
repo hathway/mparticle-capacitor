@@ -1,4 +1,3 @@
-import type { PluginListenerHandle } from '@capacitor/core';
 export declare type mParticleInitListener = (info: any) => any;
 export interface MParticleCapacitorPlugin {
     echo(options: {
@@ -6,20 +5,55 @@ export interface MParticleCapacitorPlugin {
     }): Promise<{
         value: string;
     }>;
-    helloMP(): Promise<string>;
-    mParticleInit(call: any): Promise<any>;
-    logMParticleEvent(call: any): Promise<any>;
-    logMParticlePageView(call: any): Promise<any>;
-    setUserAttribute(call: any): Promise<any>;
-    setUserAttributeList(call: any): Promise<any>;
-    getUserAttributeLists(_call: any): Promise<any>;
-    updateMParticleCart(call: any): Promise<any>;
-    addMParticleProduct(call: any): Promise<any>;
-    removeMParticleProduct(call: any): Promise<any>;
-    submitPurchaseEvent(call: any): Promise<any>;
-    loginMParticleUser(call: any): Promise<any>;
+    mParticleInit(call: {
+        key: string;
+        production: boolean;
+    }): Promise<any>;
+    loginMParticleUser(call: {
+        email: string;
+        customerId: string;
+    }): Promise<any>;
     logoutMParticleUser(call?: any): Promise<any>;
-    addListener(eventName: 'mParticleInit', listenerFunc: mParticleInitListener): Promise<PluginListenerHandle> & PluginListenerHandle;
+    logMParticleEvent(call: {
+        eventName: any;
+        eventType: any;
+        eventProperties: any;
+    }): Promise<any>;
+    logMParticlePageView(call: {
+        pageName: any;
+        pageLink: any;
+    }): Promise<any>;
+    setUserAttribute(call: {
+        attributeName: string;
+        attributeValue: string;
+    }): Promise<any>;
+    setUserAttributeList(call: {
+        attributeName: any;
+        attributeValues: any;
+    }): Promise<any>;
+    updateMParticleCart(call: {
+        productData: any;
+        customAttributes: any;
+        eventType: any;
+    }): Promise<any>;
+    addMParticleProduct(call: {
+        productData: any;
+        customAttributes: any;
+    }): Promise<any>;
+    removeMParticleProduct(call: {
+        productData: any;
+        customAttributes: any;
+    }): Promise<any>;
+    submitPurchaseEvent(call: {
+        productData: any;
+        customAttributes: any;
+        transactionAttributes: any;
+    }): Promise<any>;
+    registerMParticleUser(call: {
+        email: string;
+        customerId: string;
+        userAttributes: any;
+    }): Promise<any>;
 }
 export declare enum MParticleEventType {
     Navigation = 1,

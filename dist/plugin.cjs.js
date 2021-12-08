@@ -43,17 +43,15 @@ const MParticleCapacitor = core.registerPlugin('MParticleCapacitor', {
 
 class MParticleCapacitorWeb extends core.WebPlugin {
     async mParticleInit(call) {
-        call.mParticleKey = call.key;
         const mParticleConfig = {
-            isDevelopmentMode: true,
+            isDevelopmentMode: !call.production || true,
             dataPlan: {
                 planId: 'master_data_plan',
                 planVersion: 2
             }
         };
-        console.log('web MPinit', call, mParticleConfig, mParticleBraze__default["default"]);
         mParticleBraze__default["default"].register(mParticleConfig);
-        return mParticle__default["default"].init(call.mParticleKey, mParticleConfig);
+        return mParticle__default["default"].init(call.key, mParticleConfig);
     }
     async loginMParticleUser(call) {
         return mParticle__default["default"].Identity.login(this.identityRequest(call.email, call.customerId));
@@ -64,12 +62,21 @@ class MParticleCapacitorWeb extends core.WebPlugin {
         };
         return mParticle__default["default"].Identity.logout({}, identityCallback);
     }
+    async registerMParticleUser(call) {
+        return mParticle__default["default"].Identity.login(this.identityRequest(call.email, call.customerId), function (result) {
+            if (!result)
+                return;
+            let currentUser = result.getUser();
+            for (let [key, value] of Object.entries(call.userAttributes)) {
+                if (key && value)
+                    currentUser.setUserAttribute(key, value);
+            }
+        });
+    }
     async logMParticleEvent(call) {
-        console.log('event fired', call);
         return mParticle__default["default"].logEvent(call.eventName, call.eventType, call.eventProperties);
     }
     async logMParticlePageView(call) {
-        console.log(mParticle__default["default"], call);
         return mParticle__default["default"].logPageView(call.pageName, { page: call.pageLink });
     }
     async setUserAttribute(call) {
@@ -78,13 +85,8 @@ class MParticleCapacitorWeb extends core.WebPlugin {
     async setUserAttributeList(call) {
         return this.currentUser.setUserAttributeList(call.attributeName, call.attributeValues);
     }
-    async getUserAttributeLists(_call) {
-        console.log("0w", this.currentUser.getAllUserAttributes());
-        console.log("1w", this.currentUser.getUserAttributesLists());
-        return this.currentUser.getUserAttributesLists();
-    }
     async updateMParticleCart(call) {
-        const productToUpdate = this.createMParticleProduct(call.product);
+        const productToUpdate = this.createMParticleProduct(call.productData);
         return this.logProductAction(call.eventType, productToUpdate, call.customAttributes, null, null);
     }
     async addMParticleProduct(call) {
@@ -92,7 +94,7 @@ class MParticleCapacitorWeb extends core.WebPlugin {
         return this.logProductAction(mParticle__default["default"].ProductActionType.AddToCart, product, call.customAttributes, null, null);
     }
     async removeMParticleProduct(call) {
-        const productToRemove = this.createMParticleProduct(call.product);
+        const productToRemove = this.createMParticleProduct(call.productData);
         return this.logProductAction(mParticle__default["default"].ProductActionType.RemoveFromCart, productToRemove, call.customAttributes, null, null);
     }
     async submitPurchaseEvent(call) {
@@ -131,11 +133,7 @@ class MParticleCapacitorWeb extends core.WebPlugin {
         customFlags, transactionAttributes);
     }
     async echo(options) {
-        console.log('ECHO', options);
         return options;
-    }
-    async helloMP() {
-        return 'hello from mParticle';
     }
 }
 

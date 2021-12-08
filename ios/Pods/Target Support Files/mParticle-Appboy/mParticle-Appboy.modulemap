@@ -1,0 +1,6 @@
+framework module mParticle_Appboy {
+  umbrella header "mParticle-Appboy-umbrella.h"
+
+  export *
+  module * { export * }
+}

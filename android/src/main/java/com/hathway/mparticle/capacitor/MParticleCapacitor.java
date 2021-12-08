@@ -21,13 +21,6 @@ public class MParticleCapacitor {
         return value;
     }
 
-    public String getSecret(String key) {
-        if (key == "us1-8c8c91aa9ec62c46bb6d33502d11bac1") {
-            return "BCBZ7JzoS5i_mVmiWWsq12JspNQt_tF7G5iiNgIT4FJXO1kwGlB6rvgRRtDbPOc2";
-        }
-        return "";
-    }
-
     public EventType getEventType(int ord) {
         for (EventType e : EventType.values()) {
             if (e.ordinal() == ord) {
@@ -47,27 +40,12 @@ public class MParticleCapacitor {
         }
     }
 
-    public List<JSObject> toList(JSArray array) throws JSONException {
-        List<JSObject> items = new ArrayList<>();
-//        Object o = null;
-        for (int i = 0; i < array.length(); i++) {
-//            o = array.get(i);
-            try {
-                items.add((JSObject) (array.get(i)));
-            } catch (Exception ex) {
-                throw new JSONException("Not all items are instances of the given type");
-            }
-        }
-        return items;
-    }
-
     public MParticleUser currentUser() {
         return MParticle.getInstance().Identity().getCurrentUser();
     }
 
     public IdentityApiRequest identityRequest(String email, String customerId) {
         IdentityApiRequest identityRequest = IdentityApiRequest.withEmptyUser()
-        //the IdentityApiRequest provides several convenience methods for common identity types
         .email(email)
         .customerId(customerId)
         .build();
@@ -77,14 +55,16 @@ public class MParticleCapacitor {
     public Product createMParticleProduct(JSObject productData) {
         Map<String, String> customAttributes = new HashMap<String, String>();
         JSObject temp = productData.getJSObject("attributes");
-        Iterator<String> iter = temp.keys();
-        while (iter.hasNext()) {
-            String key = iter.next();
-            try {
-                Object value = temp.get(key);
-                customAttributes.put(key, value.toString());
-                } catch (JSONException e) {
-                // Something went wrong!
+        if (temp != null) {
+            Iterator<String> iter = temp.keys();
+            while (iter.hasNext()) {
+                String key = iter.next();
+                try {
+                    Object value = temp.get(key);
+                    customAttributes.put(key, value.toString());
+                    } catch (JSONException e) {
+                    // Something went wrong!
+                }
             }
         }
         return new Product.Builder(

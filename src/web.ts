@@ -8,21 +8,19 @@ export class MParticleCapacitorWeb
   extends WebPlugin
   implements MParticleCapacitorPlugin {
 
-  async mParticleInit(call:any): Promise<any> {
-    call.mParticleKey = call.key;
+  async mParticleInit(call: { key:string, production:boolean } ): Promise<any> {
     const mParticleConfig = {
-      isDevelopmentMode: true,
+      isDevelopmentMode: !call.production || true,
       dataPlan: {
         planId: 'master_data_plan',
         planVersion: 2
       }
     };
-    console.log('web MPinit',call,mParticleConfig,mParticleBraze);
     mParticleBraze.register(mParticleConfig);
-    return mParticle.init(call.mParticleKey, mParticleConfig);
+    return mParticle.init(call.key, mParticleConfig);
   }
 
-  async loginMParticleUser(call:any): Promise<any> {
+  async loginMParticleUser(call: { email:string, customerId:string } ): Promise<any> {
     return mParticle.Identity.login(this.identityRequest(call.email, call.customerId));
   }
 
@@ -35,13 +33,21 @@ export class MParticleCapacitorWeb
     return mParticle.Identity.logout(<any>{}, identityCallback);
   }
 
-  async logMParticleEvent(call:any): Promise<any> {
-    console.log('event fired',call);
+  async registerMParticleUser(call: { email:string, customerId:string, userAttributes:any } ): Promise<any> {
+    return mParticle.Identity.login(this.identityRequest(call.email, call.customerId), function(result:any) {
+      if (!result) return;
+      let currentUser = result.getUser();
+      for (let [key, value] of Object.entries(call.userAttributes)) {
+        if (key && value) currentUser.setUserAttribute(key, value);
+      }      
+    });
+  }
+
+  async logMParticleEvent(call: { eventName:any, eventType:any, eventProperties:any } ): Promise<any> {
     return mParticle.logEvent(call.eventName, call.eventType, call.eventProperties);
   }
 
-  async logMParticlePageView(call:any): Promise<any> {
-    console.log(mParticle,call);
+  async logMParticlePageView(call: { pageName:any, pageLink:any } ): Promise<any> {
     return mParticle.logPageView(
       call.pageName,
       { page: call.pageLink }, // pageLink comes in as window.location.toString()
@@ -49,36 +55,30 @@ export class MParticleCapacitorWeb
     ); 
   }
 
-  async setUserAttribute(call:any): Promise<any> {
+  async setUserAttribute(call: { attributeName:any, attributeValue:any } ): Promise<any> {
     return this.currentUser.setUserAttribute(call.attributeName, call.attributeValue);
   }
 
-  async setUserAttributeList(call:any): Promise<any> {
+  async setUserAttributeList(call: { attributeName:any, attributeValues:any } ): Promise<any> {
     return this.currentUser.setUserAttributeList(call.attributeName, call.attributeValues);
   }
 
-  async getUserAttributeLists(_call:any): Promise<any> {
-    console.log("0w",this.currentUser.getAllUserAttributes())
-    console.log("1w",this.currentUser.getUserAttributesLists())
-    return this.currentUser.getUserAttributesLists();
-  }
-
-  async updateMParticleCart(call:any): Promise<any> {
-    const productToUpdate = this.createMParticleProduct(call.product);
+  async updateMParticleCart(call: { productData:any, customAttributes:any, eventType:any } ): Promise<any> {
+    const productToUpdate = this.createMParticleProduct(call.productData);
     return this.logProductAction(call.eventType, productToUpdate, call.customAttributes, null, null);
   }
 
-  async addMParticleProduct(call:any): Promise<any> { 
+  async addMParticleProduct(call: { productData:any, customAttributes:any } ): Promise<any> { 
     const product = this.createMParticleProduct(call.productData);
     return this.logProductAction(mParticle.ProductActionType.AddToCart, product, call.customAttributes, null, null);
   }
 
-  async removeMParticleProduct(call:any): Promise<any> {
-    const productToRemove = this.createMParticleProduct(call.product);
+  async removeMParticleProduct(call: { productData:any, customAttributes:any } ): Promise<any> {
+    const productToRemove = this.createMParticleProduct(call.productData);
     return this.logProductAction(mParticle.ProductActionType.RemoveFromCart, productToRemove, call.customAttributes, null, null);
   } 
 
-  async submitPurchaseEvent(call:any): Promise<any>{
+  async submitPurchaseEvent(call: { productData:any, customAttributes:any, transactionAttributes:any } ): Promise<any>{
     let productArray:any = [];
     (call.productData).forEach((element:any) => {
       productArray.push(this.createMParticleProduct(element));
@@ -124,12 +124,6 @@ export class MParticleCapacitorWeb
   }
 
   async echo(options: { value: string }): Promise<{ value: string }> {
-    console.log('ECHO', options);
     return options;
   }
-  
-  async helloMP(): Promise<string> {
-    return 'hello from mParticle';
-  }
-
 }
