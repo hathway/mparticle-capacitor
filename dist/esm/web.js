@@ -4,7 +4,6 @@ import mParticle from '@mparticle/web-sdk';
 import mParticleBraze from '@mparticle/web-appboy-kit';
 export class MParticleCapacitorWeb extends WebPlugin {
     async mParticleInit(call) {
-        call.mParticleKey = call.key;
         const mParticleConfig = {
             isDevelopmentMode: !call.production || true,
             dataPlan: {
@@ -13,7 +12,7 @@ export class MParticleCapacitorWeb extends WebPlugin {
             }
         };
         mParticleBraze.register(mParticleConfig);
-        return mParticle.init(call.mParticleKey, mParticleConfig);
+        return mParticle.init(call.key, mParticleConfig);
     }
     async loginMParticleUser(call) {
         return mParticle.Identity.login(this.identityRequest(call.email, call.customerId));

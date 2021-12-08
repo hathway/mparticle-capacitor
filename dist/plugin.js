@@ -38,7 +38,6 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle, mParticle
 
     class MParticleCapacitorWeb extends core.WebPlugin {
         async mParticleInit(call) {
-            call.mParticleKey = call.key;
             const mParticleConfig = {
                 isDevelopmentMode: !call.production || true,
                 dataPlan: {
@@ -47,7 +46,7 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle, mParticle
                 }
             };
             mParticleBraze__default["default"].register(mParticleConfig);
-            return mParticle__default["default"].init(call.mParticleKey, mParticleConfig);
+            return mParticle__default["default"].init(call.key, mParticleConfig);
         }
         async loginMParticleUser(call) {
             return mParticle__default["default"].Identity.login(this.identityRequest(call.email, call.customerId));

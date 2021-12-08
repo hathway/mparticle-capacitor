@@ -23,12 +23,12 @@
       },
       {
         "name": "mParticleInit",
-        "signature": "(call: any) => Promise<any>",
+        "signature": "(call: { key: any; production: any; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "any"
+            "type": "{ key: any; production: any; }"
           }
         ],
         "returns": "Promise<any>",
@@ -39,12 +39,12 @@
       },
       {
         "name": "logMParticleEvent",
-        "signature": "(call: any) => Promise<any>",
+        "signature": "(call: { eventName: any; eventType: any; eventProperties: any; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "any"
+            "type": "{ eventName: any; eventType: any; eventProperties: any; }"
           }
         ],
         "returns": "Promise<any>",
@@ -55,12 +55,12 @@
       },
       {
         "name": "logMParticlePageView",
-        "signature": "(call: any) => Promise<any>",
+        "signature": "(call: { pageName: any; pageLink: any; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "any"
+            "type": "{ pageName: any; pageLink: any; }"
           }
         ],
         "returns": "Promise<any>",
@@ -71,12 +71,12 @@
       },
       {
         "name": "setUserAttribute",
-        "signature": "(call: any) => Promise<any>",
+        "signature": "(call: { attributeName: any; attributeValue: any; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "any"
+            "type": "{ attributeName: any; attributeValue: any; }"
           }
         ],
         "returns": "Promise<any>",
@@ -87,12 +87,12 @@
       },
       {
         "name": "setUserAttributeList",
-        "signature": "(call: any) => Promise<any>",
+        "signature": "(call: { attributeName: any; attributeValues: any; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "any"
+            "type": "{ attributeName: any; attributeValues: any; }"
           }
         ],
         "returns": "Promise<any>",
@@ -103,12 +103,12 @@
       },
       {
         "name": "updateMParticleCart",
-        "signature": "(call: any) => Promise<any>",
+        "signature": "(call: { productData: any; customAttributes: any; eventType: any; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "any"
+            "type": "{ productData: any; customAttributes: any; eventType: any; }"
           }
         ],
         "returns": "Promise<any>",
@@ -119,12 +119,12 @@
       },
       {
         "name": "addMParticleProduct",
-        "signature": "(call: any) => Promise<any>",
+        "signature": "(call: { productData: any; customAttributes: any; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "any"
+            "type": "{ productData: any; customAttributes: any; }"
           }
         ],
         "returns": "Promise<any>",
@@ -135,12 +135,12 @@
       },
       {
         "name": "removeMParticleProduct",
-        "signature": "(call: any) => Promise<any>",
+        "signature": "(call: { productData: any; customAttributes: any; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "any"
+            "type": "{ productData: any; customAttributes: any; }"
           }
         ],
         "returns": "Promise<any>",
@@ -151,12 +151,12 @@
       },
       {
         "name": "submitPurchaseEvent",
-        "signature": "(call: any) => Promise<any>",
+        "signature": "(call: { productData: any; customAttributes: any; transactionAttributes: any; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "any"
+            "type": "{ productData: any; customAttributes: any; transactionAttributes: any; }"
           }
         ],
         "returns": "Promise<any>",
@@ -167,12 +167,12 @@
       },
       {
         "name": "loginMParticleUser",
-        "signature": "(call: any) => Promise<any>",
+        "signature": "(call: { email: any; customerId: any; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "any"
+            "type": "{ email: any; customerId: any; }"
           }
         ],
         "returns": "Promise<any>",
@@ -199,12 +199,12 @@
       },
       {
         "name": "registerMParticleUser",
-        "signature": "(call: any) => Promise<any>",
+        "signature": "(call: { email: any; customerId: any; userAttributes: any; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "any"
+            "type": "{ email: any; customerId: any; userAttributes: any; }"
           }
         ],
         "returns": "Promise<any>",

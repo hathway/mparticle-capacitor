@@ -3,23 +3,23 @@ export type mParticleInitListener = (info:any) => any;
 export interface MParticleCapacitorPlugin {
   echo(options: { value: string }): Promise<{ value: string }>;
 
-  mParticleInit(call:any): Promise<any>;
+  mParticleInit(call: { key:any, production:any } ): Promise<any>;
 
-  logMParticleEvent(call:any): Promise<any>;
-  logMParticlePageView(call:any): Promise<any>;
+  logMParticleEvent(call: { eventName:any, eventType:any, eventProperties:any } ): Promise<any>;
+  logMParticlePageView(call: { pageName:any, pageLink:any } ): Promise<any>;
 
-  setUserAttribute(call:any): Promise<any>;
-  setUserAttributeList(call:any): Promise<any>;
+  setUserAttribute(call: { attributeName:any, attributeValue:any } ): Promise<any>;
+  setUserAttributeList(call: { attributeName:any, attributeValues:any } ): Promise<any>;
 
-  updateMParticleCart(call:any): Promise<any>;
-  addMParticleProduct(call:any): Promise<any>;
-  removeMParticleProduct(call:any): Promise<any>;
+  updateMParticleCart(call: { productData:any, customAttributes:any, eventType:any } ): Promise<any>;
+  addMParticleProduct(call: { productData:any, customAttributes:any } ): Promise<any>;
+  removeMParticleProduct(call: { productData:any, customAttributes:any } ): Promise<any>;
 
-  submitPurchaseEvent(call:any): Promise<any>;
+  submitPurchaseEvent(call: { productData:any, customAttributes:any, transactionAttributes:any } ): Promise<any>;
 
-  loginMParticleUser(call:any): Promise<any>;
+  loginMParticleUser(call: { email:any, customerId:any } ): Promise<any>;
   logoutMParticleUser(call?:any): Promise<any>;
-  registerMParticleUser(call:any): Promise<any>;
+  registerMParticleUser(call: { email:any, customerId:any, userAttributes:any } ): Promise<any>;
 }
 
 export enum MParticleEventType {
