@@ -53,7 +53,7 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 }
 ```
 
-## Baze Integration
+## Braze Integration
 
 mParticle will handle the integration internaly as long as things are hooked up in the dashboard. 
 There are some custom settings and inclusions that need to be included in your project for mParticle to route data to Braze properly.
