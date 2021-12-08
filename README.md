@@ -224,12 +224,12 @@ logoutMParticleUser(call?: any) => Promise<any>
 ### logMParticleEvent(...)
 
 ```typescript
-logMParticleEvent(call: { eventName: any; eventType: any; eventProperties: any; }) => Promise<any>
+logMParticleEvent(call: { eventName: string; eventType: any; eventProperties: any; }) => Promise<any>
 ```
 
-| Param      | Type                                                                   |
-| ---------- | ---------------------------------------------------------------------- |
-| **`call`** | <code>{ eventName: any; eventType: any; eventProperties: any; }</code> |
+| Param      | Type                                                                      |
+| ---------- | ------------------------------------------------------------------------- |
+| **`call`** | <code>{ eventName: string; eventType: any; eventProperties: any; }</code> |
 
 **Returns:** <code>Promise&lt;any&gt;</code>
 
@@ -239,12 +239,12 @@ logMParticleEvent(call: { eventName: any; eventType: any; eventProperties: any; 
 ### logMParticlePageView(...)
 
 ```typescript
-logMParticlePageView(call: { pageName: any; pageLink: any; }) => Promise<any>
+logMParticlePageView(call: { pageName: string; pageLink: any; }) => Promise<any>
 ```
 
-| Param      | Type                                           |
-| ---------- | ---------------------------------------------- |
-| **`call`** | <code>{ pageName: any; pageLink: any; }</code> |
+| Param      | Type                                              |
+| ---------- | ------------------------------------------------- |
+| **`call`** | <code>{ pageName: string; pageLink: any; }</code> |
 
 **Returns:** <code>Promise&lt;any&gt;</code>
 
@@ -269,12 +269,12 @@ setUserAttribute(call: { attributeName: string; attributeValue: string; }) => Pr
 ### setUserAttributeList(...)
 
 ```typescript
-setUserAttributeList(call: { attributeName: any; attributeValues: any; }) => Promise<any>
+setUserAttributeList(call: { attributeName: string; attributeValues: any; }) => Promise<any>
 ```
 
-| Param      | Type                                                       |
-| ---------- | ---------------------------------------------------------- |
-| **`call`** | <code>{ attributeName: any; attributeValues: any; }</code> |
+| Param      | Type                                                          |
+| ---------- | ------------------------------------------------------------- |
+| **`call`** | <code>{ attributeName: string; attributeValues: any; }</code> |
 
 **Returns:** <code>Promise&lt;any&gt;</code>
 

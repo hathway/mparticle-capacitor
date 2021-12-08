@@ -43,11 +43,11 @@ export class MParticleCapacitorWeb
     });
   }
 
-  async logMParticleEvent(call: { eventName:any, eventType:any, eventProperties:any } ): Promise<any> {
+  async logMParticleEvent(call: { eventName:string, eventType:any, eventProperties:any } ): Promise<any> {
     return mParticle.logEvent(call.eventName, call.eventType, call.eventProperties);
   }
 
-  async logMParticlePageView(call: { pageName:any, pageLink:any } ): Promise<any> {
+  async logMParticlePageView(call: { pageName:string, pageLink:string } ): Promise<any> {
     return mParticle.logPageView(
       call.pageName,
       { page: call.pageLink }, // pageLink comes in as window.location.toString()
@@ -55,11 +55,11 @@ export class MParticleCapacitorWeb
     ); 
   }
 
-  async setUserAttribute(call: { attributeName:any, attributeValue:any } ): Promise<any> {
+  async setUserAttribute(call: { attributeName:string, attributeValue:string } ): Promise<any> {
     return this.currentUser.setUserAttribute(call.attributeName, call.attributeValue);
   }
 
-  async setUserAttributeList(call: { attributeName:any, attributeValues:any } ): Promise<any> {
+  async setUserAttributeList(call: { attributeName:string, attributeValues:any } ): Promise<any> {
     return this.currentUser.setUserAttributeList(call.attributeName, call.attributeValues);
   }
 

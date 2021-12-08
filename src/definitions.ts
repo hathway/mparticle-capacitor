@@ -7,11 +7,11 @@ export interface MParticleCapacitorPlugin {
   loginMParticleUser(call: { email:string, customerId:string } ): Promise<any>;
   logoutMParticleUser(call?:any): Promise<any>;
 
-  logMParticleEvent(call: { eventName:any, eventType:any, eventProperties:any } ): Promise<any>;
-  logMParticlePageView(call: { pageName:any, pageLink:any } ): Promise<any>;
+  logMParticleEvent(call: { eventName:string, eventType:any, eventProperties:any } ): Promise<any>;
+  logMParticlePageView(call: { pageName:string, pageLink:any } ): Promise<any>;
 
   setUserAttribute(call: { attributeName:string, attributeValue:string } ): Promise<any>;
-  setUserAttributeList(call: { attributeName:any, attributeValues:any } ): Promise<any>;
+  setUserAttributeList(call: { attributeName:string, attributeValues:any } ): Promise<any>;
 
   updateMParticleCart(call: { productData:any, customAttributes:any, eventType:any } ): Promise<any>;
   addMParticleProduct(call: { productData:any, customAttributes:any } ): Promise<any>;

@@ -17,20 +17,20 @@ export declare class MParticleCapacitorWeb extends WebPlugin implements MParticl
         userAttributes: any;
     }): Promise<any>;
     logMParticleEvent(call: {
-        eventName: any;
+        eventName: string;
         eventType: any;
         eventProperties: any;
     }): Promise<any>;
     logMParticlePageView(call: {
-        pageName: any;
-        pageLink: any;
+        pageName: string;
+        pageLink: string;
     }): Promise<any>;
     setUserAttribute(call: {
-        attributeName: any;
-        attributeValue: any;
+        attributeName: string;
+        attributeValue: string;
     }): Promise<any>;
     setUserAttributeList(call: {
-        attributeName: any;
+        attributeName: string;
         attributeValues: any;
     }): Promise<any>;
     updateMParticleCart(call: {
