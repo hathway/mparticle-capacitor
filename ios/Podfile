@@ -6,7 +6,8 @@ def capacitor_pods
   pod 'Capacitor', :path => '../node_modules/@capacitor/ios'
   pod 'CapacitorCordova', :path => '../node_modules/@capacitor/ios'
   pod 'mParticle-Apple-SDK', '~> 8.5'
-  pod 'mParticle-Appboy', '~> 8'
+  pod 'mParticle-Appboy', '~> 8.0'
+  pod 'mParticle-Radar', '~> 8.0'
 end
 
 target 'Plugin' do

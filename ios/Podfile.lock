@@ -1,17 +1,17 @@
 PODS:
-  - Appboy-iOS-SDK (4.3.4):
-    - Appboy-iOS-SDK/UI (= 4.3.4)
-  - Appboy-iOS-SDK/ContentCards (4.3.4):
+  - Appboy-iOS-SDK (4.4.1):
+    - Appboy-iOS-SDK/UI (= 4.4.1)
+  - Appboy-iOS-SDK/ContentCards (4.4.1):
     - Appboy-iOS-SDK/Core
     - SDWebImage (< 6, >= 5.8.2)
-  - Appboy-iOS-SDK/Core (4.3.4)
-  - Appboy-iOS-SDK/InAppMessage (4.3.4):
+  - Appboy-iOS-SDK/Core (4.4.1)
+  - Appboy-iOS-SDK/InAppMessage (4.4.1):
     - Appboy-iOS-SDK/Core
     - SDWebImage (< 6, >= 5.8.2)
-  - Appboy-iOS-SDK/NewsFeed (4.3.4):
+  - Appboy-iOS-SDK/NewsFeed (4.4.1):
     - Appboy-iOS-SDK/Core
     - SDWebImage (< 6, >= 5.8.2)
-  - Appboy-iOS-SDK/UI (4.3.4):
+  - Appboy-iOS-SDK/UI (4.4.1):
     - Appboy-iOS-SDK/ContentCards
     - Appboy-iOS-SDK/Core
     - Appboy-iOS-SDK/InAppMessage
@@ -19,28 +19,35 @@ PODS:
   - Capacitor (3.2.4):
     - CapacitorCordova
   - CapacitorCordova (3.2.4)
-  - mParticle-Appboy (8.0.11):
-    - Appboy-iOS-SDK (~> 4.3)
-    - Appboy-tvOS-SDK (~> 3.27)
+  - mParticle-Appboy (8.0.12):
+    - Appboy-iOS-SDK (~> 4.4)
+    - Appboy-tvOS-SDK (~> 4.3)
     - mParticle-Apple-SDK/mParticle (~> 8.0)
-  - mParticle-Apple-SDK (8.5.3):
-    - mParticle-Apple-SDK/mParticle (= 8.5.3)
-  - mParticle-Apple-SDK/mParticle (8.5.3)
-  - SDWebImage (5.12.0):
-    - SDWebImage/Core (= 5.12.0)
-  - SDWebImage/Core (5.12.0)
+  - mParticle-Apple-SDK (8.5.4):
+    - mParticle-Apple-SDK/mParticle (= 8.5.4)
+  - mParticle-Apple-SDK/mParticle (8.5.4)
+  - mParticle-Radar (8.0.4):
+    - mParticle-Apple-SDK/mParticle (~> 8.0)
+    - RadarSDK (~> 3.2.0)
+  - RadarSDK (3.2.1)
+  - SDWebImage (5.12.1):
+    - SDWebImage/Core (= 5.12.1)
+  - SDWebImage/Core (5.12.1)
 
 DEPENDENCIES:
   - "Capacitor (from `../node_modules/@capacitor/ios`)"
   - "CapacitorCordova (from `../node_modules/@capacitor/ios`)"
-  - mParticle-Appboy (~> 8)
+  - mParticle-Appboy (~> 8.0)
   - mParticle-Apple-SDK (~> 8.5)
+  - mParticle-Radar (~> 8.0)
 
 SPEC REPOS:
   trunk:
     - Appboy-iOS-SDK
     - mParticle-Appboy
     - mParticle-Apple-SDK
+    - mParticle-Radar
+    - RadarSDK
     - SDWebImage
 
 EXTERNAL SOURCES:
@@ -50,13 +57,15 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@capacitor/ios"
 
 SPEC CHECKSUMS:
-  Appboy-iOS-SDK: dd22a28a003c5a1331080ecec398eaa4d7ef4569
+  Appboy-iOS-SDK: 541a839e91a9176ca5c5431375b770a732f8da59
   Capacitor: 07f746722420584674243fe6bb2e02d243a02a08
   CapacitorCordova: 16f118e79d7c20eb659565b1ed9133e2b730f747
-  mParticle-Appboy: cdd2aee8df3d997dc1a3c8a239e2542477bdbb9d
-  mParticle-Apple-SDK: 982774ac43c1fc996b503e76e375cc128caa2d5e
-  SDWebImage: 4ea20cca2986adc5aacde07aa686742fd4c67a37
+  mParticle-Appboy: c64eb11a9dc1b9532a1376d9e0a1f8935ddfe8d5
+  mParticle-Apple-SDK: cc5e0c0bb5cdc90f647c5d01e77b112d82258e69
+  mParticle-Radar: baeef521694f1f2021a589e37ac184aaf8c74b67
+  RadarSDK: 8dacc3e664ffe75a9cd8d56c772d8ae403bf4f0d
+  SDWebImage: 4dc3e42d9ec0c1028b960a33ac6b637bb432207b
 
-PODFILE CHECKSUM: e723b5153da877e71e0e2e967c33735e36930ce9
+PODFILE CHECKSUM: 1edd52e419f1c507e42a7401569f157f4e3c90ba
 
 COCOAPODS: 1.11.2

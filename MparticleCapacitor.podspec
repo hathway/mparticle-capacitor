@@ -15,5 +15,6 @@ Pod::Spec.new do |s|
   s.dependency 'Capacitor'
   s.dependency 'mParticle-Apple-SDK'
   s.dependency 'mParticle-Appboy'
+  s.dependency 'mParticle-Radar'
   s.swift_version = '5.1'
 end

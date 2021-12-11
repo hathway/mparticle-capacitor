@@ -49,6 +49,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>RadarSDK.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SDWebImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -60,6 +65,11 @@
 			<false/>
 		</dict>
 		<key>mParticle-Apple-SDK.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>mParticle-Radar.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
