@@ -59,5 +59,4 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation 'com.mparticle:android-core:5.32.0'
-    implementation 'com.mparticle:android-appboy-kit:5.32.0'
 }
