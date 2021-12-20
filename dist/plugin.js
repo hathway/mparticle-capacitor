@@ -1,10 +1,9 @@
-var capacitorMParticleCapacitor = (function (exports, core, mParticle, mParticleBraze) {
+var capacitorMParticleCapacitor = (function (exports, core, mParticle) {
     'use strict';
 
     function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
     var mParticle__default = /*#__PURE__*/_interopDefaultLegacy(mParticle);
-    var mParticleBraze__default = /*#__PURE__*/_interopDefaultLegacy(mParticleBraze);
 
     exports.MParticleEventType = void 0;
     (function (MParticleEventType) {
@@ -45,7 +44,6 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle, mParticle
                     planVersion: 2
                 }
             };
-            mParticleBraze__default["default"].register(mParticleConfig);
             return mParticle__default["default"].init(call.key, mParticleConfig);
         }
         async loginMParticleUser(call) {
@@ -143,5 +141,5 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle, mParticle
 
     return exports;
 
-})({}, capacitorExports, mParticle, mParticleBraze);
+})({}, capacitorExports, mParticle);
 //# sourceMappingURL=plugin.js.map

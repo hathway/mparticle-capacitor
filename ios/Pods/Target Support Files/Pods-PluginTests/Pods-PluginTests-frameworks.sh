@@ -176,19 +176,13 @@ code_sign_if_enabled() {
 }
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/Appboy-iOS-SDK/Appboy_iOS_SDK.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Capacitor/Capacitor.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/CapacitorCordova/Cordova.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/mParticle-Appboy/mParticle_Appboy.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/mParticle-Apple-SDK/mParticle_Apple_SDK.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "${BUILT_PRODUCTS_DIR}/Appboy-iOS-SDK/Appboy_iOS_SDK.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Capacitor/Capacitor.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/CapacitorCordova/Cordova.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/mParticle-Appboy/mParticle_Appboy.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/mParticle-Apple-SDK/mParticle_Apple_SDK.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
