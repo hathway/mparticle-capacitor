@@ -58,6 +58,7 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 MParticle provides a "black-box" solution to data sharing between other api. Kits do not need to be added to the plugin, they can be added directly to your app's `Podfile` or `build.gradle`. View the list of supported kits here:
 
 Android: https://github.com/mParticle/mparticle-android-sdk
+
 iOS: https://github.com/mParticle/mparticle-apple-sdk
 
 ## Braze Integration
