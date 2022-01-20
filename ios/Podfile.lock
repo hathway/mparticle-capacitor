@@ -2,14 +2,14 @@ PODS:
   - Capacitor (3.2.4):
     - CapacitorCordova
   - CapacitorCordova (3.2.4)
-  - mParticle-Apple-SDK (8.5.3):
-    - mParticle-Apple-SDK/mParticle (= 8.5.3)
-  - mParticle-Apple-SDK/mParticle (8.5.3)
+  - mParticle-Apple-SDK (8.6.0):
+    - mParticle-Apple-SDK/mParticle (= 8.6.0)
+  - mParticle-Apple-SDK/mParticle (8.6.0)
 
 DEPENDENCIES:
   - "Capacitor (from `../node_modules/@capacitor/ios`)"
   - "CapacitorCordova (from `../node_modules/@capacitor/ios`)"
-  - mParticle-Apple-SDK (~> 8.5)
+  - mParticle-Apple-SDK (~> 8.6)
 
 SPEC REPOS:
   trunk:
@@ -24,8 +24,8 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Capacitor: 07f746722420584674243fe6bb2e02d243a02a08
   CapacitorCordova: 16f118e79d7c20eb659565b1ed9133e2b730f747
-  mParticle-Apple-SDK: 982774ac43c1fc996b503e76e375cc128caa2d5e
+  mParticle-Apple-SDK: 411707ace4aeeeade33b6a1e43dea47f8d373aa4
 
-PODFILE CHECKSUM: 7f122b40732d011345d605c3caad4db8f9a08739
+PODFILE CHECKSUM: 3aa8300770c1f21140dcb98e6f238f7da7abef1f
 
 COCOAPODS: 1.11.2
