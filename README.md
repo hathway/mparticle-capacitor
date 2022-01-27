@@ -31,6 +31,7 @@ public class MainActivity extends BridgeActivity {
         .environment(MParticle.Environment.Development) // or MParticle.Environment.Production
         .dataplan("master_data_plan", 2)
         .logLevel(MParticle.LogLevel.DEBUG) // to see debug logging in Android Studio
+        .androidIdEnabled(true) // required for SDK 5.35+
         .build();
         MParticle.start(options);
     }
