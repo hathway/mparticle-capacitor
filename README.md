@@ -183,6 +183,45 @@ pod 'mParticle-AppsFlyer', '~> 8'
 
 Full documentation here: https://github.com/mparticle-integrations/mparticle-apple-integration-appsflyer
 
+### AppsFlyer Capacitor Plugin (Deeplining)
+
+The AppsFlyer capacitor plugin can work in parallell with the kit to process the deeplinks
+
+```bash
+npm install appsflyer-capacitor-plugin  
+npx cap sync
+```
+
+Note that we add the listener before the init.
+
+```typescript
+AppsFlyer.addListener(AFConstants.UDL_CALLBACK, (res) => {
+  console.log('URL APPSFLYER UDL_CALLBACK ~~>' + JSON.stringify(res));
+  if (res.status === 'FOUND') {
+    // do the deeplink process
+  } else if (res.status === 'ERROR') {
+    console.log('deep link error');
+  } else {
+    console.log('deep link not found');
+  }
+}); 
+
+AppsFlyer.initSDK({
+    appID: '{APPID}',  // replace with your app ID.
+      devKey: '{DEVKEY}',   // replace with your dev key.
+      isDebug: true,
+      waitForATTUserAuthorization: 10, // for iOS 14 and higher
+      registerOnDeepLink: true,
+      registerConversionListener: true,
+}).then().catch(e =>console.log("AppsFlyer Error Catch",e));    
+```
+
+It is also recommended to encapulate the above code in `if (platform.is('hybrid')) {` or something similar as this listener will throw an 'unimplemented' error when in a web environment. AppsFlyer documentation also recommends to start in `this.platform.ready().then(() => {`.
+
+Full documentation here: https://github.com/AppsFlyerSDK/appsflyer-capacitor-plugin
+
+
+
 ## API
 
 <docgen-index>
