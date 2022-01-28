@@ -15,12 +15,12 @@ export interface MParticleCapacitorPlugin {
     }): Promise<any>;
     logoutMParticleUser(call?: any): Promise<any>;
     logMParticleEvent(call: {
-        eventName: any;
+        eventName: string;
         eventType: any;
         eventProperties: any;
     }): Promise<any>;
     logMParticlePageView(call: {
-        pageName: any;
+        pageName: string;
         pageLink: any;
     }): Promise<any>;
     setUserAttribute(call: {
@@ -28,7 +28,7 @@ export interface MParticleCapacitorPlugin {
         attributeValue: string;
     }): Promise<any>;
     setUserAttributeList(call: {
-        attributeName: any;
+        attributeName: string;
         attributeValues: any;
     }): Promise<any>;
     updateMParticleCart(call: {

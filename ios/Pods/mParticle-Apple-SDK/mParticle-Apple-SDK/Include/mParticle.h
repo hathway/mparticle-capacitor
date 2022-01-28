@@ -57,6 +57,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly) NSString *UUID;
 
+/**
+ The session start time.
+ */
+@property (nonatomic, readonly) NSNumber *startTime;
+
 @end
 
 /**
@@ -709,6 +714,18 @@ Defaults to false. Prevents the eventsHost above from overwriting the alias endp
  @see logScreenEvent:
  */
 - (void)logScreen:(NSString *)screenName eventInfo:(nullable NSDictionary<NSString *, id> *)eventInfo;
+
+/**
+ Logs a screen event and gives developer option to choose whether this screen event should be uploaded to mParticle when logged or only passed to kits. This is a convenience method for logging simple screen events; internally it creates an instance
+ of MPEvent and calls logScreenEvent:
+ @param screenName The name of the screen to be logged (required not nil and up to 255 characters)
+ @param eventInfo A dictionary containing further information about the screen. This dictionary is limited to 100 key
+ value pairs. Keys must be strings (up to 255 characters) and values can be strings (up to 4096 characters), numbers,
+ booleans, or dates
+ @param shouldUploadEvent A boolean flag that indicates whether this screen event should be uploaded to mParticle when logged or only passed to kits
+ @see logScreenEvent:
+ */
+- (void)logScreen:(NSString *)screenName eventInfo:(nullable NSDictionary<NSString *, id> *)eventInfo shouldUploadEvent:(BOOL)shouldUploadEvent;
 
 /**
  Sets the ATT Authorization state with the supplied timestamp, or uses the current time if none is supplied.

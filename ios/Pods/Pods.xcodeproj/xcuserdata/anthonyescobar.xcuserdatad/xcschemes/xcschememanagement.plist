@@ -4,31 +4,6 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Appboy-iOS-SDK-Appboy.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Appboy-iOS-SDK-AppboyUI.ContentCards.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Appboy-iOS-SDK-AppboyUI.InAppMessage.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Appboy-iOS-SDK-AppboyUI.NewsFeed.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Appboy-iOS-SDK.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Capacitor.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -45,16 +20,6 @@
 			<false/>
 		</dict>
 		<key>Pods-PluginTests.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>SDWebImage.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>mParticle-Appboy.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

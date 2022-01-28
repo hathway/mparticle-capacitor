@@ -5,12 +5,12 @@ mParticle Capacitor Plugin to avoid enterprise
 ## Install
 
 ```bash
-npm install git+https://github.com/dghathway/mparticle-capacitor.git#v0.0.7
+npm install git+https://github.com/dghathway/mparticle-capacitor.git#v0.1
 npx cap sync
 ```
 or add to your `package.json`
 ```json
-"mparticle-capacitor": "git+https://github.com/dghathway/mparticle-capacitor.git#v0.0.7"
+"mparticle-capacitor": "git+https://github.com/dghathway/mparticle-capacitor.git#v0.1"
 ```
 
 ## AppDelegate & MainActivity Scripts
@@ -31,6 +31,7 @@ public class MainActivity extends BridgeActivity {
         .environment(MParticle.Environment.Development) // or MParticle.Environment.Production
         .dataplan("master_data_plan", 2)
         .logLevel(MParticle.LogLevel.DEBUG) // to see debug logging in Android Studio
+        .androidIdEnabled(true) // required for SDK 5.35+
         .build();
         MParticle.start(options);
     }
@@ -53,9 +54,17 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 }
 ```
 
-## Baze Integration
+## Adding Kits
 
-mParticle will handle the integration internaly as long as things are hooked up in the dashboard. 
+MParticle provides a "black-box" solution to data sharing between other api. Kits do not need to be added to the plugin, they can be added directly to your app's `Podfile` or `build.gradle`. View the list of supported kits here:
+
+Android: https://github.com/mParticle/mparticle-android-sdk
+
+iOS: https://github.com/mParticle/mparticle-apple-sdk
+
+## Braze Integration
+
+mParticle will handle the integration internaly as long as things are hooked up in the dashboard.
 There are some custom settings and inclusions that need to be included in your project for mParticle to route data to Braze properly.
 
 ### Android
@@ -67,9 +76,22 @@ repositories {
     maven { url "https://appboy.github.io/appboy-android-sdk/sdk" }
     ...
 }
+dependencies {
+    implementation 'com.mparticle:android-appboy-kit:5+'
+}
+```
+Full documentation here: https://github.com/mparticle-integrations/mparticle-android-integration-appboy
+
+### iOS
+
+Add the kit to your app's Podfile:
+```Podfile
+pod 'mParticle-Appboy', '~> 8'
 ```
 
-#### Enable Push Notifications
+### Enable Push Notifications
+
+#### Android
 
 Add Firebase to your ```build.gradle```
 ```gradle
@@ -122,13 +144,13 @@ Create a `braze.xml` file in `android/app/src/main/res/values`
 ```
 Full Documentation Here: https://www.braze.com/docs/developer_guide/platform_integration_guides/android/push_notifications/android/integration/standard_integration/#custom-handling-for-push-receipts-opens-dismissals-and-key-value-pairs
 
-### iOS
+#### iOS
 
 mParticle will handle the integration internaly. There may be issues depending on other packages in your app. Full mParticle documentation here: https://docs.mparticle.com/developers/sdk/ios/push-notifications/
 
 > iOS does not pass push tokens automatically, for your hybrid app I recommend using: https://capacitorjs.com/docs/apis/push-notifications to request and enable push notifictaions for your users
 
-### Device Push Tokens Aren't Getting to Braze (swizzling)
+##### Device Push Tokens Aren't Getting to Braze (swizzling)
 
 Look for functions that override or proxy the AppDelegate functions specifically `didRegisterForRemoteNotificationsWithDeviceToken`. Firebase Gets in the way of Braze And mParticle interactions 
 > ref: https://firebase.google.com/docs/cloud-messaging/ios/client
@@ -137,6 +159,29 @@ Look for functions that override or proxy the AppDelegate functions specifically
 solution is in your ```Info.plist```: 
     ![info.plist firebase](https://i.stack.imgur.com/XnMm0.png)
 > (via. https://firebase.google.com/docs/cloud-messaging/ios/client)
+
+## AppsFlyer
+
+AppsFlyer works as expected out of the box. Most of the settings will be handled between the dashboards.
+
+### Android
+
+Add the AppsFlyer kit to your app's `build.gradle`:
+```gradle
+dependencies {
+    implementation 'com.mparticle:android-appsflyer-kit:5+'
+}
+```
+Full documentation here: https://github.com/mparticle-integrations/mparticle-android-integration-appsflyer
+
+### iOS
+
+Add the kit to your app's Podfile:
+```Podfile
+pod 'mParticle-AppsFlyer', '~> 8'
+```
+
+Full documentation here: https://github.com/mparticle-integrations/mparticle-apple-integration-appsflyer
 
 ## API
 
@@ -224,12 +269,12 @@ logoutMParticleUser(call?: any) => Promise<any>
 ### logMParticleEvent(...)
 
 ```typescript
-logMParticleEvent(call: { eventName: any; eventType: any; eventProperties: any; }) => Promise<any>
+logMParticleEvent(call: { eventName: string; eventType: any; eventProperties: any; }) => Promise<any>
 ```
 
-| Param      | Type                                                                   |
-| ---------- | ---------------------------------------------------------------------- |
-| **`call`** | <code>{ eventName: any; eventType: any; eventProperties: any; }</code> |
+| Param      | Type                                                                      |
+| ---------- | ------------------------------------------------------------------------- |
+| **`call`** | <code>{ eventName: string; eventType: any; eventProperties: any; }</code> |
 
 **Returns:** <code>Promise&lt;any&gt;</code>
 
@@ -239,12 +284,12 @@ logMParticleEvent(call: { eventName: any; eventType: any; eventProperties: any; 
 ### logMParticlePageView(...)
 
 ```typescript
-logMParticlePageView(call: { pageName: any; pageLink: any; }) => Promise<any>
+logMParticlePageView(call: { pageName: string; pageLink: any; }) => Promise<any>
 ```
 
-| Param      | Type                                           |
-| ---------- | ---------------------------------------------- |
-| **`call`** | <code>{ pageName: any; pageLink: any; }</code> |
+| Param      | Type                                              |
+| ---------- | ------------------------------------------------- |
+| **`call`** | <code>{ pageName: string; pageLink: any; }</code> |
 
 **Returns:** <code>Promise&lt;any&gt;</code>
 
@@ -269,12 +314,12 @@ setUserAttribute(call: { attributeName: string; attributeValue: string; }) => Pr
 ### setUserAttributeList(...)
 
 ```typescript
-setUserAttributeList(call: { attributeName: any; attributeValues: any; }) => Promise<any>
+setUserAttributeList(call: { attributeName: string; attributeValues: any; }) => Promise<any>
 ```
 
-| Param      | Type                                                       |
-| ---------- | ---------------------------------------------------------- |
-| **`call`** | <code>{ attributeName: any; attributeValues: any; }</code> |
+| Param      | Type                                                          |
+| ---------- | ------------------------------------------------------------- |
+| **`call`** | <code>{ attributeName: string; attributeValues: any; }</code> |
 
 **Returns:** <code>Promise&lt;any&gt;</code>
 

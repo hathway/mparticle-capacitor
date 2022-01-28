@@ -52,7 +52,10 @@ static NSArray *execStatusDescriptions;
 static BOOL appBackgrounded = NO;
  
 @interface MParticleSession ()
+
+@property (nonatomic, readwrite) NSNumber *startTime;
 - (instancetype)initWithUUID:(NSString *)uuid;
+
 @end
 
 @interface MParticle ()
@@ -1139,6 +1142,8 @@ static BOOL skipNextUpload = NO;
     MPSession *mpSession = [[MPSession alloc] init];
     mpSession.uuid = tempSession.UUID;
     
+    tempSession.startTime = MPMilliseconds(mpSession.startTime);
+    
     [self broadcastSessionDidBegin:mpSession];
     
     MPILogVerbose(@"New Session Has Begun: %@", tempSession.UUID);
@@ -1750,6 +1755,7 @@ static BOOL skipNextUpload = NO;
     messageBuilder = [messageBuilder withLocation:[MParticle sharedInstance].stateMachine.location];
 #endif
     MPMessage *message = [messageBuilder build];
+    message.shouldUploadEvent = event.shouldUploadEvent;
     
     [self saveMessage:message updateSession:YES];
     

@@ -32,6 +32,29 @@
     return self;
 }
 
++ (void)fixInvalidKeysInDictionary:(NSMutableDictionary*)messageDictionary messageInfo:(NSDictionary*) messageInfo{
+    for (NSString *key in messageInfo) {
+        if ([messageInfo[key] isKindOfClass:[NSDictionary class]]) {
+            if (![NSJSONSerialization isValidJSONObject: messageInfo[key]]) {
+                NSMutableDictionary *temp = [messageDictionary[key] mutableCopy];
+                [MPMessage fixInvalidKeysInDictionary:temp messageInfo:messageInfo[key]];
+                messageDictionary[key] = temp;
+            }
+        } else {
+            if ([messageInfo[key] isKindOfClass:[NSNumber class]]) {
+                NSNumber *value = (NSNumber *)messageInfo[key];
+                if(value.doubleValue == INFINITY || value.doubleValue == -INFINITY || isnan(value.doubleValue)) {
+                    MPILogVerbose(@"Invalid Message Data for key: %@", key);
+                    MPILogVerbose(@"Value should not be infinite. Removing value from message data");
+                    messageDictionary[key] = nil;
+                }
+                
+            }
+        }
+    }
+    return;
+}
+
 - (instancetype)initWithSession:(MPSession *)session messageType:(NSString *)messageType messageInfo:(NSDictionary *)messageInfo uploadStatus:(MPUploadStatus)uploadStatus UUID:(NSString *)uuid timestamp:(NSTimeInterval)timestamp userId:(NSNumber *)userId  dataPlanId:(NSString *)dataPlanId dataPlanVersion:(NSNumber *)dataPlanVersion {
     NSNumber *sessionId = nil;
     
@@ -39,11 +62,16 @@
         sessionId = @(session.sessionId);
     }
     
+    NSMutableDictionary *messageDictionary = messageInfo.mutableCopy;
+    if (![NSJSONSerialization isValidJSONObject: messageInfo]) {
+        [MPMessage fixInvalidKeysInDictionary:messageDictionary messageInfo:messageInfo];
+    }
+    
     return [self initWithSessionId:sessionId
                          messageId:0
                               UUID:uuid
                        messageType:messageType
-                       messageData:[NSJSONSerialization dataWithJSONObject:messageInfo options:0 error:nil]
+                       messageData:[NSJSONSerialization dataWithJSONObject:messageDictionary options:0 error:nil]
                          timestamp:timestamp
                       uploadStatus:uploadStatus
                             userId:userId

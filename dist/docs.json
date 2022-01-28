@@ -71,12 +71,12 @@
       },
       {
         "name": "logMParticleEvent",
-        "signature": "(call: { eventName: any; eventType: any; eventProperties: any; }) => Promise<any>",
+        "signature": "(call: { eventName: string; eventType: any; eventProperties: any; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "{ eventName: any; eventType: any; eventProperties: any; }"
+            "type": "{ eventName: string; eventType: any; eventProperties: any; }"
           }
         ],
         "returns": "Promise<any>",
@@ -87,12 +87,12 @@
       },
       {
         "name": "logMParticlePageView",
-        "signature": "(call: { pageName: any; pageLink: any; }) => Promise<any>",
+        "signature": "(call: { pageName: string; pageLink: any; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "{ pageName: any; pageLink: any; }"
+            "type": "{ pageName: string; pageLink: any; }"
           }
         ],
         "returns": "Promise<any>",
@@ -119,12 +119,12 @@
       },
       {
         "name": "setUserAttributeList",
-        "signature": "(call: { attributeName: any; attributeValues: any; }) => Promise<any>",
+        "signature": "(call: { attributeName: string; attributeValues: any; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "{ attributeName: any; attributeValues: any; }"
+            "type": "{ attributeName: string; attributeValues: any; }"
           }
         ],
         "returns": "Promise<any>",
