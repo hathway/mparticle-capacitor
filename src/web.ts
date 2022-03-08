@@ -8,7 +8,7 @@ export class MParticleCapacitorWeb
 
   async mParticleInit(call: { key:string, production:boolean } ): Promise<any> {
     const mParticleConfig = {
-      isDevelopmentMode: !call.production || true,
+      isDevelopmentMode: !(call.production),
       dataPlan: {
         planId: 'master_data_plan',
         planVersion: 2

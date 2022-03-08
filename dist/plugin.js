@@ -38,7 +38,7 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle) {
     class MParticleCapacitorWeb extends core.WebPlugin {
         async mParticleInit(call) {
             const mParticleConfig = {
-                isDevelopmentMode: !call.production || true,
+                isDevelopmentMode: !(call.production),
                 dataPlan: {
                     planId: 'master_data_plan',
                     planVersion: 2
