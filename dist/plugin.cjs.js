@@ -99,7 +99,7 @@ class MParticleCapacitorWeb extends core.WebPlugin {
         (call.productData).forEach((element) => {
             productArray.push(this.createMParticleProduct(element));
         });
-        return this.logProductAction(mParticle__default["default"].ProductActionType.Checkout, productArray, call.customAttributes, call.transactionAttributes, null);
+        return this.logProductAction(mParticle__default["default"].ProductActionType.Purchase, productArray, call.customAttributes, call.transactionAttributes, null);
     }
     get currentUser() {
         return mParticle__default["default"].Identity.getCurrentUser();

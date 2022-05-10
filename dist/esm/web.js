@@ -62,7 +62,7 @@ export class MParticleCapacitorWeb extends WebPlugin {
         (call.productData).forEach((element) => {
             productArray.push(this.createMParticleProduct(element));
         });
-        return this.logProductAction(mParticle.ProductActionType.Checkout, productArray, call.customAttributes, call.transactionAttributes, null);
+        return this.logProductAction(mParticle.ProductActionType.Purchase, productArray, call.customAttributes, call.transactionAttributes, null);
     }
     get currentUser() {
         return mParticle.Identity.getCurrentUser();

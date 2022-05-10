@@ -80,7 +80,7 @@ export class MParticleCapacitorWeb
     (call.productData).forEach((element:any) => {
       productArray.push(this.createMParticleProduct(element));
     });
-    return this.logProductAction(mParticle.ProductActionType.Checkout,  productArray, call.customAttributes, call.transactionAttributes, null);
+    return this.logProductAction(mParticle.ProductActionType.Purchase,  productArray, call.customAttributes, call.transactionAttributes, null);
   }
 
   public get currentUser() {
