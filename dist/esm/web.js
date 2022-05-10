@@ -3,7 +3,7 @@ import mParticle from '@mparticle/web-sdk';
 export class MParticleCapacitorWeb extends WebPlugin {
     async mParticleInit(call) {
         const mParticleConfig = {
-            isDevelopmentMode: !call.production || true,
+            isDevelopmentMode: !(call.production),
             dataPlan: {
                 planId: 'master_data_plan',
                 planVersion: 2
@@ -62,7 +62,7 @@ export class MParticleCapacitorWeb extends WebPlugin {
         (call.productData).forEach((element) => {
             productArray.push(this.createMParticleProduct(element));
         });
-        return this.logProductAction(mParticle.ProductActionType.Checkout, productArray, call.customAttributes, call.transactionAttributes, null);
+        return this.logProductAction(mParticle.ProductActionType.Purchase, productArray, call.customAttributes, call.transactionAttributes, null);
     }
     get currentUser() {
         return mParticle.Identity.getCurrentUser();

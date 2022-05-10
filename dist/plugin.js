@@ -38,7 +38,7 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle) {
     class MParticleCapacitorWeb extends core.WebPlugin {
         async mParticleInit(call) {
             const mParticleConfig = {
-                isDevelopmentMode: !call.production || true,
+                isDevelopmentMode: !(call.production),
                 dataPlan: {
                     planId: 'master_data_plan',
                     planVersion: 2
@@ -95,7 +95,7 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle) {
             (call.productData).forEach((element) => {
                 productArray.push(this.createMParticleProduct(element));
             });
-            return this.logProductAction(mParticle__default["default"].ProductActionType.Checkout, productArray, call.customAttributes, call.transactionAttributes, null);
+            return this.logProductAction(mParticle__default["default"].ProductActionType.Purchase, productArray, call.customAttributes, call.transactionAttributes, null);
         }
         get currentUser() {
             return mParticle__default["default"].Identity.getCurrentUser();
