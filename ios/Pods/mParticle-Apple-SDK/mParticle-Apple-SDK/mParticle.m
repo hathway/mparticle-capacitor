@@ -25,6 +25,7 @@
 #import "MPApplication.h"
 #import "MParticleWebView.h"
 #import "MPDataPlanFilter.h"
+#import "MPResponseConfig.h"
 
 #if TARGET_OS_IOS == 1
     #import "MPLocationManager.h"
@@ -68,7 +69,7 @@ NSString *const kMPStateKey = @"state";
 @property (nonatomic, strong, nonnull) MParticleOptions *options;
 @property (nonatomic, strong, nullable) NSMutableDictionary *configSettings;
 @property (nonatomic, strong, nullable) MPKitActivity *kitActivity;
-@property (nonatomic, unsafe_unretained) BOOL initialized;
+@property (nonatomic) BOOL initialized;
 @property (nonatomic, strong, nonnull) NSMutableArray *kitsInitializedBlocks;
 @property (nonatomic, readwrite) MPNetworkOptions *networkOptions;
 @property (nonatomic, strong, nullable) NSArray<NSDictionary *> *deferredKitConfiguration;
@@ -168,14 +169,14 @@ NSString *const kMPStateKey = @"state";
 
 @interface MParticleOptions ()
 
-@property (nonatomic, assign, readwrite) BOOL isProxyAppDelegateSet;
-@property (nonatomic, assign, readwrite) BOOL isCollectUserAgentSet;
-@property (nonatomic, assign, readwrite) BOOL isCollectSearchAdsAttributionSet;
-@property (nonatomic, assign, readwrite) BOOL isTrackNotificationsSet;
-@property (nonatomic, assign, readwrite) BOOL isAutomaticSessionTrackingSet;
-@property (nonatomic, assign, readwrite) BOOL isStartKitsAsyncSet;
-@property (nonatomic, assign, readwrite) BOOL isUploadIntervalSet;
-@property (nonatomic, assign, readwrite) BOOL isSessionTimeoutSet;
+@property (nonatomic, readwrite) BOOL isProxyAppDelegateSet;
+@property (nonatomic, readwrite) BOOL isCollectUserAgentSet;
+@property (nonatomic, readwrite) BOOL isCollectSearchAdsAttributionSet;
+@property (nonatomic, readwrite) BOOL isTrackNotificationsSet;
+@property (nonatomic, readwrite) BOOL isAutomaticSessionTrackingSet;
+@property (nonatomic, readwrite) BOOL isStartKitsAsyncSet;
+@property (nonatomic, readwrite) BOOL isUploadIntervalSet;
+@property (nonatomic, readwrite) BOOL isSessionTimeoutSet;
 
 @end
 
@@ -244,6 +245,14 @@ NSString *const kMPStateKey = @"state";
 - (void)setSessionTimeout:(NSTimeInterval)sessionTimeout {
     _sessionTimeout = sessionTimeout;
     _isSessionTimeoutSet = YES;
+}
+
+- (void)setConfigMaxAgeSeconds:(NSNumber *)configMaxAgeSeconds {
+    if (configMaxAgeSeconds != nil && [configMaxAgeSeconds doubleValue] <= 0) {
+        MPILogWarning(@"Config Max Age must be a positive number, disregarding value.");
+    } else {
+        _configMaxAgeSeconds = configMaxAgeSeconds;
+    }
 }
 
 @end
@@ -448,6 +457,10 @@ NSString *const kMPStateKey = @"state";
     return [kMParticleSDKVersion copy];
 }
 
+- (NSNumber *)configMaxAgeSeconds {
+    return self.options.configMaxAgeSeconds;
+}
+
 #pragma mark Initialization
 + (instancetype)sharedInstance {
     dispatch_once(&predicate, ^{
@@ -457,7 +470,7 @@ NSString *const kMPStateKey = @"state";
     return _sharedInstance;
 }
 
-+(void)setSharedInstance:(MParticle *)instance {
++ (void)setSharedInstance:(MParticle *)instance {
     predicate = 0; // resets the once_token so dispatch_once will run again
     _sharedInstance = instance;
     
@@ -524,6 +537,7 @@ NSString *const kMPStateKey = @"state";
     self.backendController.uploadInterval = options.uploadInterval;
     self.backendController.sessionTimeout = options.sessionTimeout;
     self.logLevel = options.logLevel;
+    self.customLogger = options.customLogger;
     
     MPConsentState *consentState = self.options.consentState;
     
@@ -539,6 +553,10 @@ NSString *const kMPStateKey = @"state";
     [MParticle sharedInstance].stateMachine.automaticSessionTracking = options.automaticSessionTracking;
     if (options.attStatus != nil) {
         [self setATTStatus:(MPATTAuthorizationStatus)options.attStatus.integerValue withATTStatusTimestampMillis:options.attStatusTimestampMillis];
+    }
+    
+    if ([MPResponseConfig isOlderThanConfigMaxAgeSeconds]) {
+        [MPResponseConfig deleteConfig];
     }
     
     _kitContainer = [[MPKitContainer alloc] init];

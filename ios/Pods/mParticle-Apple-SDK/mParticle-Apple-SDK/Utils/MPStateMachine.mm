@@ -11,7 +11,6 @@
 #import "MPILogger.h"
 #import "MPConsumerInfo.h"
 #import "MPPersistenceController.h"
-#include "MessageTypeName.h"
 #import "MPLocationManager.h"
 #import "MPKitContainer.h"
 #import "MPSearchAdsAttribution.h"
@@ -51,7 +50,7 @@ static BOOL runningInBackground = NO;
     dispatch_queue_t messageQueue;
 }
 
-@property (nonatomic, unsafe_unretained) MParticleNetworkStatus networkStatus;
+@property (nonatomic) MParticleNetworkStatus networkStatus;
 @property (nonatomic, strong) NSString *storedSDKVersion;
 @property (nonatomic, strong) MParticleReachability *reachability;
 

@@ -4,7 +4,10 @@ import mParticle from '@mparticle/web-sdk';
 export declare class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacitorPlugin {
     mParticleInit(call: {
         key: string;
-        production: boolean;
+        production?: boolean;
+        planID?: string;
+        planVer?: number;
+        logLevel?: any;
     }): Promise<any>;
     loginMParticleUser(call: {
         email: string;

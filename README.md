@@ -38,6 +38,8 @@ public class MainActivity extends BridgeActivity {
 }
 ```
 
+can't find "com.mparticle...."? add `android:exported="true"` to `AndroidMnifest.xml` under `<activity>`>
+
 ### iOS
 
 Initilize mParticle in the app directly instead of the plugin, Appboy/Braze needs the permissions mParticle will pass to it through this.
@@ -263,12 +265,12 @@ echo(options: { value: string; }) => Promise<{ value: string; }>
 ### mParticleInit(...)
 
 ```typescript
-mParticleInit(call: { key: string; production: boolean; }) => Promise<any>
+mParticleInit(call: { key: string; production?: boolean; planID?: string; planVer?: number; logLevel?: any; }) => Promise<any>
 ```
 
-| Param      | Type                                               |
-| ---------- | -------------------------------------------------- |
-| **`call`** | <code>{ key: string; production: boolean; }</code> |
+| Param      | Type                                                                                                   |
+| ---------- | ------------------------------------------------------------------------------------------------------ |
+| **`call`** | <code>{ key: string; production?: boolean; planID?: string; planVer?: number; logLevel?: any; }</code> |
 
 **Returns:** <code>Promise&lt;any&gt;</code>
 

@@ -24,7 +24,6 @@
 #import "MPResponseConfig.h"
 #import "MPCommerceEvent.h"
 #import "MPCommerceEvent+Dictionary.h"
-#include "MessageTypeName.h"
 #import "MPKitContainer.h"
 #import "MPUserAttributeChange.h"
 #import "MPUserIdentityChange.h"
@@ -377,7 +376,7 @@ static BOOL appBackgrounded = NO;
         return;
     }
     
-    MPMessageBuilder *messageBuilder = [MPMessageBuilder newBuilderWithMessageType:static_cast<MPMessageType>(mParticle::MessageType::UserAttributeChange)
+    MPMessageBuilder *messageBuilder = [MPMessageBuilder newBuilderWithMessageType:MPMessageTypeUserAttributeChange
                                                                            session:self.session
                                                                userAttributeChange:userAttributeChange];
     if (userAttributeChange.timestamp) {
@@ -394,7 +393,7 @@ static BOOL appBackgrounded = NO;
         return;
     }
     
-    MPMessageBuilder *messageBuilder = [MPMessageBuilder newBuilderWithMessageType:static_cast<MPMessageType>(mParticle::MessageType::UserIdentityChange)
+    MPMessageBuilder *messageBuilder = [MPMessageBuilder newBuilderWithMessageType:MPMessageTypeUserIdentityChange
                                                                            session:self.session
                                                                 userIdentityChange:userIdentityChange];
     if (userIdentityChange.timestamp) {
@@ -1976,33 +1975,33 @@ static BOOL skipNextUpload = NO;
 - (MPExecStatus)checkForKitsAndUploadWithCompletionHandler:(void (^ _Nullable)(BOOL didShortCircuit))completionHandler {
     __weak MPBackendController *weakSelf = self;
 
-            [self requestConfig:^(BOOL uploadBatch) {
-                if (!uploadBatch) {
-                    if (completionHandler) {
-                        completionHandler(NO);
-                    }
-                    
-                    return;
-                }
-                __strong MPBackendController *strongSelf = weakSelf;
-                MPKitContainer *kitContainer = [MParticle sharedInstance].kitContainer;
-                BOOL shouldDelayUploadForKits = kitContainer && [kitContainer shouldDelayUpload:kMPMaximumKitWaitTimeSeconds];
-                BOOL shouldDelayUpload = shouldDelayUploadForKits || [MParticle.sharedInstance.webView shouldDelayUpload:kMPMaximumAgentWaitTimeSeconds];
-                if (shouldDelayUpload) {
-                    if (completionHandler) {
-                        completionHandler(YES);
-                    }
-                    
-                    return;
-                }
-                
-                [strongSelf uploadBatchesWithCompletionHandler:^(BOOL success) {
-                    if (completionHandler) {
-                        completionHandler(NO);
-                    }
-                }];
-                
-            }];
+    [self requestConfig:^(BOOL uploadBatch) {
+        if (!uploadBatch) {
+            if (completionHandler) {
+                completionHandler(NO);
+            }
+            
+            return;
+        }
+        __strong MPBackendController *strongSelf = weakSelf;
+        MPKitContainer *kitContainer = [MParticle sharedInstance].kitContainer;
+        BOOL shouldDelayUploadForKits = kitContainer && [kitContainer shouldDelayUpload:kMPMaximumKitWaitTimeSeconds];
+        BOOL shouldDelayUpload = shouldDelayUploadForKits || [MParticle.sharedInstance.webView shouldDelayUpload:kMPMaximumAgentWaitTimeSeconds];
+        if (shouldDelayUpload) {
+            if (completionHandler) {
+                completionHandler(YES);
+            }
+            
+            return;
+        }
+        
+        [strongSelf uploadBatchesWithCompletionHandler:^(BOOL success) {
+            if (completionHandler) {
+                completionHandler(NO);
+            }
+        }];
+        
+    }];
     
     return MPExecStatusSuccess;
 }

@@ -3,11 +3,12 @@ import mParticle from '@mparticle/web-sdk';
 export class MParticleCapacitorWeb extends WebPlugin {
     async mParticleInit(call) {
         const mParticleConfig = {
-            isDevelopmentMode: !(call.production),
+            isDevelopmentMode: !(call.production) || true,
             dataPlan: {
-                planId: 'master_data_plan',
-                planVersion: 2
-            }
+                planId: call.planID || 'master_data_plan',
+                planVersion: call.planVer || 2
+            },
+            logLevel: (call.logLevel == "verbose" || "warning" || "none") ? call.logLevel : "verbose",
         };
         return mParticle.init(call.key, mParticleConfig);
     }
