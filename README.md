@@ -5,12 +5,12 @@ mParticle Capacitor Plugin to avoid enterprise
 ## Install
 
 ```bash
-npm install git+https://github.com/hathway/mparticle-capacitor.git#v0.2.1
+npm install git+https://github.com/hathway/mparticle-capacitor.git#v0.2.3
 npx cap sync
 ```
 or add to your `package.json`
 ```json
-"mparticle-capacitor": "git+https://github.com/hathway/mparticle-capacitor.git#v0.2.1"
+"mparticle-capacitor": "git+https://github.com/hathway/mparticle-capacitor.git#v0.2.3"
 ```
 
 ## AppDelegate & MainActivity Scripts
