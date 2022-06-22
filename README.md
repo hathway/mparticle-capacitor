@@ -38,7 +38,7 @@ public class MainActivity extends BridgeActivity {
 }
 ```
 
-can't find "com.mparticle...."? add `android:exported="true"` to `AndroidMnifest.xml` under `<activity>`>
+*can't find "com.mparticle...."?* **add** `android:exported="true"` to `AndroidManifest.xml` under `<activity>`
 
 ### iOS
 
