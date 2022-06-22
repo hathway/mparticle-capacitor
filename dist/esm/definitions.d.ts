@@ -7,7 +7,10 @@ export interface MParticleCapacitorPlugin {
     }>;
     mParticleInit(call: {
         key: string;
-        production: boolean;
+        production?: boolean;
+        planID?: string;
+        planVer?: number;
+        logLevel?: any;
     }): Promise<any>;
     loginMParticleUser(call: {
         email: string;

@@ -6,7 +6,7 @@ export class MParticleCapacitorWeb
   extends WebPlugin
   implements MParticleCapacitorPlugin {
 
-  async mParticleInit(call: { key:string, production:boolean, planID:string, planVer:number, logLevel:any } ): Promise<any> {
+  async mParticleInit(call: { key:string, production?:boolean, planID?:string, planVer?:number, logLevel?:any } ): Promise<any> {
     const mParticleConfig = {
       isDevelopmentMode: !(call.production) || true,
       dataPlan: {

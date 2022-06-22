@@ -265,12 +265,12 @@ echo(options: { value: string; }) => Promise<{ value: string; }>
 ### mParticleInit(...)
 
 ```typescript
-mParticleInit(call: { key: string; production: boolean; }) => Promise<any>
+mParticleInit(call: { key: string; production?: boolean; planID?: string; planVer?: number; logLevel?: any; }) => Promise<any>
 ```
 
-| Param      | Type                                               |
-| ---------- | -------------------------------------------------- |
-| **`call`** | <code>{ key: string; production: boolean; }</code> |
+| Param      | Type                                                                                                   |
+| ---------- | ------------------------------------------------------------------------------------------------------ |
+| **`call`** | <code>{ key: string; production?: boolean; planID?: string; planVer?: number; logLevel?: any; }</code> |
 
 **Returns:** <code>Promise&lt;any&gt;</code>
 

@@ -3,7 +3,7 @@ export type mParticleInitListener = (info:any) => any;
 export interface MParticleCapacitorPlugin {
   echo(options: { value: string }): Promise<{ value: string }>;
 
-  mParticleInit(call: { key:string, production:boolean } ): Promise<any>;
+  mParticleInit(call: { key:string, production?:boolean, planID?:string, planVer?:number, logLevel?:any } ): Promise<any>;
   loginMParticleUser(call: { email:string, customerId:string } ): Promise<any>;
   logoutMParticleUser(call?:any): Promise<any>;
 
