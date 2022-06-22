@@ -78,7 +78,6 @@
     }
   },
   "dependencies": {
-    "@mparticle/web-appboy-kit": "^2.0.6",
-    "@mparticle/web-sdk": "^2.14.1"
+    "@mparticle/web-sdk": "^2.16.1"
   }
 }

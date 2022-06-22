@@ -5,6 +5,9 @@ export declare class MParticleCapacitorWeb extends WebPlugin implements MParticl
     mParticleInit(call: {
         key: string;
         production: boolean;
+        planID: string;
+        planVer: number;
+        logLevel: any;
     }): Promise<any>;
     loginMParticleUser(call: {
         email: string;

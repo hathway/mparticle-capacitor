@@ -1,7 +1,6 @@
 #import "MPKitContainer.h"
 #import "MPKitExecStatus.h"
 #import "MPEnums.h"
-#include "MessageTypeName.h"
 #import "MPStateMachine.h"
 #include "MPHasher.h"
 #import "MPKitConfiguration.h"
@@ -10,7 +9,6 @@
 #import "MPPersistenceController.h"
 #import "MPILogger.h"
 #import "MPKitFilter.h"
-#include "EventTypeName.h"
 #import "MPEvent.h"
 #import "MPCommerceEvent.h"
 #import "MPCommerceEvent+Dictionary.h"
@@ -75,7 +73,7 @@ static NSMutableSet <id<MPExtensionKitProtocol>> *kitsRegistry;
 
 @property (nonatomic, strong) NSMutableArray<MPForwardQueueItem *> *forwardQueue;
 @property (nonatomic, strong) NSMutableDictionary<NSNumber *, MPKitConfiguration *> *kitConfigurations;
-@property (nonatomic, unsafe_unretained) BOOL kitsInitialized;
+@property (nonatomic) BOOL kitsInitialized;
 @property (nonatomic, strong) NSDate *initializedTime;
 
 @end
@@ -623,7 +621,7 @@ static NSMutableSet <id<MPExtensionKitProtocol>> *kitsRegistry;
     }
     
     // Event type filter
-    __block NSString *hashValue = [NSString stringWithCString:mParticle::EventTypeName::hashForEventType(static_cast<mParticle::EventType>([commerceEvent type])).c_str() encoding:NSUTF8StringEncoding];
+    __block NSString *hashValue = [MPIHasher hashEventType:[commerceEvent type]];
     
     __block BOOL shouldFilter = kitConfiguration.eventTypeFilters[hashValue] && [kitConfiguration.eventTypeFilters[hashValue] isEqualToNumber:zero];
     if (shouldFilter) {
@@ -803,7 +801,7 @@ static NSMutableSet <id<MPExtensionKitProtocol>> *kitsRegistry;
     // Event type filter
     if (selector != @selector(logScreen:)) {
         
-        hashValue = [NSString stringWithCString:mParticle::EventTypeName::hashForEventType(static_cast<mParticle::EventType>(event.type)).c_str() encoding:NSUTF8StringEncoding];
+        hashValue = [MPIHasher hashEventType:event.type];
         
         shouldFilter = kitConfiguration.eventTypeFilters[hashValue] && [kitConfiguration.eventTypeFilters[hashValue] isEqualToNumber:zero];
         if (shouldFilter) {
@@ -841,7 +839,7 @@ static NSMutableSet <id<MPExtensionKitProtocol>> *kitsRegistry;
     
     MPEvent *forwardEvent = [event copy];
     // Attributes
-    MPMessageType messageTypeCode = (MPMessageType)mParticle::MessageTypeName::messageTypeForName(string([messageType UTF8String]));
+    MPMessageType messageTypeCode = [MPEnum messageTypeFromNSString:messageType];
     if (messageTypeCode != MPMessageTypeEvent && messageTypeCode != MPMessageTypeScreenView && messageTypeCode != MPMessageTypeMedia) {
         messageTypeCode = MPMessageTypeUnknown;
     }
@@ -1340,10 +1338,9 @@ static NSMutableSet <id<MPExtensionKitProtocol>> *kitsRegistry;
     };
     
     // Block to project a product according to attribute projections
-    NSDictionary * (^projectProductWithAttributes)(MPProduct *, NSArray *) = ^(MPProduct *product, NSArray<MPAttributeProjection *> *attributeProjections) {
+    NSDictionary * (^projectProductWithAttributes)(MPProduct *, NSArray *, NSDictionary *) = ^(MPProduct *product, NSArray<MPAttributeProjection *> *attributeProjections, NSDictionary *projectedDictionary) {
         NSMutableDictionary *projectedProductDictionary = [[NSMutableDictionary alloc] init];
         NSDictionary *sourceDictionary;
-        NSDictionary *projectedDictionary;
         NSPredicate *predicate;
         NSArray<MPAttributeProjection *> *filteredAttributeProjections;
         
@@ -1377,7 +1374,7 @@ static NSMutableSet <id<MPExtensionKitProtocol>> *kitsRegistry;
         }
         
         if (projectedProductDictionary.count == 0) {
-            return (NSDictionary *)nil;
+            return projectedDictionary;
         }
         
         return (NSDictionary *)projectedProductDictionary;
@@ -1454,7 +1451,7 @@ static NSMutableSet <id<MPExtensionKitProtocol>> *kitsRegistry;
                         
                         for (auto idx : productIndexes) {
                             MPProduct *product = products[idx];
-                            projectedDictionary = projectProductWithAttributes(product, attributeProjections);
+                            projectedDictionary = projectProductWithAttributes(product, attributeProjections, projectedDictionary);
                             
                             if (projectedDictionary) {
                                 if ((NSNull *)projectedDictionary != [NSNull null]) {
@@ -1891,6 +1888,21 @@ static NSMutableSet <id<MPExtensionKitProtocol>> *kitsRegistry;
     }
     
     completionHandler(projectedEvents, appliedProjections);
+}
+
+- (nullable NSArray<NSNumber *> *)configuredKitsRegistry {
+    BOOL anyKitsIncluded = self.supportedKits.count > 0;
+    BOOL anyKitsConfigured = self.kitConfigurations.count > 0;
+    if (!anyKitsIncluded || !anyKitsConfigured) {
+        return nil;
+    }
+    NSMutableArray<NSNumber *> *configuredKits = [[NSMutableArray alloc] initWithCapacity:self.kitConfigurations.count];
+    for (NSNumber *kitId in self.kitConfigurations.allKeys) {
+        if ([self.supportedKits containsObject:kitId]) {
+            [configuredKits addObject:kitId];
+        }
+    }
+    return configuredKits;
 }
 
 #pragma mark Public methods

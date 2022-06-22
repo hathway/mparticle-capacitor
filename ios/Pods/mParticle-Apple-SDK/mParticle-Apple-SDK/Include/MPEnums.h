@@ -311,6 +311,8 @@ typedef NS_ENUM(NSUInteger, MPKitInstance) {
     MPKitInstancePilgrim = 211,
     /** Kit code for Google Analytics for Firebase */
     MPKitInstanceGoogleAnalyticsFirebase = 136,
+    /** Kit code for Google Analytics 4 for Firebase */
+    MPKitInstanceGoogleAnalyticsFirebaseGA4 = 160,
     /** Kit code for Blueshift */
     MPKitInstanceBlueshift = 1144
 };
@@ -372,6 +374,33 @@ typedef NS_ENUM(NSUInteger, MPMessageType) {
     /** Message type code for a media event */
     MPMessageTypeMedia = 20
 };
+
+#define NSStringFromMessageType( value ) \
+( \
+@{ \
+@( MPMessageTypeUnknown )          : kMPMessageTypeStringUnknown, \
+@( MPMessageTypeSessionStart )            : kMPMessageTypeStringSessionStart, \
+@( MPMessageTypeSessionEnd )              : kMPMessageTypeStringSessionEnd, \
+@( MPMessageTypeScreenView )         : kMPMessageTypeStringScreenView, \
+@( MPMessageTypeEvent )         : kMPMessageTypeStringEvent, \
+@( MPMessageTypeCrashReport )      : kMPMessageTypeStringCrashReport, \
+@( MPMessageTypeOptOut )              : kMPMessageTypeStringOptOut, \
+@( MPMessageTypeFirstRun )               : kMPMessageTypeStringFirstRun, \
+@( MPMessageTypePreAttribution )           : kMPMessageTypeStringPreAttribution, \
+@( MPMessageTypePushRegistration )      : kMPMessageTypeStringPushRegistration, \
+@( MPMessageTypeAppStateTransition )            : kMPMessageTypeStringAppStateTransition, \
+@( MPMessageTypePushNotification )      : kMPMessageTypeStringPushNotification, \
+@( MPMessageTypeNetworkPerformance )               : kMPMessageTypeStringNetworkPerformance, \
+@( MPMessageTypeBreadcrumb )          : kMPMessageTypeStringBreadcrumb, \
+@( MPMessageTypeProfile )            : kMPMessageTypeStringProfile, \
+@( MPMessageTypePushNotificationInteraction )              : kMPMessageTypeStringPushNotificationInteraction, \
+@( MPMessageTypeCommerceEvent )       : kMPMessageTypeStringCommerceEvent, \
+@( MPMessageTypeUserAttributeChange )      : kMPMessageTypeStringUserAttributeChange, \
+@( MPMessageTypeUserIdentityChange )       : kMPMessageTypeStringUserIdentityChange, \
+@( MPMessageTypeMedia )  : kMPMessageTypeStringMedia, \
+} \
+[ @( value ) ] \
+)
 
 /// Upload Types
 typedef NS_ENUM(NSUInteger, MPUploadType) {
@@ -546,6 +575,8 @@ extern NSString * _Nonnull const MPKitAPIErrorKey;
 @interface MPEnum : NSObject
 
 + (BOOL)isUserIdentity:(MPIdentity)identity;
++ (MPMessageType)messageTypeFromNSString:(NSString * _Nullable)messageTypeString;
++ (NSUInteger)messageTypeSize;
 
 @end
 

@@ -7,7 +7,6 @@ ext {
 
 buildscript {
     repositories {
-        maven { url "https://appboy.github.io/appboy-android-sdk/sdk" }
         google()
         mavenCentral()
         jcenter()
@@ -44,7 +43,6 @@ android {
 }
 
 repositories {
-    maven { url "https://appboy.github.io/appboy-android-sdk/sdk" }
     google()
     mavenCentral()
     jcenter()
@@ -58,5 +56,5 @@ dependencies {
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
-    implementation 'com.mparticle:android-core:5.35.1'
+    implementation 'com.mparticle:android-core:5.41.1'
 }
