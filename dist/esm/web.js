@@ -8,6 +8,7 @@ export class MParticleCapacitorWeb extends WebPlugin {
                 planId: call.planID || 'master_data_plan',
                 planVersion: call.planVer || 2
             },
+            identifyRequest: call.identifyRequest || {},
             logLevel: (call.logLevel == "verbose" || "warning" || "none") ? call.logLevel : "verbose",
         };
         return mParticle.init(call.key, mParticleConfig);

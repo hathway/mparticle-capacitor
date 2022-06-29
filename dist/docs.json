@@ -23,12 +23,12 @@
       },
       {
         "name": "mParticleInit",
-        "signature": "(call: { key: string; production?: boolean; planID?: string; planVer?: number; logLevel?: any; }) => Promise<any>",
+        "signature": "(call: { key: string; production?: boolean; planID?: string; planVer?: number; logLevel?: any; identifyRequest?: any; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "{ key: string; production?: boolean | undefined; planID?: string | undefined; planVer?: number | undefined; logLevel?: any; }"
+            "type": "{ key: string; production?: boolean | undefined; planID?: string | undefined; planVer?: number | undefined; logLevel?: any; identifyRequest?: any; }"
           }
         ],
         "returns": "Promise<any>",

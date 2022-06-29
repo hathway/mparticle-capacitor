@@ -11,6 +11,7 @@ export interface MParticleCapacitorPlugin {
         planID?: string;
         planVer?: number;
         logLevel?: any;
+        identifyRequest?: any;
     }): Promise<any>;
     loginMParticleUser(call: {
         email: string;

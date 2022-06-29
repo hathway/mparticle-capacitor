@@ -1,7 +1,7 @@
 {
-  "name": "mparticle-capacitor",
-  "version": "0.0.1",
-  "description": "mParticle Capacitor Plugin to avoid enterprise",
+  "name": "@hathway/mparticle-capacitor",
+  "version": "1.0.13",
+  "description": "mParticle Capacitor Plugin",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -17,10 +17,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dghathway/mparticle-capacitor.git"
+    "url": "git+https://github.com/hathway/mparticle-capacitor.git"
   },
   "bugs": {
-    "url": "https://github.com/dghathway/mparticle-capacitor/issues"
+    "url": "https://github.com/hathway/mparticle-capacitor/issues"
   },
   "keywords": [
     "capacitor",

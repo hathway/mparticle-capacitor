@@ -1,16 +1,12 @@
 # mparticle-capacitor
 
-mParticle Capacitor Plugin to avoid enterprise
+mParticle Capacitor Plugin
 
 ## Install
 
-```bash
-npm install git+https://github.com/hathway/mparticle-capacitor.git#v0.2.3
-npx cap sync
 ```
-or add to your `package.json`
-```json
-"mparticle-capacitor": "git+https://github.com/hathway/mparticle-capacitor.git#v0.2.3"
+npm install npm i @hathway/mparticle-capacitor
+npx cap sync
 ```
 
 ## AppDelegate & MainActivity Scripts
@@ -66,7 +62,8 @@ iOS: https://github.com/mParticle/mparticle-apple-sdk
 
 ## Braze Integration
 
-mParticle will handle the integration internaly as long as things are hooked up in the dashboard.
+mParticle will handle the integration internally as long as things are hooked up in the dashboard.
+
 There are some custom settings and inclusions that need to be included in your project for mParticle to route data to Braze properly.
 
 ### Android
@@ -265,12 +262,12 @@ echo(options: { value: string; }) => Promise<{ value: string; }>
 ### mParticleInit(...)
 
 ```typescript
-mParticleInit(call: { key: string; production?: boolean; planID?: string; planVer?: number; logLevel?: any; }) => Promise<any>
+mParticleInit(call: { key: string; production?: boolean; planID?: string; planVer?: number; logLevel?: any; identifyRequest?: any; }) => Promise<any>
 ```
 
-| Param      | Type                                                                                                   |
-| ---------- | ------------------------------------------------------------------------------------------------------ |
-| **`call`** | <code>{ key: string; production?: boolean; planID?: string; planVer?: number; logLevel?: any; }</code> |
+| Param      | Type                                                                                                                          |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| **`call`** | <code>{ key: string; production?: boolean; planID?: string; planVer?: number; logLevel?: any; identifyRequest?: any; }</code> |
 
 **Returns:** <code>Promise&lt;any&gt;</code>
 
