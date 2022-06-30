@@ -105,9 +105,13 @@ public class MParticleCapacitorPlugin extends Plugin {
     @PluginMethod
     public void setUserAttributeList(PluginCall call) {
         String name = call.getString("attributeName");
-        JSArray list = call.getArray("attributeValues");
+        JSArray list_tmp = call.getArray("attributeValues");
+        List<String> attributeList = new ArrayList<>();
+        try {
+            attributeList = list_tmp.toList();
+        } catch (JSONException e) {}
         if (implementation.currentUser() != null) {
-            implementation.currentUser().setUserAttributeList(name,list);
+            implementation.currentUser().setUserAttributeList(name,attributeList);
         }
         call.resolve(new JSObject());
     }
