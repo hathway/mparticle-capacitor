@@ -1,1 +1,1 @@
-declare module '@mparticle/web-braze-kit';
+declare module '@mparticle/web-sdk';
