@@ -1,5 +1,7 @@
 import { WebPlugin } from '@capacitor/core';
 import mParticle from '@mparticle/web-sdk';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const mParticleBraze = require('@mparticle/web-braze-kit');
 export class MParticleCapacitorWeb extends WebPlugin {
     async mParticleInit(call) {
         const mParticleConfig = {
@@ -13,13 +15,23 @@ export class MParticleCapacitorWeb extends WebPlugin {
         };
         return mParticle.init(call.key, mParticleConfig);
     }
+    async registerBraze(call) {
+        return mParticleBraze.register({
+            isDevelopmentMode: call.isDevelopmentMode,
+            dataPlan: {
+                planId: call.dataPlan.planId,
+                planVersion: call.dataPlan.planVersion
+            },
+            logLevel: call.logLevel
+        });
+    }
     async loginMParticleUser(call) {
         return mParticle.Identity.login(this.identityRequest(call.email, call.customerId));
     }
     async logoutMParticleUser(_call) {
         const identityCallback = (result) => {
             if (result.getUser()) {
-                // console.log('logging out of mParticle',_call);
+                console.log('logging out of mParticle', _call);
             }
         };
         return mParticle.Identity.logout({}, identityCallback);
@@ -28,8 +40,8 @@ export class MParticleCapacitorWeb extends WebPlugin {
         return mParticle.Identity.login(this.identityRequest(call.email, call.customerId), function (result) {
             if (!result)
                 return;
-            let currentUser = result.getUser();
-            for (let [key, value] of Object.entries(call.userAttributes)) {
+            const currentUser = result.getUser();
+            for (const [key, value] of Object.entries(call.userAttributes)) {
                 if (key && value)
                     currentUser.setUserAttribute(key, value);
             }
@@ -60,7 +72,7 @@ export class MParticleCapacitorWeb extends WebPlugin {
         return this.logProductAction(mParticle.ProductActionType.RemoveFromCart, productToRemove, call.customAttributes, null, null);
     }
     async submitPurchaseEvent(call) {
-        let productArray = [];
+        const productArray = [];
         (call.productData).forEach((element) => {
             productArray.push(this.createMParticleProduct(element));
         });

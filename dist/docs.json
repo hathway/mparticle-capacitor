@@ -38,6 +38,22 @@
         "slug": "mparticleinit"
       },
       {
+        "name": "registerBraze",
+        "signature": "(call: { isDevelopmentMode: boolean; dataPlan: { planId: string; planVersion: number; }; logLevel: string; }) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "{ isDevelopmentMode: boolean; dataPlan: { planId: string; planVersion: number; }; logLevel: string; }"
+          }
+        ],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "registerbraze"
+      },
+      {
         "name": "loginMParticleUser",
         "signature": "(call: { email: string; customerId: string; }) => Promise<any>",
         "parameters": [

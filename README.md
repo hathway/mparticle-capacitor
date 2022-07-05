@@ -227,6 +227,7 @@ Full documentation here: https://github.com/AppsFlyerSDK/appsflyer-capacitor-plu
 
 * [`echo(...)`](#echo)
 * [`mParticleInit(...)`](#mparticleinit)
+* [`registerBraze(...)`](#registerbraze)
 * [`loginMParticleUser(...)`](#loginmparticleuser)
 * [`logoutMParticleUser(...)`](#logoutmparticleuser)
 * [`logMParticleEvent(...)`](#logmparticleevent)
@@ -268,6 +269,21 @@ mParticleInit(call: { key: string; production?: boolean; planID?: string; planVe
 | Param      | Type                                                                                                                          |
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | **`call`** | <code>{ key: string; production?: boolean; planID?: string; planVer?: number; logLevel?: any; identifyRequest?: any; }</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### registerBraze(...)
+
+```typescript
+registerBraze(call: { isDevelopmentMode: boolean; dataPlan: { planId: string; planVersion: number; }; logLevel: string; }) => Promise<any>
+```
+
+| Param      | Type                                                                                                               |
+| ---------- | ------------------------------------------------------------------------------------------------------------------ |
+| **`call`** | <code>{ isDevelopmentMode: boolean; dataPlan: { planId: string; planVersion: number; }; logLevel: string; }</code> |
 
 **Returns:** <code>Promise&lt;any&gt;</code>
 

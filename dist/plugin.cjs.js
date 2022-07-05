@@ -39,6 +39,8 @@ const MParticleCapacitor = core.registerPlugin('MParticleCapacitor', {
     web: () => Promise.resolve().then(function () { return web; }).then(m => new m.MParticleCapacitorWeb()),
 });
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const mParticleBraze = require('@mparticle/web-braze-kit');
 class MParticleCapacitorWeb extends core.WebPlugin {
     async mParticleInit(call) {
         const mParticleConfig = {
@@ -52,12 +54,24 @@ class MParticleCapacitorWeb extends core.WebPlugin {
         };
         return mParticle__default["default"].init(call.key, mParticleConfig);
     }
+    async registerBraze(call) {
+        return mParticleBraze.register({
+            isDevelopmentMode: call.isDevelopmentMode,
+            dataPlan: {
+                planId: call.dataPlan.planId,
+                planVersion: call.dataPlan.planVersion
+            },
+            logLevel: call.logLevel
+        });
+    }
     async loginMParticleUser(call) {
         return mParticle__default["default"].Identity.login(this.identityRequest(call.email, call.customerId));
     }
     async logoutMParticleUser(_call) {
         const identityCallback = (result) => {
-            if (result.getUser()) ;
+            if (result.getUser()) {
+                console.log('logging out of mParticle', _call);
+            }
         };
         return mParticle__default["default"].Identity.logout({}, identityCallback);
     }
@@ -65,8 +79,8 @@ class MParticleCapacitorWeb extends core.WebPlugin {
         return mParticle__default["default"].Identity.login(this.identityRequest(call.email, call.customerId), function (result) {
             if (!result)
                 return;
-            let currentUser = result.getUser();
-            for (let [key, value] of Object.entries(call.userAttributes)) {
+            const currentUser = result.getUser();
+            for (const [key, value] of Object.entries(call.userAttributes)) {
                 if (key && value)
                     currentUser.setUserAttribute(key, value);
             }
@@ -97,7 +111,7 @@ class MParticleCapacitorWeb extends core.WebPlugin {
         return this.logProductAction(mParticle__default["default"].ProductActionType.RemoveFromCart, productToRemove, call.customAttributes, null, null);
     }
     async submitPurchaseEvent(call) {
-        let productArray = [];
+        const productArray = [];
         (call.productData).forEach((element) => {
             productArray.push(this.createMParticleProduct(element));
         });

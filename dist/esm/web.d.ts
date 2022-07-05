@@ -1,6 +1,6 @@
 import { WebPlugin } from '@capacitor/core';
-import type { MParticleCapacitorPlugin } from './definitions';
 import mParticle from '@mparticle/web-sdk';
+import type { MParticleCapacitorPlugin } from './definitions';
 export declare class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacitorPlugin {
     mParticleInit(call: {
         key: string;
@@ -9,6 +9,14 @@ export declare class MParticleCapacitorWeb extends WebPlugin implements MParticl
         planVer?: number;
         logLevel?: any;
         identifyRequest?: any;
+    }): Promise<any>;
+    registerBraze(call: {
+        isDevelopmentMode: boolean;
+        dataPlan: {
+            planId: string;
+            planVersion: number;
+        };
+        logLevel: string;
     }): Promise<any>;
     loginMParticleUser(call: {
         email: string;

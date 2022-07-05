@@ -13,6 +13,14 @@ export interface MParticleCapacitorPlugin {
         logLevel?: any;
         identifyRequest?: any;
     }): Promise<any>;
+    registerBraze(call: {
+        isDevelopmentMode: boolean;
+        dataPlan: {
+            planId: string;
+            planVersion: number;
+        };
+        logLevel: string;
+    }): Promise<any>;
     loginMParticleUser(call: {
         email: string;
         customerId: string;

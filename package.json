@@ -1,6 +1,6 @@
 {
   "name": "@hathway/mparticle-capacitor",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "mParticle Capacitor Plugin",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -78,6 +78,7 @@
     }
   },
   "dependencies": {
-    "@mparticle/web-sdk": "^2.16.1"
+    "@mparticle/web-sdk": "^2.16.2",
+    "@mparticle/web-braze-kit": "^3.0.2"
   }
 }
