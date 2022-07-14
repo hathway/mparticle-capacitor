@@ -3,8 +3,8 @@ export type mParticleInitListener = (info: any) => any;
 export interface MParticleCapacitorPlugin {
   echo(options: { value: string }): Promise<{ value: string }>;
 
-  mParticleInit(call: { key: string, production?: boolean, planID?: string, planVer?: number, logLevel?: any, identifyRequest?: any }): Promise<any>;
-  registerBraze(call: { isDevelopmentMode: boolean, dataPlan: { planId: string, planVersion: number }, logLevel: string }): Promise<any>;
+  mParticleConfig(call: { isDevelopmentMode?: boolean, planID?: string, planVer?: number, logLevel?: string, identifyRequest?: any, identityCallback?:Function }): Promise<MPConfigType>
+  mParticleInit(call: { key: string, mParticleConfig: any }): Promise<any>;
   loginMParticleUser(call: { email: string, customerId: string }): Promise<any>;
   logoutMParticleUser(call?: any): Promise<any>;
 
@@ -46,4 +46,15 @@ export enum MParticleProductActionType {
   Refund = 8,
   AddToWishlist = 9,
   RemoveFromWishlist = 10,
+}
+
+export type MPConfigType = {
+  isDevelopmentMode?: boolean,
+  dataPlan?: {
+    planId?: string,
+    planVersion?: number
+  },
+  identifyRequest?: any,
+  logLevel?: string,
+  identityCallback?: Function,
 }

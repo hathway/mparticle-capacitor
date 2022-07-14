@@ -36,29 +36,24 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle) {
     });
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const mParticleBraze = require('@mparticle/web-braze-kit');
     class MParticleCapacitorWeb extends core.WebPlugin {
-        async mParticleInit(call) {
-            const mParticleConfig = {
-                isDevelopmentMode: !(call.production) || true,
+        async mParticleConfig(call) {
+            var mParticleConfig = {
+                isDevelopmentMode: call.isDevelopmentMode || true,
                 dataPlan: {
                     planId: call.planID || 'master_data_plan',
                     planVersion: call.planVer || 2
                 },
-                identifyRequest: call.identifyRequest || {},
+                identifyRequest: call.identifyRequest || undefined,
                 logLevel: (call.logLevel == "verbose" || "warning" || "none") ? call.logLevel : "verbose",
+                identityCallback: call.identityCallback || undefined,
             };
-            return mParticle__default["default"].init(call.key, mParticleConfig);
+            console.log(mParticleConfig, call);
+            return mParticleConfig;
         }
-        async registerBraze(call) {
-            return mParticleBraze.register({
-                isDevelopmentMode: call.isDevelopmentMode,
-                dataPlan: {
-                    planId: call.dataPlan.planId,
-                    planVersion: call.dataPlan.planVersion
-                },
-                logLevel: call.logLevel
-            });
+        async mParticleInit(call) {
+            console.log("test", call.key, call.mParticleConfig);
+            return mParticle__default["default"].init(call.key, call.mParticleConfig);
         }
         async loginMParticleUser(call) {
             return mParticle__default["default"].Identity.login(this.identityRequest(call.email, call.customerId));

@@ -1,35 +1,29 @@
 import { WebPlugin } from '@capacitor/core';
 import mParticle from '@mparticle/web-sdk';
 
-import type { MParticleCapacitorPlugin } from './definitions';
+import type { MParticleCapacitorPlugin, MPConfigType } from './definitions';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const mParticleBraze = require('@mparticle/web-braze-kit');
 
 export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacitorPlugin {
 
-  async mParticleInit(call: { key: string, production?: boolean, planID?: string, planVer?: number, logLevel?: any, identifyRequest?: any }): Promise<any> {
-    const mParticleConfig = {
-      isDevelopmentMode: !(call.production) || true,
+  async mParticleConfig(call: { isDevelopmentMode?: boolean, planID?: string, planVer?: number, logLevel?: string, identifyRequest?: any, identityCallback?:Function }): Promise<MPConfigType> {
+    var mParticleConfig = {
+      isDevelopmentMode: call.isDevelopmentMode || true,
       dataPlan: {
         planId: call.planID || 'master_data_plan',
         planVersion: call.planVer || 2
       },
-      identifyRequest: call.identifyRequest || {},
+      identifyRequest: call.identifyRequest || undefined,
       logLevel: (call.logLevel == "verbose" || "warning" || "none") ? call.logLevel : "verbose",
-    };
-    return mParticle.init(call.key, mParticleConfig);
+      identityCallback: call.identityCallback || undefined,
+    }; console.log(mParticleConfig,call)
+    return mParticleConfig;
   }
 
-  async registerBraze(call: { isDevelopmentMode: boolean, dataPlan: { planId: string, planVersion: number }, logLevel: string }): Promise<any> {
-    return mParticleBraze.register({
-      isDevelopmentMode: call.isDevelopmentMode,
-      dataPlan: {
-        planId: call.dataPlan.planId,
-        planVersion: call.dataPlan.planVersion
-      },
-      logLevel: call.logLevel
-    });
+  async mParticleInit(call: { key: string, mParticleConfig: any }): Promise<any> {
+    console.log("test", call.key, call.mParticleConfig);
+    return mParticle.init(call.key, call.mParticleConfig as any);
   }
 
   async loginMParticleUser(call: { email: string, customerId: string }): Promise<any> {
