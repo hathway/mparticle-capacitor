@@ -48,11 +48,9 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle) {
                 logLevel: (call.logLevel == "verbose" || "warning" || "none") ? call.logLevel : "verbose",
                 identityCallback: call.identityCallback || undefined,
             };
-            console.log(mParticleConfig, call);
             return mParticleConfig;
         }
         async mParticleInit(call) {
-            console.log("test", call.key, call.mParticleConfig);
             return mParticle__default["default"].init(call.key, call.mParticleConfig);
         }
         async loginMParticleUser(call) {

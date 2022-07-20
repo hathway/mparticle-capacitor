@@ -17,12 +17,11 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
       identifyRequest: call.identifyRequest || undefined,
       logLevel: (call.logLevel == "verbose" || "warning" || "none") ? call.logLevel : "verbose",
       identityCallback: call.identityCallback || undefined,
-    }; console.log(mParticleConfig,call)
+    }; 
     return mParticleConfig;
   }
 
   async mParticleInit(call: { key: string, mParticleConfig: any }): Promise<any> {
-    console.log("test", call.key, call.mParticleConfig);
     return mParticle.init(call.key, call.mParticleConfig as any);
   }
 

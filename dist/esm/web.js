@@ -13,11 +13,9 @@ export class MParticleCapacitorWeb extends WebPlugin {
             logLevel: (call.logLevel == "verbose" || "warning" || "none") ? call.logLevel : "verbose",
             identityCallback: call.identityCallback || undefined,
         };
-        console.log(mParticleConfig, call);
         return mParticleConfig;
     }
     async mParticleInit(call) {
-        console.log("test", call.key, call.mParticleConfig);
         return mParticle.init(call.key, call.mParticleConfig);
     }
     async loginMParticleUser(call) {
