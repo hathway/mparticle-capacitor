@@ -95,11 +95,18 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 
 ## Adding Kits
 
-MParticle provides a "black-box" solution to data sharing between other api. Kits do not need to be added to the plugin, they can be added directly to your app's `Podfile` or `build.gradle`. View the list of supported kits here:
+All available kits can be found here: https://github.com/mparticle-integrations
 
-Android: https://github.com/mParticle/mparticle-android-sdk
+MParticle provides a "black-box" solution to data sharing between other api. Kits do not need to be added to the plugin, they can be added directly to your app's `Podfile (iOS)` or `build.gradle (Android)` or into your `app.component.ts (web)`.
 
-iOS: https://github.com/mParticle/mparticle-apple-sdk
+## Any Web Integration
+
+Web kits are added before the web initialization in the component. If there is an error with the inport: 
+`Error: export 'MParticleBraze' (imported as 'MParticleBraze') was not found...`
+import using `require`:
+```typescript
+const mParticleBraze = require('@mparticle/web-braze-kit');
+```
 
 ## Braze Integration
 
