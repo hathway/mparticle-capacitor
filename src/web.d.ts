@@ -1,1 +1,1 @@
-declare module '@mparticle/web-appboy-kit';
+declare module '@mparticle/web-sdk';

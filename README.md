@@ -1,19 +1,39 @@
 # mparticle-capacitor
 
-mParticle Capacitor Plugin to avoid enterprise
+mParticle Capacitor Plugin
 
 ## Install
 
-```bash
-npm install git+https://github.com/dghathway/mparticle-capacitor.git#v0.1
+```
+npm install npm i @hathway/mparticle-capacitor
 npx cap sync
 ```
-or add to your `package.json`
-```json
-"mparticle-capacitor": "git+https://github.com/dghathway/mparticle-capacitor.git#v0.1"
-```
 
-## AppDelegate & MainActivity Scripts
+## Initialize
+
+### Web (Angular)
+
+Use `mParticleConfig` to create a configuration object used to initialize mParticle. 
+
+`app.component.ts` in `ngOnInit()`
+```typescript
+import {MParticleCapacitor} from 'mparticle-capacitor';
+...
+    let mParticleKey = "YOUR KEY"
+    MParticleCapacitor.mParticleConfig({
+        isDevelopmentMode: true, 
+        planID: "PLAN NAME", 
+        planVer: 2,
+        logLevel: "verbose", // || "warning" || "none"
+    }).then((config:any) => {        
+        if (!this.platform.is('hybrid')) {
+            // add web kits here i.e.:
+            mParticleBraze.register(config);
+        }
+        MParticleCapacitor.mParticleInit({key: mParticleKey, mParticleConfig: config})
+        .catch((e:any) => {}); // initialize mparticle web, catch when ios/android return unimplemented.  
+    }).catch((e:any) => {});
+```
 
 ### Android
 
@@ -66,7 +86,8 @@ iOS: https://github.com/mParticle/mparticle-apple-sdk
 
 ## Braze Integration
 
-mParticle will handle the integration internaly as long as things are hooked up in the dashboard.
+mParticle will handle the integration internally as long as things are hooked up in the dashboard.
+
 There are some custom settings and inclusions that need to be included in your project for mParticle to route data to Braze properly.
 
 ### Android
@@ -229,6 +250,7 @@ Full documentation here: https://github.com/AppsFlyerSDK/appsflyer-capacitor-plu
 <docgen-index>
 
 * [`echo(...)`](#echo)
+* [`mParticleConfig(...)`](#mparticleconfig)
 * [`mParticleInit(...)`](#mparticleinit)
 * [`loginMParticleUser(...)`](#loginmparticleuser)
 * [`logoutMParticleUser(...)`](#logoutmparticleuser)
@@ -241,6 +263,7 @@ Full documentation here: https://github.com/AppsFlyerSDK/appsflyer-capacitor-plu
 * [`removeMParticleProduct(...)`](#removemparticleproduct)
 * [`submitPurchaseEvent(...)`](#submitpurchaseevent)
 * [`registerMParticleUser(...)`](#registermparticleuser)
+* [Interfaces](#interfaces)
 
 </docgen-index>
 
@@ -262,15 +285,30 @@ echo(options: { value: string; }) => Promise<{ value: string; }>
 --------------------
 
 
+### mParticleConfig(...)
+
+```typescript
+mParticleConfig(call: { isDevelopmentMode?: boolean; planID?: string; planVer?: number; logLevel?: string; identifyRequest?: any; identityCallback?: Function; }) => Promise<MPConfigType>
+```
+
+| Param      | Type                                                                                                                                                                            |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`call`** | <code>{ isDevelopmentMode?: boolean; planID?: string; planVer?: number; logLevel?: string; identifyRequest?: any; identityCallback?: <a href="#function">Function</a>; }</code> |
+
+**Returns:** <code>Promise&lt;MPConfigType&gt;</code>
+
+--------------------
+
+
 ### mParticleInit(...)
 
 ```typescript
-mParticleInit(call: { key: string; production?: boolean; planID?: string; planVer?: number; logLevel?: any; }) => Promise<any>
+mParticleInit(call: { key: string; mParticleConfig: any; }) => Promise<any>
 ```
 
-| Param      | Type                                                                                                   |
-| ---------- | ------------------------------------------------------------------------------------------------------ |
-| **`call`** | <code>{ key: string; production?: boolean; planID?: string; planVer?: number; logLevel?: any; }</code> |
+| Param      | Type                                                |
+| ---------- | --------------------------------------------------- |
+| **`call`** | <code>{ key: string; mParticleConfig: any; }</code> |
 
 **Returns:** <code>Promise&lt;any&gt;</code>
 
@@ -440,5 +478,27 @@ registerMParticleUser(call: { email: string; customerId: string; userAttributes:
 **Returns:** <code>Promise&lt;any&gt;</code>
 
 --------------------
+
+
+### Interfaces
+
+
+#### Function
+
+Creates a new function.
+
+| Prop            | Type                                          |
+| --------------- | --------------------------------------------- |
+| **`prototype`** | <code>any</code>                              |
+| **`length`**    | <code>number</code>                           |
+| **`arguments`** | <code>any</code>                              |
+| **`caller`**    | <code><a href="#function">Function</a></code> |
+
+| Method       | Signature                                                                            | Description                                                                                                                                                                                                              |
+| ------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **apply**    | (this: <a href="#function">Function</a>, thisArg: any, argArray?: any) =&gt; any     | Calls the function, substituting the specified object for the this value of the function, and the specified array for the arguments of the function.                                                                     |
+| **call**     | (this: <a href="#function">Function</a>, thisArg: any, ...argArray: any[]) =&gt; any | Calls a method of an object, substituting another object for the current object.                                                                                                                                         |
+| **bind**     | (this: <a href="#function">Function</a>, thisArg: any, ...argArray: any[]) =&gt; any | For a given function, creates a bound function that has the same body as the original function. The this object of the bound function is associated with the specified object, and has the specified initial parameters. |
+| **toString** | () =&gt; string                                                                      | Returns a string representation of a function.                                                                                                                                                                           |
 
 </docgen-api>
