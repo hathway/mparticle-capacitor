@@ -28,11 +28,28 @@ import {MParticleCapacitor} from 'mparticle-capacitor';
     }).then((config:any) => {        
         if (!this.platform.is('hybrid')) {
             // add web kits here i.e.:
-            mParticleBraze.register(config);
+            // mParticleBraze.register(config);
         }
         MParticleCapacitor.mParticleInit({key: mParticleKey, mParticleConfig: config})
         .catch((e:any) => {}); // initialize mparticle web, catch when ios/android return unimplemented.  
     }).catch((e:any) => {});
+
+    /* or */
+
+    if (!this.platform.is('hybrid')) { initMP(); }
+
+    async initMP() {
+        let mParticleKey = "YOUR KEY"
+        let mpConfig = await MParticleCapacitor.mParticleConfig({
+            isDevelopmentMode: true, 
+            planID: "PLAN NAME", 
+            planVer: 2,
+            logLevel: "verbose", // || "warning" || "none"
+        });
+        // add web kits here i.e.:
+        // mParticleBraze.register(mpConfig);
+        MParticleCapacitor.mParticleInit({key: mParticleKey, mParticleConfig: mpConfig});
+    }
 ```
 
 ### Android
