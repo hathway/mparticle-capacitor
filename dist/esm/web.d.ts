@@ -1,13 +1,18 @@
 import { WebPlugin } from '@capacitor/core';
-import type { MParticleCapacitorPlugin } from './definitions';
 import mParticle from '@mparticle/web-sdk';
+import type { MParticleCapacitorPlugin, MPConfigType } from './definitions';
 export declare class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacitorPlugin {
-    mParticleInit(call: {
-        key: string;
-        production?: boolean;
+    mParticleConfig(call: {
+        isDevelopmentMode?: boolean;
         planID?: string;
         planVer?: number;
-        logLevel?: any;
+        logLevel?: string;
+        identifyRequest?: any;
+        identityCallback?: Function;
+    }): Promise<MPConfigType>;
+    mParticleInit(call: {
+        key: string;
+        mParticleConfig: any;
     }): Promise<any>;
     loginMParticleUser(call: {
         email: string;

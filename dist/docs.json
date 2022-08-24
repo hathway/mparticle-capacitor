@@ -22,13 +22,32 @@
         "slug": "echo"
       },
       {
-        "name": "mParticleInit",
-        "signature": "(call: { key: string; production?: boolean; planID?: string; planVer?: number; logLevel?: any; }) => Promise<any>",
+        "name": "mParticleConfig",
+        "signature": "(call: { isDevelopmentMode?: boolean; planID?: string; planVer?: number; logLevel?: string; identifyRequest?: any; identityCallback?: Function; }) => Promise<MPConfigType>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "{ key: string; production?: boolean | undefined; planID?: string | undefined; planVer?: number | undefined; logLevel?: any; }"
+            "type": "{ isDevelopmentMode?: boolean | undefined; planID?: string | undefined; planVer?: number | undefined; logLevel?: string | undefined; identifyRequest?: any; identityCallback?: Function | undefined; }"
+          }
+        ],
+        "returns": "Promise<MPConfigType>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [
+          "MPConfigType",
+          "Function"
+        ],
+        "slug": "mparticleconfig"
+      },
+      {
+        "name": "mParticleInit",
+        "signature": "(call: { key: string; mParticleConfig: any; }) => Promise<any>",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "{ key: string; mParticleConfig: any; }"
           }
         ],
         "returns": "Promise<any>",
@@ -216,6 +235,153 @@
     ],
     "properties": []
   },
-  "interfaces": [],
+  "interfaces": [
+    {
+      "name": "Function",
+      "slug": "function",
+      "docs": "Creates a new function.",
+      "tags": [],
+      "methods": [
+        {
+          "name": "apply",
+          "signature": "(this: Function, thisArg: any, argArray?: any) => any",
+          "parameters": [
+            {
+              "name": "thisArg",
+              "docs": "The object to be used as the this object.",
+              "type": "any"
+            },
+            {
+              "name": "argArray",
+              "docs": "A set of arguments to be passed to the function.",
+              "type": "any"
+            }
+          ],
+          "returns": "any",
+          "tags": [
+            {
+              "name": "param",
+              "text": "thisArg The object to be used as the this object."
+            },
+            {
+              "name": "param",
+              "text": "argArray A set of arguments to be passed to the function."
+            }
+          ],
+          "docs": "Calls the function, substituting the specified object for the this value of the function, and the specified array for the arguments of the function.",
+          "complexTypes": [
+            "Function"
+          ],
+          "slug": "apply"
+        },
+        {
+          "name": "call",
+          "signature": "(this: Function, thisArg: any, ...argArray: any[]) => any",
+          "parameters": [
+            {
+              "name": "thisArg",
+              "docs": "The object to be used as the current object.",
+              "type": "any"
+            },
+            {
+              "name": "argArray",
+              "docs": "A list of arguments to be passed to the method.",
+              "type": "any[]"
+            }
+          ],
+          "returns": "any",
+          "tags": [
+            {
+              "name": "param",
+              "text": "thisArg The object to be used as the current object."
+            },
+            {
+              "name": "param",
+              "text": "argArray A list of arguments to be passed to the method."
+            }
+          ],
+          "docs": "Calls a method of an object, substituting another object for the current object.",
+          "complexTypes": [
+            "Function"
+          ],
+          "slug": "call"
+        },
+        {
+          "name": "bind",
+          "signature": "(this: Function, thisArg: any, ...argArray: any[]) => any",
+          "parameters": [
+            {
+              "name": "thisArg",
+              "docs": "An object to which the this keyword can refer inside the new function.",
+              "type": "any"
+            },
+            {
+              "name": "argArray",
+              "docs": "A list of arguments to be passed to the new function.",
+              "type": "any[]"
+            }
+          ],
+          "returns": "any",
+          "tags": [
+            {
+              "name": "param",
+              "text": "thisArg An object to which the this keyword can refer inside the new function."
+            },
+            {
+              "name": "param",
+              "text": "argArray A list of arguments to be passed to the new function."
+            }
+          ],
+          "docs": "For a given function, creates a bound function that has the same body as the original function.\r\nThe this object of the bound function is associated with the specified object, and has the specified initial parameters.",
+          "complexTypes": [
+            "Function"
+          ],
+          "slug": "bind"
+        },
+        {
+          "name": "toString",
+          "signature": "() => string",
+          "parameters": [],
+          "returns": "string",
+          "tags": [],
+          "docs": "Returns a string representation of a function.",
+          "complexTypes": [],
+          "slug": "tostring"
+        }
+      ],
+      "properties": [
+        {
+          "name": "prototype",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "any"
+        },
+        {
+          "name": "length",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        },
+        {
+          "name": "arguments",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "any"
+        },
+        {
+          "name": "caller",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "Function"
+          ],
+          "type": "Function"
+        }
+      ]
+    }
+  ],
   "enums": []
 }
