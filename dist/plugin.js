@@ -82,7 +82,8 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle) {
             return mParticle__default["default"].logPageView(call.pageName, { page: call.pageLink });
         }
         async setUserAttribute(call) {
-            return this.currentUser.setUserAttribute(call.attributeName, call.attributeValue);
+            var _a;
+            return (_a = this.currentUser) === null || _a === void 0 ? void 0 : _a.setUserAttribute(call.attributeName, call.attributeValue);
         }
         async setUserAttributeList(call) {
             return this.currentUser.setUserAttributeList(call.attributeName, call.attributeValues);
