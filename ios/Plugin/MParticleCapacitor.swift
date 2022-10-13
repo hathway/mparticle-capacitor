@@ -47,10 +47,10 @@ import Capacitor
     @objc public func createMParticleProduct(_ productData:AnyObject) -> MPProduct {
         let dataDict = productData as! [String: Any]
         let product = MPProduct.init(
-            name: dataDict["name"] as! String,
+            name: (dataDict["name"] as? String) ?? "",
             sku: "\(dataDict["sku"] ?? 0)",
-            quantity: dataDict["quantity"] as! NSNumber,
-            price: (dataDict["cost"] as? NSNumber) ?? nil
+            quantity: (dataDict["quantity"] as? NSNumber) ?? 0,
+            price: (dataDict["cost"] as? NSNumber) ?? 0
         )
         if let attrs = dataDict["attributes"] as? Dictionary<String, JSValue> {
             for attr in attrs {
