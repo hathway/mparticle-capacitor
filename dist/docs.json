@@ -383,5 +383,21 @@
       ]
     }
   ],
-  "enums": []
+  "enums": [],
+  "typeAliases": [
+    {
+      "name": "MPConfigType",
+      "slug": "mpconfigtype",
+      "docs": "",
+      "types": [
+        {
+          "text": "{\n  isDevelopmentMode?: boolean,\n  dataPlan?: {\n    planId?: string,\n    planVersion?: number\n  },\n  identifyRequest?: any,\n  logLevel?: string,\n  identityCallback?: Function,\n}",
+          "complexTypes": [
+            "Function"
+          ]
+        }
+      ]
+    }
+  ],
+  "pluginConfigs": []
 }
