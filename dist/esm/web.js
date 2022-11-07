@@ -4,7 +4,7 @@ import mParticle from '@mparticle/web-sdk';
 export class MParticleCapacitorWeb extends WebPlugin {
     async mParticleConfig(call) {
         var mParticleConfig = {
-            isDevelopmentMode: call.isDevelopmentMode || true,
+            isDevelopmentMode: call.isDevelopmentMode,
             dataPlan: {
                 planId: call.planID || 'master_data_plan',
                 planVersion: call.planVer || 2
@@ -47,7 +47,8 @@ export class MParticleCapacitorWeb extends WebPlugin {
         return mParticle.logPageView(call.pageName, { page: call.pageLink });
     }
     async setUserAttribute(call) {
-        return this.currentUser.setUserAttribute(call.attributeName, call.attributeValue);
+        var _a;
+        return (_a = this.currentUser) === null || _a === void 0 ? void 0 : _a.setUserAttribute(call.attributeName, call.attributeValue);
     }
     async setUserAttributeList(call) {
         return this.currentUser.setUserAttributeList(call.attributeName, call.attributeValues);

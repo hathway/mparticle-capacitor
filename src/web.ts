@@ -9,7 +9,7 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
 
   async mParticleConfig(call: { isDevelopmentMode?: boolean, planID?: string, planVer?: number, logLevel?: string, identifyRequest?: any, identityCallback?:Function }): Promise<MPConfigType> {
     var mParticleConfig = {
-      isDevelopmentMode: call.isDevelopmentMode || true,
+      isDevelopmentMode: call.isDevelopmentMode,
       dataPlan: {
         planId: call.planID || 'master_data_plan',
         planVersion: call.planVer || 2
@@ -60,8 +60,8 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     );
   }
 
-  async setUserAttribute(call: { attributeName: string, attributeValue: string }): Promise<any> {
-    return this.currentUser.setUserAttribute(call.attributeName, call.attributeValue);
+  async setUserAttribute(call: { attributeName:string, attributeValue:string } ): Promise<any> {
+    return this.currentUser?.setUserAttribute(call.attributeName, call.attributeValue);
   }
 
   async setUserAttributeList(call: { attributeName: string, attributeValues: any }): Promise<any> {

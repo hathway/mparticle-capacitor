@@ -1,6 +1,6 @@
 {
   "name": "@hathway/mparticle-capacitor",
-  "version": "1.1.1",
+  "version": "1.1.4",
   "description": "mParticle Capacitor Plugin",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
