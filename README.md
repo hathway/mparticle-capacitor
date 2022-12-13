@@ -288,6 +288,7 @@ Full documentation here: https://github.com/AppsFlyerSDK/appsflyer-capacitor-plu
 * [`submitPurchaseEvent(...)`](#submitpurchaseevent)
 * [`registerMParticleUser(...)`](#registermparticleuser)
 * [Interfaces](#interfaces)
+* [Type Aliases](#type-aliases)
 
 </docgen-index>
 
@@ -319,7 +320,7 @@ mParticleConfig(call: { isDevelopmentMode?: boolean; planID?: string; planVer?: 
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **`call`** | <code>{ isDevelopmentMode?: boolean; planID?: string; planVer?: number; logLevel?: string; identifyRequest?: any; identityCallback?: <a href="#function">Function</a>; }</code> |
 
-**Returns:** <code>Promise&lt;MPConfigType&gt;</code>
+**Returns:** <code>Promise&lt;<a href="#mpconfigtype">MPConfigType</a>&gt;</code>
 
 --------------------
 
@@ -524,5 +525,13 @@ Creates a new function.
 | **call**     | (this: <a href="#function">Function</a>, thisArg: any, ...argArray: any[]) =&gt; any | Calls a method of an object, substituting another object for the current object.                                                                                                                                         |
 | **bind**     | (this: <a href="#function">Function</a>, thisArg: any, ...argArray: any[]) =&gt; any | For a given function, creates a bound function that has the same body as the original function. The this object of the bound function is associated with the specified object, and has the specified initial parameters. |
 | **toString** | () =&gt; string                                                                      | Returns a string representation of a function.                                                                                                                                                                           |
+
+
+### Type Aliases
+
+
+#### MPConfigType
+
+<code>{ isDevelopmentMode?: boolean, dataPlan?: { planId?: string, planVersion?: number }, identifyRequest?: any, logLevel?: string, identityCallback?: <a href="#function">Function</a>, }</code>
 
 </docgen-api>

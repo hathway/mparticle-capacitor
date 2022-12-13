@@ -43,7 +43,7 @@ const MParticleCapacitor = core.registerPlugin('MParticleCapacitor', {
 class MParticleCapacitorWeb extends core.WebPlugin {
     async mParticleConfig(call) {
         var mParticleConfig = {
-            isDevelopmentMode: call.isDevelopmentMode || true,
+            isDevelopmentMode: call.isDevelopmentMode,
             dataPlan: {
                 planId: call.planID || 'master_data_plan',
                 planVersion: call.planVer || 2

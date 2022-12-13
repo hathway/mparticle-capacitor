@@ -4,7 +4,7 @@ import mParticle from '@mparticle/web-sdk';
 export class MParticleCapacitorWeb extends WebPlugin {
     async mParticleConfig(call) {
         var mParticleConfig = {
-            isDevelopmentMode: call.isDevelopmentMode || true,
+            isDevelopmentMode: call.isDevelopmentMode,
             dataPlan: {
                 planId: call.planID || 'master_data_plan',
                 planVersion: call.planVer || 2
