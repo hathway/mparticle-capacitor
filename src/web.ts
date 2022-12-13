@@ -9,7 +9,7 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
 
   async mParticleConfig(call: { isDevelopmentMode?: boolean, planID?: string, planVer?: number, logLevel?: string, identifyRequest?: any, identityCallback?:Function }): Promise<MPConfigType> {
     var mParticleConfig = {
-      isDevelopmentMode: call.isDevelopmentMode || true,
+      isDevelopmentMode: call.isDevelopmentMode,
       dataPlan: {
         planId: call.planID || 'master_data_plan',
         planVersion: call.planVer || 2
