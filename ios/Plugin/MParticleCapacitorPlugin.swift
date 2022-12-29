@@ -99,6 +99,13 @@ public class MParticleCapacitorPlugin: CAPPlugin {
         ])
     }
 
+    @objc func getAllUserAttributes(_ call: CAPPluginCall) {
+        let attr = implementation.currentUser()?.userAttributes;
+        call.resolve([
+            "value": attr ?? ""
+        ])
+    }
+
     @objc func setUserAttribute(_ call: CAPPluginCall) {
         let name = call.getString("attributeName") ?? ""
         let value = call.getString("attributeValue") ?? ""

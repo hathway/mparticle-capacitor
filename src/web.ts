@@ -60,6 +60,10 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     );
   }
 
+  async getAllUserAttributes(): Promise<any> {
+    return this.currentUser.getAllUserAttributes();
+  }
+
   async setUserAttribute(call: { attributeName:string, attributeValue:string } ): Promise<any> {
     return this.currentUser?.setUserAttribute(call.attributeName, call.attributeValue);
   }
