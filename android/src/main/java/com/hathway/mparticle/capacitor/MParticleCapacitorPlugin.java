@@ -92,6 +92,28 @@ public class MParticleCapacitorPlugin extends Plugin {
         call.resolve(new JSObject());
     }
 
+    /**
+     * Convert a JSONObject into a JSObject
+     * @param obj
+     */
+    public static JSObject fromJSONObject(JSONObject obj) throws JSONException {
+        Iterator<String> keysIter = obj.keys();
+        List<String> keys = new ArrayList<>();
+        while (keysIter.hasNext()) {
+            keys.add(keysIter.next());
+        }
+        return new JSObject(obj, keys.toArray(new String[keys.size()]));
+    }
+
+    @PluginMethod
+    public void getAllUserAttributes(PluginCall call) throws JSONException {
+        Map<String, Object> userAttr = new HashMap<String, Object>();
+        if (implementation.currentUser() != null) {
+            userAttr = implementation.currentUser().getUserAttributes();
+        }
+        call.resolve(fromJSONObject(new JSONObject(userAttr)));
+    }
+
     @PluginMethod
     public void setUserAttribute(PluginCall call) {
         String name = call.getString("attributeName");

@@ -7,6 +7,8 @@ export interface MParticleCapacitorPlugin {
   mParticleInit(call: { key: string, mParticleConfig: any }): Promise<any>;
   loginMParticleUser(call: { email: string, customerId: string }): Promise<any>;
   logoutMParticleUser(call?: any): Promise<any>;
+  
+  getAllUserAttributes(): Promise<any>;
 
   logMParticleEvent(call: { eventName: string, eventType: any, eventProperties: any }): Promise<any>;
   logMParticlePageView(call: { pageName: string, pageLink: any }): Promise<any>;

@@ -278,6 +278,7 @@ Full documentation here: https://github.com/AppsFlyerSDK/appsflyer-capacitor-plu
 * [`mParticleInit(...)`](#mparticleinit)
 * [`loginMParticleUser(...)`](#loginmparticleuser)
 * [`logoutMParticleUser(...)`](#logoutmparticleuser)
+* [`getAllUserAttributes()`](#getalluserattributes)
 * [`logMParticleEvent(...)`](#logmparticleevent)
 * [`logMParticlePageView(...)`](#logmparticlepageview)
 * [`setUserAttribute(...)`](#setuserattribute)
@@ -364,6 +365,17 @@ logoutMParticleUser(call?: any) => Promise<any>
 | Param      | Type             |
 | ---------- | ---------------- |
 | **`call`** | <code>any</code> |
+
+**Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### getAllUserAttributes()
+
+```typescript
+getAllUserAttributes() => Promise<any>
+```
 
 **Returns:** <code>Promise&lt;any&gt;</code>
 
