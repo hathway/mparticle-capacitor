@@ -1,0 +1,6 @@
+{
+  "/JS/v2": {
+    "target": "https://jssdkcdns.mparticle.com",
+    "changeOrigin": true
+  }
+}
