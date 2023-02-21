@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-inferrable-types */
 import { Component } from '@angular/core';
+import { MParticleCapacitorWebConfigurationInterface } from '../../config/mparticle-capacitor-web-configuration.interface';
 import { MParticleCapacitorWeb } from '../../web';
 // import mParticle from '@mparticle/web-sdk';
 
@@ -20,6 +21,28 @@ export class AppComponent {
   ) {}
 
   protected async init(): Promise<void> {
+    const mParticleCapacitorConfiguration: MParticleCapacitorWebConfigurationInterface = {
+      eventAttributesMap: {
+        pageView: {
+          url: "url"
+        }
+      },
+      identityRequestAttributesMap: {
+        email: {
+          required: true
+        },
+        customerId: {
+          required: true
+        },
+        mobile: {
+          required: false
+        }
+      }
+    };
+    if (!isNaN(parseInt(this.planVersion, 10))) {
+      mParticleCapacitorConfiguration.planVersion = parseInt(this.planVersion, 10);
+    }
+    this.mparticleCapacitorWeb.setMParticleCapacitorConfiguration(mParticleCapacitorConfiguration);
     const mpConfig = await this.mparticleCapacitorWeb.mParticleConfig({
       isDevelopmentMode: this.developmentMode,
       planID: this.planId,
@@ -60,7 +83,6 @@ export class AppComponent {
   }
 
   public sendEvent(eventName: string): void {
-    console.log(eventName);
     switch(eventName) {
       case 'init':
         this.init();
