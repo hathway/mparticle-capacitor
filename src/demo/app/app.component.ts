@@ -21,7 +21,6 @@ export class AppComponent {
   ) {}
 
   protected async init(): Promise<void> {
-    // Commenting out the 
     const mParticleCapacitorConfiguration: MParticleCapacitorWebConfigurationInterface = {
       eventAttributesMap: {
         pageView: {
