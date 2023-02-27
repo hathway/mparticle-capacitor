@@ -10,6 +10,7 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
   // This is a configuration for this library itself, not configurations to be sent to MParticle.  It will decide how the event details are mapped
   // for each client.  See mparticle-capacitor-web-configuration.default.ts for an example of the structure
   public mparticleCapacitorConfiguration: MParticleCapacitorWebConfigurationInterface = defaultConfiguration;
+  public mParticle = mParticle;
 
   // If this is never called by the integrating application, then default behavior will be determined by the file: mparticle-capacitor-web-configuration.default.ts
   // This is done to maintain backwards compatibility with existing integrators, while allowing for new integrators to customize behavior to suit their own mParticle
@@ -42,11 +43,11 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     if (!this.mparticleCapacitorConfiguration) {
       this.setMParticleCapacitorConfiguration(defaultConfiguration);
     }
-    return mParticle.init(call.key, call.mParticleConfig as any);
+    return this.mParticle.init(call.key, call.mParticleConfig as any);
   }
 
   async loginMParticleUser(call: { email: string, customerId: string }): Promise<any> {
-    return mParticle.Identity.login(this.identityRequest(call.email, call.customerId));
+    return this.mParticle.Identity.login(this.identityRequest(call.email, call.customerId));
   }
 
   async logoutMParticleUser(_call: any): Promise<any> {
@@ -55,7 +56,7 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
         console.log('logging out of mParticle', _call);
       }
     };
-    return mParticle.Identity.logout({} as any, identityCallback);
+    return this.mParticle.Identity.logout({} as any, identityCallback);
   }
 
   async registerMParticleUser(call: { email: string, customerId: string, userAttributes: any }): Promise<any> {
@@ -69,12 +70,12 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
   }
 
   async logMParticleEvent(call: { eventName: string, eventType: any, eventProperties: any }): Promise<any> {
-    return mParticle.logEvent(call.eventName, call.eventType, call.eventProperties);
+    return this.mParticle.logEvent(call.eventName, call.eventType, call.eventProperties);
   }
 
   async logMParticlePageView(call: { pageName: string, pageLink: string }): Promise<any> {
     const attributes = {[ this.mparticleCapacitorConfiguration.eventAttributesMap.pageView.url]: call.pageLink };
-    return mParticle.logPageView(
+    return this.mParticle.logPageView(
       call.pageName,
       attributes, // pageLink comes in as window.location.toString()
       // call.googleAnalyticsValue // {"Google.Page": window.location.pathname.toString()} // if you're using Google Analytics to track page views
@@ -100,12 +101,12 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
 
   async addMParticleProduct(call: { productData: any, customAttributes: any }): Promise<any> {
     const product = this.createMParticleProduct(call.productData);
-    return this.logProductAction(mParticle.ProductActionType.AddToCart, product, call.customAttributes, null, null);
+    return this.logProductAction(this.mParticle.ProductActionType.AddToCart, product, call.customAttributes, null, null);
   }
 
   async removeMParticleProduct(call: { productData: any, customAttributes: any }): Promise<any> {
     const productToRemove = this.createMParticleProduct(call.productData);
-    return this.logProductAction(mParticle.ProductActionType.RemoveFromCart, productToRemove, call.customAttributes, null, null);
+    return this.logProductAction(this.mParticle.ProductActionType.RemoveFromCart, productToRemove, call.customAttributes, null, null);
   }
 
   async submitPurchaseEvent(call: { productData: any[], customAttributes: any, transactionAttributes: any }): Promise<any> {
@@ -113,11 +114,11 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     (call.productData).forEach((element: any) => {
       productArray.push(this.createMParticleProduct(element));
     });
-    return this.logProductAction(mParticle.ProductActionType.Purchase, productArray, call.customAttributes, call.transactionAttributes, null);
+    return this.logProductAction(this.mParticle.ProductActionType.Purchase, productArray, call.customAttributes, call.transactionAttributes, null);
   }
 
   public get currentUser(): mParticle.User {
-    return mParticle.Identity.getCurrentUser();
+    return this.mParticle.Identity.getCurrentUser();
   }
 
   private identityRequest(email: string, customerId: string): any {
@@ -130,7 +131,7 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
   }
 
   private createMParticleProduct(productData: any) {
-    return mParticle.eCommerce.createProduct(
+    return this.mParticle.eCommerce.createProduct(
       productData.name, //productName
       productData.sku, //productSku
       productData.cost, //productPrice
@@ -145,7 +146,7 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
   }
 
   private logProductAction(eventType: any, product: any, customAttributes: any, transactionAttributes?: any, customFlags?: any) {
-    mParticle.eCommerce.logProductAction(
+    this.mParticle.eCommerce.logProductAction(
       eventType,
       product, // product created on mparticle
       customAttributes, // mimData
