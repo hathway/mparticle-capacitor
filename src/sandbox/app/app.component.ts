@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-inferrable-types */
 import { Component } from '@angular/core';
-import { MParticleCapacitorWebConfigurationInterface } from '../../config/mparticle-capacitor-web-configuration.interface';
-import { MParticleCapacitorWeb } from '../../web';
+
+import type { MParticleCapacitorWebConfigurationInterface } from '../../config/mparticle-capacitor-web-configuration.interface';
+import type { MParticleCapacitorWeb } from '../../web';
 // import mParticle from '@mparticle/web-sdk';
 
 @Component({
@@ -82,20 +83,20 @@ export class AppComponent {
     });
   }
 
-  public sendEvent(eventName: string): void {
+  public sendEvent(eventName: string): Promise<void> {
     switch(eventName) {
       case 'init':
-        this.init();
-        break;
+        return this.init();
       case 'login': 
-        this.login();
-        break;
+        return this.login();
       case 'pageView':
-        this.pageViewEvent();
-        break;
+        return this.pageViewEvent();
       case 'purchase':
-        this.purchaseEvent();
-        break;
+        return this.purchaseEvent();
+      default:
+        return new Promise((_, reject) => {
+          reject("No valid event name passed");
+        });
     }
   }
 }
