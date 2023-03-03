@@ -1,0 +1,29 @@
+<div class="content" role="main">
+  <h1>MParticle Capacitor Demo</h1>
+
+  <h2>Configuration</h2>
+  <p>Api Key:</p>
+  <input type="text" [(ngModel)]="apiKey">
+  <p>Plan Version:</p>
+  <input type="number" [(ngModel)]="planVersion">
+
+  <h2>Trigger event:</h2>
+
+  <div class="card-container">
+    <button class="card card-small" (click)="sendEvent('init')">
+      <span>Init</span>
+    </button>
+    <button class="card card-small" (click)="sendEvent('login')">
+      <span>Login</span>
+    </button>
+    <button class="card card-small" (click)="sendEvent('logout')">
+      <span>Logout</span>
+    </button>
+    <button class="card card-small" (click)="sendEvent('pageView')">
+      <span>PageView</span>
+    </button>
+    <button class="card card-small" (click)="sendEvent('purchase')">
+      <span>Purchase</span>
+    </button>
+  </div>
+</div>

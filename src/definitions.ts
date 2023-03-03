@@ -1,9 +1,14 @@
+import type { IdentityResult } from "@mparticle/web-sdk";
+
+import type { MParticleCapacitorWebConfigurationInterface } from "./config/mparticle-capacitor-web-configuration.interface";
+
 export type mParticleInitListener = (info: any) => any;
 
 export interface MParticleCapacitorPlugin {
   echo(options: { value: string }): Promise<{ value: string }>;
 
-  mParticleConfig(call: { isDevelopmentMode?: boolean, planID?: string, planVer?: number, logLevel?: string, identifyRequest?: any, identityCallback?:Function }): Promise<MPConfigType>
+  setMParticleCapacitorConfiguration(config: MParticleCapacitorWebConfigurationInterface): void
+  mParticleConfig(call: { isDevelopmentMode?: boolean, planID?: string, planVer?: number, logLevel?: string, identifyRequest?: any, identityCallback?:Function }): Promise<MPConfigType>;
   mParticleInit(call: { key: string, mParticleConfig: any }): Promise<any>;
   loginMParticleUser(call: { email: string, customerId: string }): Promise<any>;
   logoutMParticleUser(call?: any): Promise<any>;
@@ -58,5 +63,5 @@ export type MPConfigType = {
   },
   identifyRequest?: any,
   logLevel?: string,
-  identityCallback?: Function,
+  identityCallback?: (i: IdentityResult) => void,
 }
