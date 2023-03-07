@@ -3,9 +3,13 @@
 
   <h2>Configuration</h2>
   <p>Api Key:</p>
-  <input type="text" [(ngModel)]="apiKey">
+  <input type="text" [(ngModel)]="key">
+  <p>Plan ID</p>
+  <input type="text" [(ngModel)]="planID">
   <p>Plan Version:</p>
   <input type="number" [(ngModel)]="planVersion">
+  <p>Plan Version Required(set it to "2" if not specified)</p>
+  <input type="checkbox" [(ngModel)]="planVersionRequired">
 
   <h2>Trigger event:</h2>
 

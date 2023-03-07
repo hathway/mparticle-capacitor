@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/consistent-type-imports */
 /* eslint-disable @typescript-eslint/no-inferrable-types */
 import { Component } from '@angular/core';
 
-import type { MParticleCapacitorWebConfigurationInterface } from '../../config/mparticle-capacitor-web-configuration.interface';
-import type { MParticleCapacitorWeb } from '../../web';
-// import mParticle from '@mparticle/web-sdk';
+import { MParticleCapacitorWeb } from '../../web';
+
+// @TODO:
+// 1. add ability in the UI to supply overrides(page/url), and the user email, they need their own input fields
+// 2. display the payload we send to mparticle in UI
 
 @Component({
   selector: 'app-root',
@@ -11,46 +14,30 @@ import type { MParticleCapacitorWeb } from '../../web';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  public apiKey = '';
+  public key = 'us2-3d4baeb0eb1ccf4d89c6f4ca1b63d430';
   public developmentMode = true;
-  public planId = '';
+  public planID = 'web_app_sdk';
   public logLevel = '';
   public planVersion = '';
+  public planVersionRequired = false;
 
   public constructor(
     public mparticleCapacitorWeb: MParticleCapacitorWeb
   ) {}
 
   protected async init(): Promise<void> {
-    const mParticleCapacitorConfiguration: MParticleCapacitorWebConfigurationInterface = {
-      eventAttributesMap: {
-        pageView: {
-          url: "url"
-        }
-      },
-      identityRequestAttributesMap: {
-        email: {
-          required: true
-        },
-        customerId: {
-          required: true
-        },
-        mobile: {
-          required: false
-        }
-      }
-    };
-    if (!isNaN(parseInt(this.planVersion, 10))) {
-      mParticleCapacitorConfiguration.planVersion = parseInt(this.planVersion, 10);
-    }
-    this.mparticleCapacitorWeb.setMParticleCapacitorConfiguration(mParticleCapacitorConfiguration);
-    const mpConfig = await this.mparticleCapacitorWeb.mParticleConfig({
+    const { key, planID, planVersionRequired, logLevel, planVersion } = this;
+    const config: any = {
       isDevelopmentMode: this.developmentMode,
-      planID: this.planId,
-      planVer: parseInt(this.planVersion, 10),
-      logLevel: this.logLevel
-    });
-    await this.mparticleCapacitorWeb.mParticleInit({key: this.apiKey, mParticleConfig:mpConfig });
+      planID,
+      planVersionRequired,
+      logLevel
+    };
+    if (!isNaN(parseInt(planVersion, 10))) {
+      config.planVer = planVersion;
+    }
+    const mpConfig = await this.mparticleCapacitorWeb.mParticleConfig(config);
+    await this.mparticleCapacitorWeb.mParticleInit({key, mParticleConfig:mpConfig });
   }
 
   protected async login(): Promise<void> {
@@ -62,7 +49,7 @@ export class AppComponent {
   }
 
   protected async pageViewEvent(): Promise<void> {
-    await this.mparticleCapacitorWeb.logMParticlePageView({pageName: 'Test Page', pageLink: 'testpage.com'});
+    await this.mparticleCapacitorWeb.logMParticlePageView({pageName: 'Page View', pageLink: 'testpage.com'});
   }
 
   protected async purchaseEvent(): Promise<void> {

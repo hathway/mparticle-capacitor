@@ -3,75 +3,61 @@ import { describe, it, beforeEach, vi } from 'vitest'
 import { MParticleCapacitorWeb } from "./web";
 
 const mockMParticle = {
-  init: (call) => {
-    return new Promise((resolve, reject) => {
-      resolve(call);
-    })
-  }
+  init: vi.fn(),
+  logPageView: vi.fn()
 };
 
 describe.concurrent('MParticleCapacitorWeb', () => {
   let mp;
   const key = "";
+  const mpConfig = {
+    isDevelopmentMode: true,
+    planID: "test_app",
+    logLevel: "verbose",
+  };
   beforeEach(() => {
     mp = new MParticleCapacitorWeb();
     mp.mParticle = mockMParticle;
   });
-  it.concurrent('loads passed configuration object', async (expect) => {
-    const config = {
-      planVersion: 1,
-      eventAttributesMap: {
-        pageView: {
-          url: "testUrl"
-        },
-      }
-    };
-    mp.setMParticleCapacitorConfiguration(config);
-    expect.expect(mp.mparticleCapacitorConfiguration).to.equal(config);
 
-  });
-
-  it.concurrent('builds configuration with default plan version when plan version not passed', async (expect) => {
-    const input = {
-      test: "123",
-      other: "abc"
-    };
-    const config = await mp.mParticleConfig(input);
+  it.concurrent('builds configuration with default plan version when plan version not passed and plan version is required', async (expect) => {
+    const config = await mp.mParticleConfig({
+      ...mpConfig,
+      planVersionRequired: true,
+    });
     expect.expect(config.dataPlan.planVersion).toEqual(2);
   });
 
-  it.concurrent('builds configuration with default plan version when plan version not passed', async (expect) => {
-    const input = {
-      test: "123",
-      other: "abc",
-      planVer: 99
-    };
-    const config = await mp.mParticleConfig(input);
-    expect.expect(config.dataPlan.planVersion).toEqual(99);
+  it.concurrent('builds configuration without plan version when plan version not passed and plan version is not required', async (expect) => {
+    const config = await mp.mParticleConfig({
+      ...mpConfig,
+      planVersionRequired: false,
+    });
+    expect.expect(config.dataPlan.planVersion).toBeUndefined();
   });
 
-  it.concurrent('sends init request with supplied plan version', async (expect) => {
-    const config = {
-      planVersion: 100,
-      eventAttributesMap: {
-        pageView: {
-          url: "testUrl"
-        },
+  it.concurrent('sends pageView event url with attribute name "page" when no override is passed', async (expect) => {
+    const call = {
+      pageName: "test page",
+      pageLink: "www.test.com",
+    };
+    await mp.mParticleInit(key, mpConfig);
+    const logMParticlePageView = vi.spyOn(mp.mParticle, "logPageView");
+    await mp.logMParticlePageView(call);
+    expect.expect(logMParticlePageView).toBeCalledWith(call.pageName, {page: call.pageLink});
+  });
+
+  it.concurrent('sends pageView event url with specified attribute name when override is passed', async (expect) => {
+    const call = {
+      pageName: "test page",
+      pageLink: "www.test.com",
+      overrides: {
+        attributeName: "testAttr"
       }
     };
-    mp.setMParticleCapacitorConfiguration(config);
-
-    const initSpy = vi.spyOn(mp.mParticle, "init");
-    const mParticleConfig = await mp.mParticleConfig({
-      isDevelopmentMode: true
-    });
-    expect.expect(mParticleConfig.dataPlan.planVersion).toEqual(100);
-    const call = {
-      key,
-      mParticleConfig
-    };
-    await mp.mParticleInit(call);
-    expect.expect(initSpy).toHaveBeenCalledOnce();
-    expect.expect(initSpy).toHaveBeenCalledWith(key, mParticleConfig);
+    await mp.mParticleInit(key, mpConfig);
+    const logMParticlePageView = vi.spyOn(mp.mParticle, "logPageView");
+    await mp.logMParticlePageView(call);
+    expect.expect(logMParticlePageView).toBeCalledWith(call.pageName, {[call.overrides.attributeName]: call.pageLink});
   });
 })

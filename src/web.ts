@@ -2,24 +2,22 @@ import { WebPlugin } from '@capacitor/core';
 import mParticle from '@mparticle/web-sdk';
 import type { IdentityResult } from '@mparticle/web-sdk';
 
-import defaultConfiguration from './config/mparticle-capacitor-web-configuration.default';
-import type { MParticleCapacitorWebConfigurationInterface } from './config/mparticle-capacitor-web-configuration.interface';
 import type { MParticleCapacitorPlugin, MPConfigType } from './definitions';
 
+export interface MParticleConfigArguments {
+  isDevelopmentMode?: boolean;
+  planID?: string;
+  planVer?: number;
+  planVersionRequired?: boolean;
+  logLevel?: string;
+  identifyRequest?: any;
+  identityCallback?: (i: IdentityResult) => void;
+}
+
 export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacitorPlugin {
-  // This is a configuration for this library itself, not configurations to be sent to MParticle.  It will decide how the event details are mapped
-  // for each client.  See mparticle-capacitor-web-configuration.default.ts for an example of the structure
-  public mparticleCapacitorConfiguration: MParticleCapacitorWebConfigurationInterface = defaultConfiguration;
   public mParticle = mParticle;
 
-  // If this is never called by the integrating application, then default behavior will be determined by the file: mparticle-capacitor-web-configuration.default.ts
-  // This is done to maintain backwards compatibility with existing integrators, while allowing for new integrators to customize behavior to suit their own mParticle
-  // event plans.
-  public setMParticleCapacitorConfiguration(config: MParticleCapacitorWebConfigurationInterface): void {
-    this.mparticleCapacitorConfiguration = config;
-  }
-
-  async mParticleConfig(call: { isDevelopmentMode?: boolean, planID?: string, planVer?: number, logLevel?: string, identifyRequest?: any, identityCallback?: (i: IdentityResult) => void }): Promise<MPConfigType> {
+  async mParticleConfig(call: MParticleConfigArguments): Promise<MPConfigType> {
     const mParticleConfig: any = {
       isDevelopmentMode: call.isDevelopmentMode,
       dataPlan: {
@@ -29,24 +27,22 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
       logLevel: (call.logLevel == "verbose" || "warning" || "none") ? call.logLevel : "verbose",
       identityCallback: call.identityCallback || undefined,
     };
-    // Plan Version is optional and can be passed in this function call or pulled from the default config loaded earlier through loadConfiguration()
-    // default config is needed, to not break existing clients who aren't using the loadConfiguration and want the plan version to default to 2.  If
-    // it is not passed to mParticle, then it will default to latest plan version.
-    const planVersion = call.planVer !== undefined && !isNaN(call.planVer) ? call.planVer : this.mparticleCapacitorConfiguration.planVersion;
-    if (planVersion !== undefined && typeof planVersion === 'number') {
-      mParticleConfig.dataPlan.planVersion = planVersion;
+    // Plan Version is optional but we need to set a default for existing clients which expect it to default to "2"
+    // if it is not passed.  Therefore we use planVersionRequired flag to determine if we can just not set it at all
+    // which will cause MP to default to latest version
+    if (call.planVer !== undefined && !isNaN(call.planVer)) {
+      mParticleConfig.dataPlan.planVersion = call.planVer;
+    } else if (call.planVersionRequired) {
+      mParticleConfig.dataPlan.planVersion = 2;
     }
     return mParticleConfig;
   }
 
   async mParticleInit(call: { key: string, mParticleConfig: any }): Promise<any> {
-    if (!this.mparticleCapacitorConfiguration) {
-      this.setMParticleCapacitorConfiguration(defaultConfiguration);
-    }
     return this.mParticle.init(call.key, call.mParticleConfig as any);
   }
 
-  async loginMParticleUser(call: { email: string, customerId: string }): Promise<any> {
+  async loginMParticleUser(call: { email: string, customerId?: string }): Promise<any> {
     return this.mParticle.Identity.login(this.identityRequest(call.email, call.customerId));
   }
 
@@ -59,7 +55,7 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     return this.mParticle.Identity.logout({} as any, identityCallback);
   }
 
-  async registerMParticleUser(call: { email: string, customerId: string, userAttributes: any }): Promise<any> {
+  async registerMParticleUser(call: { email: string, customerId?: string, userAttributes: any }): Promise<any> {
     return mParticle.Identity.login(this.identityRequest(call.email, call.customerId), function (result: any) {
       if (!result) return;
       const currentUser = result.getUser();
@@ -73,8 +69,12 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     return this.mParticle.logEvent(call.eventName, call.eventType, call.eventProperties);
   }
 
-  async logMParticlePageView(call: { pageName: string, pageLink: string }): Promise<any> {
-    const attributes = {[ this.mparticleCapacitorConfiguration.eventAttributesMap.pageView.url]: call.pageLink };
+  async logMParticlePageView(call: { pageName: string, pageLink: string, overrides?: { attributeName: string }}): Promise<any> {
+    let attributeName = "page";
+    if (call?.overrides?.attributeName) {
+      attributeName = call.overrides.attributeName;
+    }
+    const attributes = {[attributeName]: call.pageLink };
     return this.mParticle.logPageView(
       call.pageName,
       attributes, // pageLink comes in as window.location.toString()
@@ -121,13 +121,16 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     return this.mParticle.Identity.getCurrentUser();
   }
 
-  private identityRequest(email: string, customerId: string): any {
-    return {
+  private identityRequest(email: string, customerId?: string): any {
+    const identity: any = {
       userIdentities: {
-        email,
-        customerid: customerId
+        email
       },
     };
+    if (customerId) {
+      identity.userIdentities.customerid = customerId;
+    }
+    return identity;
   }
 
   private createMParticleProduct(productData: any) {

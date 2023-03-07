@@ -1,22 +1,21 @@
 import type { IdentityResult } from "@mparticle/web-sdk";
 
-import type { MParticleCapacitorWebConfigurationInterface } from "./config/mparticle-capacitor-web-configuration.interface";
+import type { MParticleConfigArguments } from "./web";
 
 export type mParticleInitListener = (info: any) => any;
 
 export interface MParticleCapacitorPlugin {
   echo(options: { value: string }): Promise<{ value: string }>;
 
-  setMParticleCapacitorConfiguration(config: MParticleCapacitorWebConfigurationInterface): void
-  mParticleConfig(call: { isDevelopmentMode?: boolean, planID?: string, planVer?: number, logLevel?: string, identifyRequest?: any, identityCallback?:Function }): Promise<MPConfigType>;
+  mParticleConfig(call: MParticleConfigArguments): Promise<MPConfigType>;
   mParticleInit(call: { key: string, mParticleConfig: any }): Promise<any>;
-  loginMParticleUser(call: { email: string, customerId: string }): Promise<any>;
+  loginMParticleUser(call: { email: string, customerId?: string }): Promise<any>;
   logoutMParticleUser(call?: any): Promise<any>;
   
   getAllUserAttributes(): Promise<any>;
 
   logMParticleEvent(call: { eventName: string, eventType: any, eventProperties: any }): Promise<any>;
-  logMParticlePageView(call: { pageName: string, pageLink: any }): Promise<any>;
+  logMParticlePageView(call: { pageName: string, pageLink: any, overrides?: any}): Promise<any>;
 
   setUserAttribute(call: { attributeName: string, attributeValue: string }): Promise<any>;
   setUserAttributeList(call: { attributeName: string, attributeValues: any }): Promise<any>;
@@ -27,7 +26,7 @@ export interface MParticleCapacitorPlugin {
 
   submitPurchaseEvent(call: { productData: any, customAttributes: any, transactionAttributes: any }): Promise<any>;
 
-  registerMParticleUser(call: { email: string, customerId: string, userAttributes: any }): Promise<any>;
+  registerMParticleUser(call: { email: string, customerId?: string, userAttributes: any }): Promise<any>;
 }
 
 export enum MParticleEventType {
@@ -64,4 +63,24 @@ export type MPConfigType = {
   identifyRequest?: any,
   logLevel?: string,
   identityCallback?: (i: IdentityResult) => void,
+}
+
+export interface EventAttributesMap {
+  eventAttributesMap: {
+    pageView: {
+      url: string;
+    }
+  };
+}
+
+export interface IdentityRequestAttributesMap {
+  email: {
+    required: boolean;
+  };
+  customerId: {
+    required: boolean;
+  };
+  mobile: {
+    required: boolean;
+  };
 }
