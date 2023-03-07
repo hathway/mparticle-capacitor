@@ -14,9 +14,9 @@ import { MParticleCapacitorWeb } from '../../web';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  public key = 'us2-3d4baeb0eb1ccf4d89c6f4ca1b63d430';
+  public key = '';
   public developmentMode = true;
-  public planID = 'web_app_sdk';
+  public planID = '';
   public logLevel = '';
   public planVersion = '';
   public planVersionRequired = false;
