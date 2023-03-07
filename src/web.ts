@@ -56,7 +56,7 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
   }
 
   async registerMParticleUser(call: { email: string, customerId?: string, userAttributes: any }): Promise<any> {
-    return mParticle.Identity.login(this.identityRequest(call.email, call.customerId), function (result: any) {
+    return this.mParticle.Identity.login(this.identityRequest(call.email, call.customerId), function (result: any) {
       if (!result) return;
       const currentUser = result.getUser();
       for (const [key, value] of Object.entries(call.userAttributes)) {
