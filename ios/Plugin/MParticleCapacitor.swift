@@ -15,7 +15,9 @@ import Capacitor
     @objc public func identityRequest(_ email:String,_ customerId:String) -> MPIdentityApiRequest? {
         let identityRequest = MPIdentityApiRequest.withEmptyUser()
         identityRequest.email = email
-        identityRequest.customerId = customerId
+        if !customerId.isEmpty {
+           identityRequest.customerId = customerId
+        }
         return identityRequest
     }
 
