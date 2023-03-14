@@ -86,8 +86,11 @@ public class MParticleCapacitorPlugin extends Plugin {
     public void logMParticlePageView(PluginCall call) {
         String name = call.getString("pageName");
         String link = call.getString("pageLink");
+        String optionalAttribute = call.getObject("overrides").getString("attributeName");
+        String attributeName = optionalAttribute != null ? optionalAttribute : "page";
+
         Map<String, String> screenInfo = new HashMap<String, String>();
-        screenInfo.put("page", link);
+        screenInfo.put(attributeName, link);
         MParticle.getInstance().logScreen(name, screenInfo );
         call.resolve(new JSObject());
     }
