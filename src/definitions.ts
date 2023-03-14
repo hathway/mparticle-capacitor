@@ -7,6 +7,8 @@ export type mParticleInitListener = (info: any) => any;
 export interface MParticleCapacitorPlugin {
   echo(options: { value: string }): Promise<{ value: string }>;
 
+  currentUser: mParticle.User;
+
   mParticleConfig(call: MParticleConfigArguments): Promise<MPConfigType>;
   mParticleInit(call: { key: string, mParticleConfig: any }): Promise<any>;
   loginMParticleUser(call: { email: string, customerId?: string }): Promise<any>;
