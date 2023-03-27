@@ -82,7 +82,7 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     );
   }
 
-  async getAllUserAttributes(): Promise<any> {
+  async getAllUserAttributes(_call?: any): Promise<any> {
     return this.currentUser.getAllUserAttributes();
   }
 
