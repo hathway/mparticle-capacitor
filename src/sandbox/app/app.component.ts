@@ -48,12 +48,12 @@ export class AppComponent {
     await this.mparticleCapacitorWeb.logoutMParticleUser({});
   }
 
-  protected async pageViewEvent(): Promise<void> {
-    await this.mparticleCapacitorWeb.logMParticlePageView({pageName: 'Page View', pageLink: 'testpage.com'});
+  protected pageViewEvent(): void {
+    this.mparticleCapacitorWeb.logMParticlePageView({pageName: 'Page View', pageLink: 'testpage.com'});
   }
 
-  protected async purchaseEvent(): Promise<void> {
-    await this.mparticleCapacitorWeb.submitPurchaseEvent({
+  protected purchaseEvent(): void {
+    this.mparticleCapacitorWeb.submitPurchaseEvent({
       productData: [{
         name: 'Test Product',
         sku: '0123456789',
@@ -70,20 +70,18 @@ export class AppComponent {
     });
   }
 
-  public sendEvent(eventName: string): Promise<void> {
+  public sendEvent(eventName: string): void {
     switch(eventName) {
       case 'init':
-        return this.init();
+        this.init();
       case 'login': 
-        return this.login();
+        this.login();
       case 'pageView':
-        return this.pageViewEvent();
+        this.pageViewEvent();
       case 'purchase':
-        return this.purchaseEvent();
+        this.purchaseEvent();
       default:
-        return new Promise((_, reject) => {
-          reject("No valid event name passed");
-        });
+        throw Error("No valid event name passed");
     }
   }
 }
