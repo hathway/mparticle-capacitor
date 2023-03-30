@@ -1,4 +1,4 @@
-import type { IdentityResult } from "@mparticle/web-sdk";
+import type { AllUserAttributes, IdentityResult } from "@mparticle/web-sdk";
 
 import type { MParticleConfigArguments } from "./web";
 
@@ -14,19 +14,19 @@ export interface MParticleCapacitorPlugin {
   loginMParticleUser(call: { email: string, customerId?: string }): Promise<any>;
   logoutMParticleUser(call?: any): Promise<any>;
   
-  getAllUserAttributes(call?: any): Promise<any>;
+  getAllUserAttributes(call?: any): AllUserAttributes;
 
-  logMParticleEvent(call: { eventName: string, eventType: any, eventProperties: any }): Promise<any>;
-  logMParticlePageView(call: { pageName: string, pageLink: any, overrides?: any}): Promise<any>;
+  logMParticleEvent(call: { eventName: string, eventType: any, eventProperties: any }): void;
+  logMParticlePageView(call: { pageName: string, pageLink: any, overrides?: any}): void;
 
-  setUserAttribute(call: { attributeName: string, attributeValue: string }): Promise<any>;
-  setUserAttributeList(call: { attributeName: string, attributeValues: any }): Promise<any>;
+  setUserAttribute(call: { attributeName: string, attributeValue: string }): void;
+  setUserAttributeList(call: { attributeName: string, attributeValues: any }): void;
 
-  updateMParticleCart(call: { productData: any, customAttributes: any, eventType: any }): Promise<any>;
-  addMParticleProduct(call: { productData: any, customAttributes: any }): Promise<any>;
-  removeMParticleProduct(call: { productData: any, customAttributes: any }): Promise<any>;
+  updateMParticleCart(call: { productData: any, customAttributes: any, eventType: any }): void;
+  addMParticleProduct(call: { productData: any, customAttributes: any }): void;
+  removeMParticleProduct(call: { productData: any, customAttributes: any }): void;
 
-  submitPurchaseEvent(call: { productData: any, customAttributes: any, transactionAttributes: any }): Promise<any>;
+  submitPurchaseEvent(call: { productData: any, customAttributes: any, transactionAttributes: any }): void;
 
   registerMParticleUser(call: { email: string, customerId?: string, userAttributes: any }): Promise<any>;
 }

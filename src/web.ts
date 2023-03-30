@@ -1,6 +1,6 @@
 import { WebPlugin } from '@capacitor/core';
 import mParticle from '@mparticle/web-sdk';
-import type { IdentityResult } from '@mparticle/web-sdk';
+import type { AllUserAttributes, IdentityResult } from '@mparticle/web-sdk';
 
 import type { MParticleCapacitorPlugin, MPConfigType } from './definitions';
 
@@ -43,85 +43,101 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
   }
 
   async loginMParticleUser(call: { email: string, customerId?: string }): Promise<any> {
-    return this.mParticle.Identity.login(this.identityRequest(call.email, call.customerId));
-  }
-
-  async logoutMParticleUser(_call: any): Promise<any> {
-    const identityCallback = (result: any) => {
-      if (result.getUser()) {
-        console.log('logging out of mParticle', _call);
+    return new Promise((resolve, reject) => {
+      try {
+        this.mParticle.Identity.login(this.identityRequest(call.email, call.customerId), (result) => {
+          resolve(result);
+        });  
+      } catch (e) {
+        reject(e);
       }
-    };
-    return this.mParticle.Identity.logout({} as any, identityCallback);
+    })
   }
 
-  async registerMParticleUser(call: { email: string, customerId?: string, userAttributes: any }): Promise<any> {
-    return this.mParticle.Identity.login(this.identityRequest(call.email, call.customerId), function (result: any) {
-      if (!result) return;
-      const currentUser = result.getUser();
-      for (const [key, value] of Object.entries(call.userAttributes)) {
-        if (key && value) currentUser.setUserAttribute(key, value);
+  async logoutMParticleUser(_call?: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      try {
+        this.mParticle.Identity.logout({} as any, (result) => {
+          resolve(result);
+        });
+      } catch (e) {
+        reject(e);
       }
     });
   }
 
-  async logMParticleEvent(call: { eventName: string, eventType: any, eventProperties: any }): Promise<any> {
-    return this.mParticle.logEvent(call.eventName, call.eventType, call.eventProperties);
+  async registerMParticleUser(call: { email: string, customerId?: string, userAttributes: any }): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.mParticle.Identity.login(this.identityRequest(call.email, call.customerId), (result) => {
+        if (!result) {
+          reject();
+        }
+        const currentUser = result.getUser();
+        for (const [key, value] of Object.entries(call.userAttributes)) {
+          if (key && value) currentUser.setUserAttribute(key, (value as any).toString());
+        }
+        resolve(result);
+      });
+    });
   }
 
-  async logMParticlePageView(call: { pageName: string, pageLink: string, overrides?: { attributeName: string }}): Promise<any> {
+  public logMParticleEvent(call: { eventName: string, eventType: any, eventProperties: any }): void {
+    this.mParticle.logEvent(call.eventName, call.eventType, call.eventProperties);
+  }
+
+  public logMParticlePageView(call: { pageName: string, pageLink: string, overrides?: { attributeName: string }}): void {
     let attributeName = "page";
     if (call?.overrides?.attributeName) {
       attributeName = call.overrides.attributeName;
     }
     const attributes = {[attributeName]: call.pageLink };
-    return this.mParticle.logPageView(
+    this.mParticle.logPageView(
       call.pageName,
       attributes, // pageLink comes in as window.location.toString()
       // call.googleAnalyticsValue // {"Google.Page": window.location.pathname.toString()} // if you're using Google Analytics to track page views
     );
   }
 
-  async getAllUserAttributes(_call?: any): Promise<any> {
+  public getAllUserAttributes(_call?: any): AllUserAttributes {
     return this.currentUser.getAllUserAttributes();
   }
 
-  async setUserAttribute(call: { attributeName:string, attributeValue:string } ): Promise<any> {
-    return this.currentUser?.setUserAttribute(call.attributeName, call.attributeValue);
+  public setUserAttribute(call: { attributeName:string, attributeValue:string } ): void {
+    this.currentUser?.setUserAttribute(call.attributeName, call.attributeValue);
   }
 
-  async setUserAttributeList(call: { attributeName: string, attributeValues: any }): Promise<any> {
-    return this.currentUser.setUserAttributeList(call.attributeName, call.attributeValues);
+  public setUserAttributeList(call: { attributeName: string, attributeValues: any }): void {
+    this.currentUser.setUserAttributeList(call.attributeName, call.attributeValues);
   }
 
-  async updateMParticleCart(call: { productData: any, customAttributes: any, eventType: any }): Promise<any> {
+  public updateMParticleCart(call: { productData: any, customAttributes: any, eventType: any }): void {
     const productToUpdate = this.createMParticleProduct(call.productData);
-    return this.logProductAction(call.eventType, productToUpdate, call.customAttributes, null, null);
+    this.logProductAction(call.eventType, productToUpdate, call.customAttributes, null, null);
   }
 
-  async addMParticleProduct(call: { productData: any, customAttributes: any }): Promise<any> {
+  public addMParticleProduct(call: { productData: any, customAttributes: any }): void {
     const product = this.createMParticleProduct(call.productData);
-    return this.logProductAction(this.mParticle.ProductActionType.AddToCart, product, call.customAttributes, null, null);
+    this.logProductAction(this.mParticle.ProductActionType.AddToCart, product, call.customAttributes, null, null);
   }
 
-  async removeMParticleProduct(call: { productData: any, customAttributes: any }): Promise<any> {
+  public removeMParticleProduct(call: { productData: any, customAttributes: any }): void {
     const productToRemove = this.createMParticleProduct(call.productData);
-    return this.logProductAction(this.mParticle.ProductActionType.RemoveFromCart, productToRemove, call.customAttributes, null, null);
+    this.logProductAction(this.mParticle.ProductActionType.RemoveFromCart, productToRemove, call.customAttributes, null, null);
   }
 
-  async submitPurchaseEvent(call: { productData: any[], customAttributes: any, transactionAttributes: any }): Promise<any> {
+  public submitPurchaseEvent(call: { productData: any[], customAttributes: any, transactionAttributes: any }): void {
     const productArray: any = [];
     (call.productData).forEach((element: any) => {
       productArray.push(this.createMParticleProduct(element));
     });
-    return this.logProductAction(this.mParticle.ProductActionType.Purchase, productArray, call.customAttributes, call.transactionAttributes, null);
+    this.logProductAction(this.mParticle.ProductActionType.Purchase, productArray, call.customAttributes, call.transactionAttributes, null);
   }
 
   public get currentUser(): mParticle.User {
     return this.mParticle.Identity.getCurrentUser();
   }
 
-  private identityRequest(email: string, customerId?: string): any {
+  protected identityRequest(email: string, customerId?: string): any {
     const identity: any = {
       userIdentities: {
         email
@@ -133,7 +149,7 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     return identity;
   }
 
-  private createMParticleProduct(productData: any) {
+  protected createMParticleProduct(productData: any): mParticle.Product {
     return this.mParticle.eCommerce.createProduct(
       productData.name, //productName
       productData.sku, //productSku
@@ -148,7 +164,7 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     );
   }
 
-  private logProductAction(eventType: any, product: any, customAttributes: any, transactionAttributes?: any, customFlags?: any) {
+  protected logProductAction(eventType: any, product: any, customAttributes: any, transactionAttributes?: any, customFlags?: any): void {
     this.mParticle.eCommerce.logProductAction(
       eventType,
       product, // product created on mparticle
@@ -158,6 +174,6 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
   }
 
   async echo(options: { value: string }): Promise<{ value: string }> {
-    return options;
+    return new Promise((resolve) => resolve(options));
   }
 }
