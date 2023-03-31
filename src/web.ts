@@ -42,10 +42,10 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     return this.mParticle.init(call.key, call.mParticleConfig as any);
   }
 
-  async loginMParticleUser(call: { email: string, customerId?: string }): Promise<any> {
+  async loginMParticleUser(call: { email: string, customerId?: string }): Promise<IdentityResult> {
     return new Promise((resolve, reject) => {
       try {
-        this.mParticle.Identity.login(this.identityRequest(call.email, call.customerId), (result) => {
+        this.mParticle.Identity.login(this.identityRequest(call.email, call.customerId), (result: IdentityResult) => {
           resolve(result);
         });  
       } catch (e) {
@@ -54,7 +54,7 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     })
   }
 
-  async logoutMParticleUser(_call?: any): Promise<any> {
+  async logoutMParticleUser(_call?: any): Promise<IdentityResult> {
     return new Promise((resolve, reject) => {
       try {
         this.mParticle.Identity.logout({} as any, (result) => {
