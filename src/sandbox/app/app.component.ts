@@ -74,12 +74,16 @@ export class AppComponent {
     switch(eventName) {
       case 'init':
         this.init();
+        break;
       case 'login': 
         this.login();
+        break;
       case 'pageView':
         this.pageViewEvent();
+        break;
       case 'purchase':
         this.purchaseEvent();
+        break;
       default:
         throw Error("No valid event name passed");
     }

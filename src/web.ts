@@ -17,7 +17,7 @@ export interface MParticleConfigArguments {
 export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacitorPlugin {
   public mParticle = mParticle;
 
-  async mParticleConfig(call: MParticleConfigArguments): Promise<MPConfigType> {
+  public mParticleConfig(call: MParticleConfigArguments): MPConfigType {
     const mParticleConfig: any = {
       isDevelopmentMode: call.isDevelopmentMode,
       dataPlan: {
@@ -25,7 +25,6 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
       },
       identifyRequest: call.identifyRequest || undefined,
       logLevel: (call.logLevel == "verbose" || "warning" || "none") ? call.logLevel : "verbose",
-      identityCallback: call.identityCallback || undefined,
     };
     // Plan Version is optional but we need to set a default for existing clients which expect it to default to "2"
     // if it is not passed.  Therefore we use planVersionRequired flag to determine if we can just not set it at all
@@ -38,23 +37,35 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     return mParticleConfig;
   }
 
-  async mParticleInit(call: { key: string, mParticleConfig: any }): Promise<any> {
-    return this.mParticle.init(call.key, call.mParticleConfig as any);
+  public mParticleInit(call: { key: string, mParticleConfig: any }): Promise<IdentityResult> {
+    return new Promise((resolve, reject) => {
+      call.mParticleConfig.identityCallback = (result: IdentityResult) => {
+        resolve(result);
+      };
+      try {
+        this.mParticle.init(
+          call.key,
+          { ...call.mParticleConfig as any }
+        );
+      } catch (e) {
+        reject(e);
+      }
+    });
   }
 
-  async loginMParticleUser(call: { email: string, customerId?: string }): Promise<IdentityResult> {
+  public loginMParticleUser(call: { email: string, customerId?: string }): Promise<IdentityResult> {
     return new Promise((resolve, reject) => {
       try {
         this.mParticle.Identity.login(this.identityRequest(call.email, call.customerId), (result: IdentityResult) => {
           resolve(result);
-        });  
+        });
       } catch (e) {
         reject(e);
       }
     })
   }
 
-  async logoutMParticleUser(_call?: any): Promise<IdentityResult> {
+  public logoutMParticleUser(_call?: any): Promise<IdentityResult> {
     return new Promise((resolve, reject) => {
       try {
         this.mParticle.Identity.logout({} as any, (result) => {
@@ -66,7 +77,7 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     });
   }
 
-  async registerMParticleUser(call: { email: string, customerId?: string, userAttributes: any }): Promise<any> {
+  public registerMParticleUser(call: { email: string, customerId?: string, userAttributes: any }): Promise<any> {
     return new Promise((resolve, reject) => {
       this.mParticle.Identity.login(this.identityRequest(call.email, call.customerId), (result) => {
         if (!result) {

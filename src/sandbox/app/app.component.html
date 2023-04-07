@@ -2,14 +2,26 @@
   <h1>MParticle Capacitor Demo</h1>
 
   <h2>Configuration</h2>
-  <p>Api Key:</p>
-  <input type="text" [(ngModel)]="key">
-  <p>Plan ID</p>
-  <input type="text" [(ngModel)]="planID">
-  <p>Plan Version:</p>
-  <input type="number" [(ngModel)]="planVersion">
-  <p>Plan Version Required(set it to "2" if not specified)</p>
-  <input type="checkbox" [(ngModel)]="planVersionRequired">
+  
+  <div class="col-12">
+    <label for="key">Api Key:</label>
+    <input class="form-control col-12" type="text" [(ngModel)]="key">
+  </div>
+
+  <div class="col-12">
+    <label for="planID">Plan ID:</label>
+    <input class="form-control" type="text" [(ngModel)]="planID">
+  </div>
+
+  <div class="col-12">
+    <label for="planVersion">Plan Version:</label>
+    <input class="form-control" type="number" [(ngModel)]="planVersion">
+  </div>
+<br>
+  <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+    <input class="btn-check" type="checkbox" [(ngModel)]="planVersionRequired">
+    <label class="btn btn-outline-primary" for="btncheck1" autocomplete="off">Default Plan Version</label>
+  </div>
 
   <h2>Trigger event:</h2>
 
