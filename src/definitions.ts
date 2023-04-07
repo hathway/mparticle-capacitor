@@ -9,10 +9,10 @@ export interface MParticleCapacitorPlugin {
 
   currentUser: mParticle.User;
 
-  mParticleConfig(call: MParticleConfigArguments): Promise<MPConfigType>;
-  mParticleInit(call: { key: string, mParticleConfig: any }): Promise<any>;
-  loginMParticleUser(call: { email: string, customerId?: string }): Promise<any>;
-  logoutMParticleUser(call?: any): Promise<any>;
+  mParticleConfig(call: MParticleConfigArguments): MPConfigType;
+  mParticleInit(call: { key: string, mParticleConfig: any }): Promise<IdentityResult>;
+  loginMParticleUser(call: { email: string, customerId?: string }): Promise<IdentityResult>;
+  logoutMParticleUser(call?: any): Promise<IdentityResult>;
   
   getAllUserAttributes(call?: any): AllUserAttributes;
 
