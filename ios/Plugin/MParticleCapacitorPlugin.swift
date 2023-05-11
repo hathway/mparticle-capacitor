@@ -120,6 +120,15 @@ public class MParticleCapacitorPlugin: CAPPlugin {
         ])
     }
 
+    @objc func removeUserAttribute(_ call: CAPPluginCall) {
+        let name = call.getString("attributeName") ?? ""
+
+        implementation.currentUser()?.removeAttribute(name)
+        call.resolve([
+            "value":"success",
+        ])
+    }
+
     @objc func setUserAttributeList(_ call: CAPPluginCall) {
         let name:String = call.getString("attributeName") ?? ""
         let list:[String] = call.getArray("attributeValues") as? [String] ?? []

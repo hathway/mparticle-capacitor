@@ -128,6 +128,15 @@ public class MParticleCapacitorPlugin extends Plugin {
     }
 
     @PluginMethod
+    public void removeUserAttribute(PluginCall call) {
+        String name = call.getString("attributeName");
+        if (implementation.currentUser() != null) {
+            implementation.currentUser().removeUserAttribute(name);
+        }
+        call.resolve(new JSObject());
+    }
+
+    @PluginMethod
     public void setUserAttributeList(PluginCall call) {
         String name = call.getString("attributeName");
         JSArray list_tmp = call.getArray("attributeValues");

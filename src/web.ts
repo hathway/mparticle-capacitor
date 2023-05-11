@@ -17,7 +17,7 @@ export interface MParticleConfigArguments {
 export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacitorPlugin {
   public mParticle = mParticle;
 
-  public mParticleConfig(call: MParticleConfigArguments): MPConfigType {
+  async mParticleConfig(call: MParticleConfigArguments): Promise<MPConfigType> {
     const mParticleConfig: any = {
       isDevelopmentMode: call.isDevelopmentMode,
       dataPlan: {
@@ -118,7 +118,11 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
   }
 
   public setUserAttributeList(call: { attributeName: string, attributeValues: any }): void {
-    this.currentUser.setUserAttributeList(call.attributeName, call.attributeValues);
+    this.currentUser?.setUserAttributeList(call.attributeName, call.attributeValues);
+  }
+
+  public removeUserAttribute(call: { attributeName: string }): void {
+    this.currentUser?.removeUserAttribute(call.attributeName);
   }
 
   public updateMParticleCart(call: { productData: any, customAttributes: any, eventType: any }): void {

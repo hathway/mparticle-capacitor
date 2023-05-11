@@ -9,11 +9,11 @@ export interface MParticleCapacitorPlugin {
 
   currentUser: mParticle.User;
 
-  mParticleConfig(call: MParticleConfigArguments): MPConfigType;
+  mParticleConfig(call: MParticleConfigArguments): Promise<MPConfigType>;
   mParticleInit(call: { key: string, mParticleConfig: any }): Promise<IdentityResult>;
   loginMParticleUser(call: { email: string, customerId?: string }): Promise<IdentityResult>;
   logoutMParticleUser(call?: any): Promise<IdentityResult>;
-  
+
   getAllUserAttributes(call?: any): AllUserAttributes;
 
   logMParticleEvent(call: { eventName: string, eventType: any, eventProperties: any }): void;
@@ -21,6 +21,7 @@ export interface MParticleCapacitorPlugin {
 
   setUserAttribute(call: { attributeName: string, attributeValue: string }): void;
   setUserAttributeList(call: { attributeName: string, attributeValues: any }): void;
+  removeUserAttribute(call: {attributeName: string}): void;
 
   updateMParticleCart(call: { productData: any, customAttributes: any, eventType: any }): void;
   addMParticleProduct(call: { productData: any, customAttributes: any }): void;

@@ -278,11 +278,12 @@ Full documentation here: https://github.com/AppsFlyerSDK/appsflyer-capacitor-plu
 * [`mParticleInit(...)`](#mparticleinit)
 * [`loginMParticleUser(...)`](#loginmparticleuser)
 * [`logoutMParticleUser(...)`](#logoutmparticleuser)
-* [`getAllUserAttributes()`](#getalluserattributes)
+* [`getAllUserAttributes(...)`](#getalluserattributes)
 * [`logMParticleEvent(...)`](#logmparticleevent)
 * [`logMParticlePageView(...)`](#logmparticlepageview)
 * [`setUserAttribute(...)`](#setuserattribute)
 * [`setUserAttributeList(...)`](#setuserattributelist)
+* [`removeUserAttribute(...)`](#removeuserattribute)
 * [`updateMParticleCart(...)`](#updatemparticlecart)
 * [`addMParticleProduct(...)`](#addmparticleproduct)
 * [`removeMParticleProduct(...)`](#removemparticleproduct)
@@ -329,14 +330,14 @@ mParticleConfig(call: MParticleConfigArguments) => Promise<MPConfigType>
 ### mParticleInit(...)
 
 ```typescript
-mParticleInit(call: { key: string; mParticleConfig: any; }) => Promise<any>
+mParticleInit(call: { key: string; mParticleConfig: any; }) => Promise<IdentityResult>
 ```
 
 | Param      | Type                                                |
 | ---------- | --------------------------------------------------- |
 | **`call`** | <code>{ key: string; mParticleConfig: any; }</code> |
 
-**Returns:** <code>Promise&lt;any&gt;</code>
+**Returns:** <code>Promise&lt;<a href="#identityresult">IdentityResult</a>&gt;</code>
 
 --------------------
 
@@ -344,14 +345,14 @@ mParticleInit(call: { key: string; mParticleConfig: any; }) => Promise<any>
 ### loginMParticleUser(...)
 
 ```typescript
-loginMParticleUser(call: { email: string; customerId?: string; }) => Promise<any>
+loginMParticleUser(call: { email: string; customerId?: string; }) => Promise<IdentityResult>
 ```
 
 | Param      | Type                                                 |
 | ---------- | ---------------------------------------------------- |
 | **`call`** | <code>{ email: string; customerId?: string; }</code> |
 
-**Returns:** <code>Promise&lt;any&gt;</code>
+**Returns:** <code>Promise&lt;<a href="#identityresult">IdentityResult</a>&gt;</code>
 
 --------------------
 
@@ -359,25 +360,29 @@ loginMParticleUser(call: { email: string; customerId?: string; }) => Promise<any
 ### logoutMParticleUser(...)
 
 ```typescript
-logoutMParticleUser(call?: any) => Promise<any>
+logoutMParticleUser(call?: any) => Promise<IdentityResult>
 ```
 
 | Param      | Type             |
 | ---------- | ---------------- |
 | **`call`** | <code>any</code> |
 
-**Returns:** <code>Promise&lt;any&gt;</code>
+**Returns:** <code>Promise&lt;<a href="#identityresult">IdentityResult</a>&gt;</code>
 
 --------------------
 
 
-### getAllUserAttributes()
+### getAllUserAttributes(...)
 
 ```typescript
-getAllUserAttributes() => Promise<any>
+getAllUserAttributes(call?: any) => AllUserAttributes
 ```
 
-**Returns:** <code>Promise&lt;any&gt;</code>
+| Param      | Type             |
+| ---------- | ---------------- |
+| **`call`** | <code>any</code> |
+
+**Returns:** <code><a href="#alluserattributes">AllUserAttributes</a></code>
 
 --------------------
 
@@ -385,14 +390,12 @@ getAllUserAttributes() => Promise<any>
 ### logMParticleEvent(...)
 
 ```typescript
-logMParticleEvent(call: { eventName: string; eventType: any; eventProperties: any; }) => Promise<any>
+logMParticleEvent(call: { eventName: string; eventType: any; eventProperties: any; }) => void
 ```
 
 | Param      | Type                                                                      |
 | ---------- | ------------------------------------------------------------------------- |
 | **`call`** | <code>{ eventName: string; eventType: any; eventProperties: any; }</code> |
-
-**Returns:** <code>Promise&lt;any&gt;</code>
 
 --------------------
 
@@ -400,14 +403,12 @@ logMParticleEvent(call: { eventName: string; eventType: any; eventProperties: an
 ### logMParticlePageView(...)
 
 ```typescript
-logMParticlePageView(call: { pageName: string; pageLink: any; overrides?: any; }) => Promise<any>
+logMParticlePageView(call: { pageName: string; pageLink: any; overrides?: any; }) => void
 ```
 
 | Param      | Type                                                               |
 | ---------- | ------------------------------------------------------------------ |
 | **`call`** | <code>{ pageName: string; pageLink: any; overrides?: any; }</code> |
-
-**Returns:** <code>Promise&lt;any&gt;</code>
 
 --------------------
 
@@ -415,14 +416,12 @@ logMParticlePageView(call: { pageName: string; pageLink: any; overrides?: any; }
 ### setUserAttribute(...)
 
 ```typescript
-setUserAttribute(call: { attributeName: string; attributeValue: string; }) => Promise<any>
+setUserAttribute(call: { attributeName: string; attributeValue: string; }) => void
 ```
 
 | Param      | Type                                                            |
 | ---------- | --------------------------------------------------------------- |
 | **`call`** | <code>{ attributeName: string; attributeValue: string; }</code> |
-
-**Returns:** <code>Promise&lt;any&gt;</code>
 
 --------------------
 
@@ -430,14 +429,25 @@ setUserAttribute(call: { attributeName: string; attributeValue: string; }) => Pr
 ### setUserAttributeList(...)
 
 ```typescript
-setUserAttributeList(call: { attributeName: string; attributeValues: any; }) => Promise<any>
+setUserAttributeList(call: { attributeName: string; attributeValues: any; }) => void
 ```
 
 | Param      | Type                                                          |
 | ---------- | ------------------------------------------------------------- |
 | **`call`** | <code>{ attributeName: string; attributeValues: any; }</code> |
 
-**Returns:** <code>Promise&lt;any&gt;</code>
+--------------------
+
+
+### removeUserAttribute(...)
+
+```typescript
+removeUserAttribute(call: { attributeName: string; }) => void
+```
+
+| Param      | Type                                    |
+| ---------- | --------------------------------------- |
+| **`call`** | <code>{ attributeName: string; }</code> |
 
 --------------------
 
@@ -445,14 +455,12 @@ setUserAttributeList(call: { attributeName: string; attributeValues: any; }) => 
 ### updateMParticleCart(...)
 
 ```typescript
-updateMParticleCart(call: { productData: any; customAttributes: any; eventType: any; }) => Promise<any>
+updateMParticleCart(call: { productData: any; customAttributes: any; eventType: any; }) => void
 ```
 
 | Param      | Type                                                                      |
 | ---------- | ------------------------------------------------------------------------- |
 | **`call`** | <code>{ productData: any; customAttributes: any; eventType: any; }</code> |
-
-**Returns:** <code>Promise&lt;any&gt;</code>
 
 --------------------
 
@@ -460,14 +468,12 @@ updateMParticleCart(call: { productData: any; customAttributes: any; eventType: 
 ### addMParticleProduct(...)
 
 ```typescript
-addMParticleProduct(call: { productData: any; customAttributes: any; }) => Promise<any>
+addMParticleProduct(call: { productData: any; customAttributes: any; }) => void
 ```
 
 | Param      | Type                                                      |
 | ---------- | --------------------------------------------------------- |
 | **`call`** | <code>{ productData: any; customAttributes: any; }</code> |
-
-**Returns:** <code>Promise&lt;any&gt;</code>
 
 --------------------
 
@@ -475,14 +481,12 @@ addMParticleProduct(call: { productData: any; customAttributes: any; }) => Promi
 ### removeMParticleProduct(...)
 
 ```typescript
-removeMParticleProduct(call: { productData: any; customAttributes: any; }) => Promise<any>
+removeMParticleProduct(call: { productData: any; customAttributes: any; }) => void
 ```
 
 | Param      | Type                                                      |
 | ---------- | --------------------------------------------------------- |
 | **`call`** | <code>{ productData: any; customAttributes: any; }</code> |
-
-**Returns:** <code>Promise&lt;any&gt;</code>
 
 --------------------
 
@@ -490,14 +494,12 @@ removeMParticleProduct(call: { productData: any; customAttributes: any; }) => Pr
 ### submitPurchaseEvent(...)
 
 ```typescript
-submitPurchaseEvent(call: { productData: any; customAttributes: any; transactionAttributes: any; }) => Promise<any>
+submitPurchaseEvent(call: { productData: any; customAttributes: any; transactionAttributes: any; }) => void
 ```
 
 | Param      | Type                                                                                  |
 | ---------- | ------------------------------------------------------------------------------------- |
 | **`call`** | <code>{ productData: any; customAttributes: any; transactionAttributes: any; }</code> |
-
-**Returns:** <code>Promise&lt;any&gt;</code>
 
 --------------------
 
