@@ -1,33 +1,35 @@
-import type { IdentityResult } from "@mparticle/web-sdk";
+import type { AllUserAttributes, IdentityResult } from "@mparticle/web-sdk";
 
-import type { MParticleCapacitorWebConfigurationInterface } from "./config/mparticle-capacitor-web-configuration.interface";
+import type { MParticleConfigArguments } from "./web";
 
 export type mParticleInitListener = (info: any) => any;
 
 export interface MParticleCapacitorPlugin {
   echo(options: { value: string }): Promise<{ value: string }>;
 
-  setMParticleCapacitorConfiguration(config: MParticleCapacitorWebConfigurationInterface): void
-  mParticleConfig(call: { isDevelopmentMode?: boolean, planID?: string, planVer?: number, logLevel?: string, identifyRequest?: any, identityCallback?:Function }): Promise<MPConfigType>;
-  mParticleInit(call: { key: string, mParticleConfig: any }): Promise<any>;
-  loginMParticleUser(call: { email: string, customerId: string }): Promise<any>;
-  logoutMParticleUser(call?: any): Promise<any>;
-  
-  getAllUserAttributes(): Promise<any>;
+  currentUser: mParticle.User;
 
-  logMParticleEvent(call: { eventName: string, eventType: any, eventProperties: any }): Promise<any>;
-  logMParticlePageView(call: { pageName: string, pageLink: any }): Promise<any>;
+  mParticleConfig(call: MParticleConfigArguments): Promise<MPConfigType>;
+  mParticleInit(call: { key: string, mParticleConfig: any }): Promise<IdentityResult>;
+  loginMParticleUser(call: { email: string, customerId?: string }): Promise<IdentityResult>;
+  logoutMParticleUser(call?: any): Promise<IdentityResult>;
 
-  setUserAttribute(call: { attributeName: string, attributeValue: string }): Promise<any>;
-  setUserAttributeList(call: { attributeName: string, attributeValues: any }): Promise<any>;
+  getAllUserAttributes(call?: any): AllUserAttributes;
 
-  updateMParticleCart(call: { productData: any, customAttributes: any, eventType: any }): Promise<any>;
-  addMParticleProduct(call: { productData: any, customAttributes: any }): Promise<any>;
-  removeMParticleProduct(call: { productData: any, customAttributes: any }): Promise<any>;
+  logMParticleEvent(call: { eventName: string, eventType: any, eventProperties: any }): void;
+  logMParticlePageView(call: { pageName: string, pageLink: any, overrides?: any}): void;
 
-  submitPurchaseEvent(call: { productData: any, customAttributes: any, transactionAttributes: any }): Promise<any>;
+  setUserAttribute(call: { attributeName: string, attributeValue: string }): void;
+  setUserAttributeList(call: { attributeName: string, attributeValues: any }): void;
+  removeUserAttribute(call: {attributeName: string}): void;
 
-  registerMParticleUser(call: { email: string, customerId: string, userAttributes: any }): Promise<any>;
+  updateMParticleCart(call: { productData: any, customAttributes: any, eventType: any }): void;
+  addMParticleProduct(call: { productData: any, customAttributes: any }): void;
+  removeMParticleProduct(call: { productData: any, customAttributes: any }): void;
+
+  submitPurchaseEvent(call: { productData: any, customAttributes: any, transactionAttributes: any }): void;
+
+  registerMParticleUser(call: { email: string, customerId?: string, userAttributes: any }): Promise<any>;
 }
 
 export enum MParticleEventType {
@@ -64,4 +66,24 @@ export type MPConfigType = {
   identifyRequest?: any,
   logLevel?: string,
   identityCallback?: (i: IdentityResult) => void,
+}
+
+export interface EventAttributesMap {
+  eventAttributesMap: {
+    pageView: {
+      url: string;
+    }
+  };
+}
+
+export interface IdentityRequestAttributesMap {
+  email: {
+    required: boolean;
+  };
+  customerId: {
+    required: boolean;
+  };
+  mobile: {
+    required: boolean;
+  };
 }

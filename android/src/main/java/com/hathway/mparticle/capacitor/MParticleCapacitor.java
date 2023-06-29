@@ -70,7 +70,7 @@ public class MParticleCapacitor {
         return new Product.Builder(
             (String) productData.getString("name"),
             (String) productData.getString("sku"),
-            (double) productData.getInteger("cost"))
+            (double) Double.parseDouble(productData.getString("cost")))
             .quantity((double) productData.getInteger("quantity"))
             .customAttributes((Map<String,String>) customAttributes)
             .build();

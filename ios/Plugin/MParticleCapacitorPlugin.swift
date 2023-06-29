@@ -91,7 +91,11 @@ public class MParticleCapacitorPlugin: CAPPlugin {
 
     @objc func logMParticlePageView(_ call: CAPPluginCall) {
         let name = call.getString("pageName") ?? ""
-        let screenInfo = ["page": call.getString("pageLink") ?? ""];
+        var attributeName = "page"
+        if let overrides = call.getObject("overrides") {
+            attributeName = overrides["attributeName"] as! String
+        }
+        let screenInfo = [ attributeName: call.getString("pageLink") ?? ""];
 
         MParticle.sharedInstance().logScreen(name, eventInfo: screenInfo)
         call.resolve([
@@ -111,6 +115,15 @@ public class MParticleCapacitorPlugin: CAPPlugin {
         let value = call.getString("attributeValue") ?? ""
 
         implementation.currentUser()?.setUserAttribute(name, value: value)
+        call.resolve([
+            "value":"success",
+        ])
+    }
+
+    @objc func removeUserAttribute(_ call: CAPPluginCall) {
+        let name = call.getString("attributeName") ?? ""
+
+        implementation.currentUser()?.removeAttribute(name)
         call.resolve([
             "value":"success",
         ])
