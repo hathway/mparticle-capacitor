@@ -1,68 +1,79 @@
 import { WebPlugin } from '@capacitor/core';
 import mParticle from '@mparticle/web-sdk';
+import type { AllUserAttributes, IdentityResult } from '@mparticle/web-sdk';
 import type { MParticleCapacitorPlugin, MPConfigType } from './definitions';
+export interface MParticleConfigArguments {
+    isDevelopmentMode?: boolean;
+    planID?: string;
+    planVer?: number;
+    planVersionRequired?: boolean;
+    logLevel?: string;
+    identifyRequest?: any;
+    identityCallback?: (i: IdentityResult) => void;
+}
 export declare class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacitorPlugin {
-    mParticleConfig(call: {
-        isDevelopmentMode?: boolean;
-        planID?: string;
-        planVer?: number;
-        logLevel?: string;
-        identifyRequest?: any;
-        identityCallback?: Function;
-    }): Promise<MPConfigType>;
+    mParticle: typeof mParticle;
+    mParticleConfig(call: MParticleConfigArguments): Promise<MPConfigType>;
     mParticleInit(call: {
         key: string;
         mParticleConfig: any;
-    }): Promise<any>;
+    }): Promise<IdentityResult>;
     loginMParticleUser(call: {
         email: string;
-        customerId: string;
-    }): Promise<any>;
-    logoutMParticleUser(_call: any): Promise<any>;
+        customerId?: string;
+    }): Promise<IdentityResult>;
+    logoutMParticleUser(_call?: any): Promise<IdentityResult>;
     registerMParticleUser(call: {
         email: string;
-        customerId: string;
+        customerId?: string;
         userAttributes: any;
     }): Promise<any>;
     logMParticleEvent(call: {
         eventName: string;
         eventType: any;
         eventProperties: any;
-    }): Promise<any>;
+    }): void;
     logMParticlePageView(call: {
         pageName: string;
         pageLink: string;
-    }): Promise<any>;
+        overrides?: {
+            attributeName: string;
+        };
+    }): void;
+    getAllUserAttributes(_call?: any): AllUserAttributes;
     setUserAttribute(call: {
         attributeName: string;
         attributeValue: string;
-    }): Promise<any>;
+    }): void;
     setUserAttributeList(call: {
         attributeName: string;
         attributeValues: any;
-    }): Promise<any>;
+    }): void;
+    removeUserAttribute(call: {
+        attributeName: string;
+    }): void;
     updateMParticleCart(call: {
         productData: any;
         customAttributes: any;
         eventType: any;
-    }): Promise<any>;
+    }): void;
     addMParticleProduct(call: {
         productData: any;
         customAttributes: any;
-    }): Promise<any>;
+    }): void;
     removeMParticleProduct(call: {
         productData: any;
         customAttributes: any;
-    }): Promise<any>;
+    }): void;
     submitPurchaseEvent(call: {
-        productData: any;
+        productData: any[];
         customAttributes: any;
         transactionAttributes: any;
-    }): Promise<any>;
+    }): void;
     get currentUser(): mParticle.User;
-    private identityRequest;
-    private createMParticleProduct;
-    private logProductAction;
+    protected identityRequest(email: string, customerId?: string): any;
+    protected createMParticleProduct(productData: any): mParticle.Product;
+    protected logProductAction(eventType: any, product: any, customAttributes: any, transactionAttributes?: any, customFlags?: any): void;
     echo(options: {
         value: string;
     }): Promise<{
