@@ -11,6 +11,9 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     private let implementation = MParticleCapacitor()
 
     @objc func mParticleInit(_ call: CAPPluginCall) {
+
+        print("this is a version running locally")
+
         call.unimplemented("Moved for Braze compatability")
         // let key = call.getString("key") ?? ""
         // let secret = call.getString("secret") ?? ""
