@@ -81,6 +81,9 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle) {
         async logMParticlePageView(call) {
             return mParticle__default["default"].logPageView(call.pageName, { page: call.pageLink });
         }
+        async getAllUserAttributes() {
+            return this.currentUser.getAllUserAttributes();
+        }
         async setUserAttribute(call) {
             var _a;
             return (_a = this.currentUser) === null || _a === void 0 ? void 0 : _a.setUserAttribute(call.attributeName, call.attributeValue);

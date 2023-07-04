@@ -33,6 +33,7 @@ export declare class MParticleCapacitorWeb extends WebPlugin implements MParticl
         pageName: string;
         pageLink: string;
     }): Promise<any>;
+    getAllUserAttributes(): Promise<any>;
     setUserAttribute(call: {
         attributeName: string;
         attributeValue: string;

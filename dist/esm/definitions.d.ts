@@ -22,6 +22,7 @@ export interface MParticleCapacitorPlugin {
         customerId: string;
     }): Promise<any>;
     logoutMParticleUser(call?: any): Promise<any>;
+    getAllUserAttributes(): Promise<any>;
     logMParticleEvent(call: {
         eventName: string;
         eventType: any;

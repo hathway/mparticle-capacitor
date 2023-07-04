@@ -89,6 +89,16 @@
         "slug": "logoutmparticleuser"
       },
       {
+        "name": "getAllUserAttributes",
+        "signature": "() => Promise<any>",
+        "parameters": [],
+        "returns": "Promise<any>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "getalluserattributes"
+      },
+      {
         "name": "logMParticleEvent",
         "signature": "(call: { eventName: string; eventType: any; eventProperties: any; }) => Promise<any>",
         "parameters": [

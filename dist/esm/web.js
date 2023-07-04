@@ -46,6 +46,9 @@ export class MParticleCapacitorWeb extends WebPlugin {
     async logMParticlePageView(call) {
         return mParticle.logPageView(call.pageName, { page: call.pageLink });
     }
+    async getAllUserAttributes() {
+        return this.currentUser.getAllUserAttributes();
+    }
     async setUserAttribute(call) {
         var _a;
         return (_a = this.currentUser) === null || _a === void 0 ? void 0 : _a.setUserAttribute(call.attributeName, call.attributeValue);

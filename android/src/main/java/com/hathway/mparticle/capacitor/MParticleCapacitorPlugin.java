@@ -256,8 +256,12 @@ public class MParticleCapacitorPlugin extends Plugin {
     public void loginMParticleUser(PluginCall call) {
         String email = call.getString("email");
         String customerId = call.getString("customerId");
-        MParticle.getInstance().Identity().login(implementation.identityRequest(email,customerId));
-        call.resolve(new JSObject());
+        MParticle.getInstance().Identity().login(implementation.identityRequest(email, customerId));
+
+        long mPID = MParticle.getInstance().Identity().getCurrentUser().getId();
+        JSObject jsonObject = new JSObject();
+        jsonObject.put("value", mPID);
+        call.resolve(jsonObject);
     }
 
     @PluginMethod
