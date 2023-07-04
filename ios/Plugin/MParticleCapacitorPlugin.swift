@@ -11,6 +11,7 @@ public class MParticleCapacitorPlugin: CAPPlugin {
     private let implementation = MParticleCapacitor()
 
     @objc func mParticleInit(_ call: CAPPluginCall) {
+        print("you are now initializing the mparticle plugin in swift")
         call.unimplemented("Moved for Braze compatability")
         // let key = call.getString("key") ?? ""
         // let secret = call.getString("secret") ?? ""
@@ -28,9 +29,17 @@ public class MParticleCapacitorPlugin: CAPPlugin {
         let email = call.getString("email") ?? ""
         let customerId = call.getString("customerId") ?? ""
         MParticle.sharedInstance().identity.login(implementation.identityRequest(email,customerId)!, completion: implementation.identityCallback)
+
         call.resolve([
             "value":"success",
         ])
+
+        // TODO: after login, need to get the MPID value (MParticleID)
+        // return to JS layer
+
+        // call.resolve([
+        //     "value": mParticleID,
+        // ])
     }
 
     @objc func logoutMParticleUser(_ call: CAPPluginCall) {
