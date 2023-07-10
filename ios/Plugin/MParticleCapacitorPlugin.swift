@@ -28,8 +28,9 @@ public class MParticleCapacitorPlugin: CAPPlugin {
         let email = call.getString("email") ?? ""
         let customerId = call.getString("customerId") ?? ""
         MParticle.sharedInstance().identity.login(implementation.identityRequest(email,customerId)!, completion: implementation.identityCallback)
+        let mPID = MParticle.sharedInstance().identity.currentUser?.userId;
         call.resolve([
-            "value":"success",
+            "value": mPID ?? "Success",
         ])
     }
 

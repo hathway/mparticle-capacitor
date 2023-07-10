@@ -345,14 +345,14 @@ mParticleInit(call: { key: string; mParticleConfig: any; }) => Promise<IdentityR
 ### loginMParticleUser(...)
 
 ```typescript
-loginMParticleUser(call: { email: string; customerId?: string; }) => Promise<IdentityResult>
+loginMParticleUser(call: { email: string; customerId?: string; }) => Promise<{ value: string; }>
 ```
 
 | Param      | Type                                                 |
 | ---------- | ---------------------------------------------------- |
 | **`call`** | <code>{ email: string; customerId?: string; }</code> |
 
-**Returns:** <code>Promise&lt;<a href="#identityresult">IdentityResult</a>&gt;</code>
+**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
 
 --------------------
 
@@ -668,6 +668,11 @@ registerMParticleUser(call: { email: string; customerId?: string; userAttributes
 <code>{ isDevelopmentMode?: boolean, dataPlan?: { planId?: string, planVersion?: number }, identifyRequest?: any, logLevel?: string, identityCallback?: (i: <a href="#identityresult">IdentityResult</a>) =&gt; void, }</code>
 
 
+#### UserIdentities
+
+<code>{ customerid?: string; email?: string; other?: string; other2?: string; other3?: string; other4?: string; other5?: string; other6?: string; other7?: string; other8?: string; other9?: string; other10?: string; mobile_number?: string; phone_number_2?: string; phone_number_3?: string; facebook?: string; facebookcustomaudienceid?: string; google?: string; twitter?: string; microsoft?: string; yahoo?: string; }</code>
+
+
 #### MPID
 
 <code>string</code>
@@ -690,8 +695,43 @@ Construct a type with a set of properties K of type T
 <code><a href="#record">Record</a>&lt; string, <a href="#userattributesvalue">UserAttributesValue</a> | UserAttributesValue[] &gt;</code>
 
 
+#### Product
+
+<code>{ name: string; sku: string; price: number; quantity?: number; variant?: string; category?: string; brand?: string; position?: number; coupon?: string; attributes?: <a href="#record">Record</a>&lt;string, unknown&gt;; }</code>
+
+
+#### Cart
+
+<code>{ /** * * @deprecated <a href="#cart">Cart</a> persistence in mParticle has been deprecated. Please use mParticle.eCommerce.logProductAction(mParticle.ProductActionType.AddToCart, [products]) */ add: (product: <a href="#product">Product</a>, logEventBoolean?: boolean) =&gt; void; /** * * @deprecated <a href="#cart">Cart</a> persistence in mParticle has been deprecated. Please use mParticle.eCommerce.logProductAction(mParticle.ProductActionType.RemoveFromCart, [products]) */ remove: (product: <a href="#product">Product</a>, logEventBoolean?: boolean) =&gt; void; /** * * @deprecated <a href="#cart">Cart</a> persistence in mParticle has been deprecated. */ clear: () =&gt; void; }</code>
+
+
+#### GDPRConsentState
+
+<code>{ [key: string]: <a href="#privacyconsentstate">PrivacyConsentState</a>; }</code>
+
+
+#### PrivacyConsentState
+
+<code>{ Consented: boolean; Timestamp: number; ConsentDocument: string; Location: string; HardwareId: string; }</code>
+
+
+#### ConsentState
+
+<code>{ setGDPRConsentState: (gdprConsentState: <a href="#gdprconsentstate">GDPRConsentState</a>) =&gt; <a href="#consentstate">ConsentState</a>; setCCPAConsentState: (ccpaConsentState: <a href="#ccpaconsentstate">CCPAConsentState</a>) =&gt; <a href="#consentstate">ConsentState</a>; addGDPRConsentState: ( purpose: string, gdprConsent: <a href="#privacyconsentstate">PrivacyConsentState</a>, ) =&gt; <a href="#consentstate">ConsentState</a>; getGDPRConsentState: () =&gt; <a href="#gdprconsentstate">GDPRConsentState</a>; getCCPAConsentState: () =&gt; <a href="#ccpaconsentstate">CCPAConsentState</a>; removeGDPRConsentState: (purpose: string) =&gt; <a href="#consentstate">ConsentState</a>; removeCCPAConsentState: () =&gt; <a href="#consentstate">ConsentState</a>; }</code>
+
+
 #### CCPAConsentState
 
 <code><a href="#privacyconsentstate">PrivacyConsentState</a></code>
+
+
+#### User
+
+<code>{ getUserIdentities: () =&gt; <a href="#useridentities">UserIdentities</a>; getMPID: () =&gt; <a href="#mpid">MPID</a>; setUserTag: (tag: string) =&gt; void; removeUserTag: (tag: string) =&gt; void; setUserAttribute: (key: string, value: string) =&gt; void; setUserAttributes: (attributeObject: <a href="#record">Record</a>&lt;string, unknown&gt;) =&gt; void; removeUserAttribute: (key: string) =&gt; void; setUserAttributeList: (key: string, value: UserAttributesValue[]) =&gt; void; removeAllUserAttributes: () =&gt; void; getUserAttributesLists: () =&gt; <a href="#record">Record</a>&lt;string, UserAttributesValue[]&gt;; getAllUserAttributes: () =&gt; <a href="#alluserattributes">AllUserAttributes</a>; /** * * @deprecated <a href="#cart">Cart</a> persistence in mParticle has been deprecated */ getCart: () =&gt; <a href="#cart">Cart</a>; getConsentState: () =&gt; <a href="#consentstate">ConsentState</a>; setConsentState: (<a href="#consentstate">ConsentState</a>: <a href="#consentstate">ConsentState</a>) =&gt; void; isLoggedIn: () =&gt; boolean; getLastSeenTime: () =&gt; number; getFirstSeenTime: () =&gt; number; }</code>
+
+
+#### IdentityResult
+
+<code>{ httpCode: any; getPreviousUser(): <a href="#user">User</a>; getUser(): <a href="#user">User</a>; body: <a href="#identityresultbody">IdentityResultBody</a>; }</code>
 
 </docgen-api>

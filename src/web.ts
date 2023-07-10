@@ -1,8 +1,7 @@
 import { WebPlugin } from '@capacitor/core';
 import mParticle from '@mparticle/web-sdk';
-import type { AllUserAttributes, IdentityResult } from '@mparticle/web-sdk';
 
-import type { MParticleCapacitorPlugin, MPConfigType } from './definitions';
+import type { AllUserAttributes, IdentityResult, MParticleCapacitorPlugin, MPConfigType, Product, User } from './definitions';
 
 export interface MParticleConfigArguments {
   isDevelopmentMode?: boolean;
@@ -53,11 +52,11 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     });
   }
 
-  public loginMParticleUser(call: { email: string, customerId?: string }): Promise<IdentityResult> {
+  public loginMParticleUser(call: { email: string, customerId?: string }): Promise<{value: string}> {
     return new Promise((resolve, reject) => {
       try {
         this.mParticle.Identity.login(this.identityRequest(call.email, call.customerId), (result: IdentityResult) => {
-          resolve(result);
+          resolve({value: result.getUser().getMPID()});
         });
       } catch (e) {
         reject(e);
@@ -148,7 +147,7 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     this.logProductAction(this.mParticle.ProductActionType.Purchase, productArray, call.customAttributes, call.transactionAttributes, null);
   }
 
-  public get currentUser(): mParticle.User {
+  public get currentUser(): User {
     return this.mParticle.Identity.getCurrentUser();
   }
 
@@ -164,7 +163,7 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     return identity;
   }
 
-  protected createMParticleProduct(productData: any): mParticle.Product {
+  protected createMParticleProduct(productData: any): Product {
     return this.mParticle.eCommerce.createProduct(
       productData.name, //productName
       productData.sku, //productSku
