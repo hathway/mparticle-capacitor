@@ -90,6 +90,27 @@ public class MParticleCapacitorPlugin: CAPPlugin {
         ])
     }
 
+
+    @objc func logMParticleScreenView(_ call: CAPPluginCall) {
+
+        print("you are now in logMParticleScreenView")
+
+        call.resolve([
+            "value":"success",
+        ])
+
+        // let name = call.getString("pageName") ?? ""
+        // var attributeName = "page"
+        // if let overrides = call.getObject("overrides") {
+        //     attributeName = overrides["attributeName"] as! String
+        // }
+        // let screenInfo = [ attributeName: call.getString("pageLink") ?? ""];
+
+        // MParticle.sharedInstance().logScreen(name, eventInfo: screenInfo)
+        // call.resolve([
+        //     "value":"success",
+        // ])
+    }
     @objc func logMParticlePageView(_ call: CAPPluginCall) {
         let name = call.getString("pageName") ?? ""
         var attributeName = "page"

@@ -41,6 +41,7 @@ export declare class MParticleCapacitorWeb extends WebPlugin implements MParticl
             attributeName: string;
         };
     }): void;
+    logMParticleScreenView(call: any): void;
     getAllUserAttributes(_call?: any): AllUserAttributes;
     setUserAttribute(call: {
         attributeName: string;

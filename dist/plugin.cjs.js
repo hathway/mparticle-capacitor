@@ -128,6 +128,12 @@ class MParticleCapacitorWeb extends core.WebPlugin {
         const attributes = { [attributeName]: call.pageLink };
         this.mParticle.logPageView(call.pageName, attributes);
     }
+    // this method is not used for web... this is just a stub
+    logMParticleScreenView(call) {
+        console.log(call);
+        // this.logMParticlePageView(call)
+        return;
+    }
     getAllUserAttributes(_call) {
         return this.currentUser.getAllUserAttributes();
     }

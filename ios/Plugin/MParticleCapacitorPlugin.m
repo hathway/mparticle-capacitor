@@ -10,6 +10,7 @@ CAP_PLUGIN(MParticleCapacitorPlugin, "MParticleCapacitor",
            CAP_PLUGIN_METHOD(application, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(logMParticleEvent, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(logMParticlePageView, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(logMParticleScreenView, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(setUserAttribute, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(setUserAttributeList, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(removeUserAttribute, CAPPluginReturnPromise);

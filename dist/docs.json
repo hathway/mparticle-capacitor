@@ -143,6 +143,22 @@
         "slug": "logmparticlepageview"
       },
       {
+        "name": "logMParticleScreenView",
+        "signature": "(call: { pageName: string; pageLink: any; overrides?: any; }) => void",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "{ pageName: string; pageLink: any; overrides?: any; }"
+          }
+        ],
+        "returns": "void",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "logmparticlescreenview"
+      },
+      {
         "name": "setUserAttribute",
         "signature": "(call: { attributeName: string; attributeValue: string; }) => void",
         "parameters": [

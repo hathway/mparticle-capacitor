@@ -281,6 +281,7 @@ Full documentation here: https://github.com/AppsFlyerSDK/appsflyer-capacitor-plu
 * [`getAllUserAttributes(...)`](#getalluserattributes)
 * [`logMParticleEvent(...)`](#logmparticleevent)
 * [`logMParticlePageView(...)`](#logmparticlepageview)
+* [`logMParticleScreenView(...)`](#logmparticlescreenview)
 * [`setUserAttribute(...)`](#setuserattribute)
 * [`setUserAttributeList(...)`](#setuserattributelist)
 * [`removeUserAttribute(...)`](#removeuserattribute)
@@ -404,6 +405,19 @@ logMParticleEvent(call: { eventName: string; eventType: any; eventProperties: an
 
 ```typescript
 logMParticlePageView(call: { pageName: string; pageLink: any; overrides?: any; }) => void
+```
+
+| Param      | Type                                                               |
+| ---------- | ------------------------------------------------------------------ |
+| **`call`** | <code>{ pageName: string; pageLink: any; overrides?: any; }</code> |
+
+--------------------
+
+
+### logMParticleScreenView(...)
+
+```typescript
+logMParticleScreenView(call: { pageName: string; pageLink: any; overrides?: any; }) => void
 ```
 
 | Param      | Type                                                               |
