@@ -19,6 +19,9 @@ export interface MParticleCapacitorPlugin {
   logMParticleEvent(call: { eventName: string, eventType: any, eventProperties: any }): void;
   logMParticlePageView(call: { pageName: string, pageLink: any, overrides?: any}): void;
 
+  // new in npm-2.1.0
+  logMParticleScreenView(call: { pageName: string, pageLink: any, overrides?: any}): void;
+
   setUserAttribute(call: { attributeName: string, attributeValue: string }): void;
   setUserAttributeList(call: { attributeName: string, attributeValues: any }): void;
   removeUserAttribute(call: {attributeName: string}): void;

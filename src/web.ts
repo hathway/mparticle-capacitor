@@ -109,6 +109,13 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     );
   }
 
+  // this method is not used for web... this is just a stub
+  public logMParticleScreenView(call: any): void {
+    console.log(call);
+    // this.logMParticlePageView(call)
+    return;
+  }
+
   public getAllUserAttributes(_call?: any): AllUserAttributes {
     return this.currentUser.getAllUserAttributes();
   }

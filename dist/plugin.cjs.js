@@ -39,91 +39,151 @@ const MParticleCapacitor = core.registerPlugin('MParticleCapacitor', {
     web: () => Promise.resolve().then(function () { return web; }).then(m => new m.MParticleCapacitorWeb()),
 });
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 class MParticleCapacitorWeb extends core.WebPlugin {
+    constructor() {
+        super(...arguments);
+        this.mParticle = mParticle__default["default"];
+    }
     async mParticleConfig(call) {
-        var mParticleConfig = {
+        const mParticleConfig = {
             isDevelopmentMode: call.isDevelopmentMode,
             dataPlan: {
                 planId: call.planID || 'master_data_plan',
-                planVersion: call.planVer || 2
             },
             identifyRequest: call.identifyRequest || undefined,
             logLevel: (call.logLevel == "verbose" || "warning" || "none") ? call.logLevel : "verbose",
-            identityCallback: call.identityCallback || undefined,
         };
+        // Plan Version is optional but we need to set a default for existing clients which expect it to default to "2"
+        // if it is not passed.  Therefore we use planVersionRequired flag to determine if we can just not set it at all
+        // which will cause MP to default to latest version
+        if (call.planVer !== undefined && !isNaN(call.planVer)) {
+            mParticleConfig.dataPlan.planVersion = call.planVer;
+        }
+        else if (call.planVersionRequired) {
+            mParticleConfig.dataPlan.planVersion = 2;
+        }
         return mParticleConfig;
     }
-    async mParticleInit(call) {
-        return mParticle__default["default"].init(call.key, call.mParticleConfig);
-    }
-    async loginMParticleUser(call) {
-        return mParticle__default["default"].Identity.login(this.identityRequest(call.email, call.customerId));
-    }
-    async logoutMParticleUser(_call) {
-        const identityCallback = (result) => {
-            if (result.getUser()) {
-                console.log('logging out of mParticle', _call);
+    mParticleInit(call) {
+        return new Promise((resolve, reject) => {
+            call.mParticleConfig.identityCallback = (result) => {
+                resolve(result);
+            };
+            try {
+                this.mParticle.init(call.key, Object.assign({}, call.mParticleConfig));
             }
-        };
-        return mParticle__default["default"].Identity.logout({}, identityCallback);
-    }
-    async registerMParticleUser(call) {
-        return mParticle__default["default"].Identity.login(this.identityRequest(call.email, call.customerId), function (result) {
-            if (!result)
-                return;
-            const currentUser = result.getUser();
-            for (const [key, value] of Object.entries(call.userAttributes)) {
-                if (key && value)
-                    currentUser.setUserAttribute(key, value);
+            catch (e) {
+                reject(e);
             }
         });
     }
-    async logMParticleEvent(call) {
-        return mParticle__default["default"].logEvent(call.eventName, call.eventType, call.eventProperties);
+    loginMParticleUser(call) {
+        return new Promise((resolve, reject) => {
+            try {
+                this.mParticle.Identity.login(this.identityRequest(call.email, call.customerId), (result) => {
+                    resolve(result);
+                });
+            }
+            catch (e) {
+                reject(e);
+            }
+        });
     }
-    async logMParticlePageView(call) {
-        return mParticle__default["default"].logPageView(call.pageName, { page: call.pageLink });
+    logoutMParticleUser(_call) {
+        return new Promise((resolve, reject) => {
+            try {
+                this.mParticle.Identity.logout({}, (result) => {
+                    resolve(result);
+                });
+            }
+            catch (e) {
+                reject(e);
+            }
+        });
     }
-    async setUserAttribute(call) {
+    registerMParticleUser(call) {
+        return new Promise((resolve, reject) => {
+            this.mParticle.Identity.login(this.identityRequest(call.email, call.customerId), (result) => {
+                if (!result) {
+                    reject();
+                }
+                const currentUser = result.getUser();
+                for (const [key, value] of Object.entries(call.userAttributes)) {
+                    if (key && value)
+                        currentUser.setUserAttribute(key, value.toString());
+                }
+                resolve(result);
+            });
+        });
+    }
+    logMParticleEvent(call) {
+        this.mParticle.logEvent(call.eventName, call.eventType, call.eventProperties);
+    }
+    logMParticlePageView(call) {
         var _a;
-        return (_a = this.currentUser) === null || _a === void 0 ? void 0 : _a.setUserAttribute(call.attributeName, call.attributeValue);
+        let attributeName = "page";
+        if ((_a = call === null || call === void 0 ? void 0 : call.overrides) === null || _a === void 0 ? void 0 : _a.attributeName) {
+            attributeName = call.overrides.attributeName;
+        }
+        const attributes = { [attributeName]: call.pageLink };
+        this.mParticle.logPageView(call.pageName, attributes);
     }
-    async setUserAttributeList(call) {
-        return this.currentUser.setUserAttributeList(call.attributeName, call.attributeValues);
+    // this method is not used for web... this is just a stub
+    logMParticleScreenView(call) {
+        console.log(call);
+        // this.logMParticlePageView(call)
+        return;
     }
-    async updateMParticleCart(call) {
+    getAllUserAttributes(_call) {
+        return this.currentUser.getAllUserAttributes();
+    }
+    setUserAttribute(call) {
+        var _a;
+        (_a = this.currentUser) === null || _a === void 0 ? void 0 : _a.setUserAttribute(call.attributeName, call.attributeValue);
+    }
+    setUserAttributeList(call) {
+        var _a;
+        (_a = this.currentUser) === null || _a === void 0 ? void 0 : _a.setUserAttributeList(call.attributeName, call.attributeValues);
+    }
+    removeUserAttribute(call) {
+        var _a;
+        (_a = this.currentUser) === null || _a === void 0 ? void 0 : _a.removeUserAttribute(call.attributeName);
+    }
+    updateMParticleCart(call) {
         const productToUpdate = this.createMParticleProduct(call.productData);
-        return this.logProductAction(call.eventType, productToUpdate, call.customAttributes, null, null);
+        this.logProductAction(call.eventType, productToUpdate, call.customAttributes, null, null);
     }
-    async addMParticleProduct(call) {
+    addMParticleProduct(call) {
         const product = this.createMParticleProduct(call.productData);
-        return this.logProductAction(mParticle__default["default"].ProductActionType.AddToCart, product, call.customAttributes, null, null);
+        this.logProductAction(this.mParticle.ProductActionType.AddToCart, product, call.customAttributes, null, null);
     }
-    async removeMParticleProduct(call) {
+    removeMParticleProduct(call) {
         const productToRemove = this.createMParticleProduct(call.productData);
-        return this.logProductAction(mParticle__default["default"].ProductActionType.RemoveFromCart, productToRemove, call.customAttributes, null, null);
+        this.logProductAction(this.mParticle.ProductActionType.RemoveFromCart, productToRemove, call.customAttributes, null, null);
     }
-    async submitPurchaseEvent(call) {
+    submitPurchaseEvent(call) {
         const productArray = [];
         (call.productData).forEach((element) => {
             productArray.push(this.createMParticleProduct(element));
         });
-        return this.logProductAction(mParticle__default["default"].ProductActionType.Purchase, productArray, call.customAttributes, call.transactionAttributes, null);
+        this.logProductAction(this.mParticle.ProductActionType.Purchase, productArray, call.customAttributes, call.transactionAttributes, null);
     }
     get currentUser() {
-        return mParticle__default["default"].Identity.getCurrentUser();
+        return this.mParticle.Identity.getCurrentUser();
     }
     identityRequest(email, customerId) {
-        return {
+        const identity = {
             userIdentities: {
-                email,
-                customerid: customerId
+                email
             },
         };
+        if (customerId) {
+            identity.userIdentities.customerid = customerId;
+        }
+        return identity;
     }
     createMParticleProduct(productData) {
-        return mParticle__default["default"].eCommerce.createProduct(productData.name, //productName
+        return this.mParticle.eCommerce.createProduct(productData.name, //productName
         productData.sku, //productSku
         productData.cost, //productPrice
         productData.quantity, //quantity
@@ -135,12 +195,12 @@ class MParticleCapacitorWeb extends core.WebPlugin {
         productData.attributes);
     }
     logProductAction(eventType, product, customAttributes, transactionAttributes, customFlags) {
-        mParticle__default["default"].eCommerce.logProductAction(eventType, product, // product created on mparticle
+        this.mParticle.eCommerce.logProductAction(eventType, product, // product created on mparticle
         customAttributes, // mimData
         customFlags, transactionAttributes);
     }
     async echo(options) {
-        return options;
+        return new Promise((resolve) => resolve(options));
     }
 }
 

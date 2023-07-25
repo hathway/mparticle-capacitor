@@ -23,12 +23,12 @@
       },
       {
         "name": "mParticleConfig",
-        "signature": "(call: { isDevelopmentMode?: boolean; planID?: string; planVer?: number; logLevel?: string; identifyRequest?: any; identityCallback?: Function; }) => Promise<MPConfigType>",
+        "signature": "(call: MParticleConfigArguments) => Promise<MPConfigType>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "{ isDevelopmentMode?: boolean | undefined; planID?: string | undefined; planVer?: number | undefined; logLevel?: string | undefined; identifyRequest?: any; identityCallback?: Function | undefined; }"
+            "type": "MParticleConfigArguments"
           }
         ],
         "returns": "Promise<MPConfigType>",
@@ -36,13 +36,13 @@
         "docs": "",
         "complexTypes": [
           "MPConfigType",
-          "Function"
+          "MParticleConfigArguments"
         ],
         "slug": "mparticleconfig"
       },
       {
         "name": "mParticleInit",
-        "signature": "(call: { key: string; mParticleConfig: any; }) => Promise<any>",
+        "signature": "(call: { key: string; mParticleConfig: any; }) => Promise<IdentityResult>",
         "parameters": [
           {
             "name": "call",
@@ -50,31 +50,35 @@
             "type": "{ key: string; mParticleConfig: any; }"
           }
         ],
-        "returns": "Promise<any>",
+        "returns": "Promise<IdentityResult>",
         "tags": [],
         "docs": "",
-        "complexTypes": [],
+        "complexTypes": [
+          "IdentityResult"
+        ],
         "slug": "mparticleinit"
       },
       {
         "name": "loginMParticleUser",
-        "signature": "(call: { email: string; customerId: string; }) => Promise<any>",
+        "signature": "(call: { email: string; customerId?: string; }) => Promise<IdentityResult>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "{ email: string; customerId: string; }"
+            "type": "{ email: string; customerId?: string | undefined; }"
           }
         ],
-        "returns": "Promise<any>",
+        "returns": "Promise<IdentityResult>",
         "tags": [],
         "docs": "",
-        "complexTypes": [],
+        "complexTypes": [
+          "IdentityResult"
+        ],
         "slug": "loginmparticleuser"
       },
       {
         "name": "logoutMParticleUser",
-        "signature": "(call?: any) => Promise<any>",
+        "signature": "(call?: any) => Promise<IdentityResult>",
         "parameters": [
           {
             "name": "call",
@@ -82,15 +86,35 @@
             "type": "any"
           }
         ],
-        "returns": "Promise<any>",
+        "returns": "Promise<IdentityResult>",
         "tags": [],
         "docs": "",
-        "complexTypes": [],
+        "complexTypes": [
+          "IdentityResult"
+        ],
         "slug": "logoutmparticleuser"
       },
       {
+        "name": "getAllUserAttributes",
+        "signature": "(call?: any) => AllUserAttributes",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "any"
+          }
+        ],
+        "returns": "AllUserAttributes",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [
+          "AllUserAttributes"
+        ],
+        "slug": "getalluserattributes"
+      },
+      {
         "name": "logMParticleEvent",
-        "signature": "(call: { eventName: string; eventType: any; eventProperties: any; }) => Promise<any>",
+        "signature": "(call: { eventName: string; eventType: any; eventProperties: any; }) => void",
         "parameters": [
           {
             "name": "call",
@@ -98,7 +122,7 @@
             "type": "{ eventName: string; eventType: any; eventProperties: any; }"
           }
         ],
-        "returns": "Promise<any>",
+        "returns": "void",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -106,23 +130,39 @@
       },
       {
         "name": "logMParticlePageView",
-        "signature": "(call: { pageName: string; pageLink: any; }) => Promise<any>",
+        "signature": "(call: { pageName: string; pageLink: any; overrides?: any; }) => void",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "{ pageName: string; pageLink: any; }"
+            "type": "{ pageName: string; pageLink: any; overrides?: any; }"
           }
         ],
-        "returns": "Promise<any>",
+        "returns": "void",
         "tags": [],
         "docs": "",
         "complexTypes": [],
         "slug": "logmparticlepageview"
       },
       {
+        "name": "logMParticleScreenView",
+        "signature": "(call: { pageName: string; pageLink: any; overrides?: any; }) => void",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "{ pageName: string; pageLink: any; overrides?: any; }"
+          }
+        ],
+        "returns": "void",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "logmparticlescreenview"
+      },
+      {
         "name": "setUserAttribute",
-        "signature": "(call: { attributeName: string; attributeValue: string; }) => Promise<any>",
+        "signature": "(call: { attributeName: string; attributeValue: string; }) => void",
         "parameters": [
           {
             "name": "call",
@@ -130,7 +170,7 @@
             "type": "{ attributeName: string; attributeValue: string; }"
           }
         ],
-        "returns": "Promise<any>",
+        "returns": "void",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -138,7 +178,7 @@
       },
       {
         "name": "setUserAttributeList",
-        "signature": "(call: { attributeName: string; attributeValues: any; }) => Promise<any>",
+        "signature": "(call: { attributeName: string; attributeValues: any; }) => void",
         "parameters": [
           {
             "name": "call",
@@ -146,15 +186,31 @@
             "type": "{ attributeName: string; attributeValues: any; }"
           }
         ],
-        "returns": "Promise<any>",
+        "returns": "void",
         "tags": [],
         "docs": "",
         "complexTypes": [],
         "slug": "setuserattributelist"
       },
       {
+        "name": "removeUserAttribute",
+        "signature": "(call: { attributeName: string; }) => void",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "{ attributeName: string; }"
+          }
+        ],
+        "returns": "void",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "removeuserattribute"
+      },
+      {
         "name": "updateMParticleCart",
-        "signature": "(call: { productData: any; customAttributes: any; eventType: any; }) => Promise<any>",
+        "signature": "(call: { productData: any; customAttributes: any; eventType: any; }) => void",
         "parameters": [
           {
             "name": "call",
@@ -162,7 +218,7 @@
             "type": "{ productData: any; customAttributes: any; eventType: any; }"
           }
         ],
-        "returns": "Promise<any>",
+        "returns": "void",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -170,7 +226,7 @@
       },
       {
         "name": "addMParticleProduct",
-        "signature": "(call: { productData: any; customAttributes: any; }) => Promise<any>",
+        "signature": "(call: { productData: any; customAttributes: any; }) => void",
         "parameters": [
           {
             "name": "call",
@@ -178,7 +234,7 @@
             "type": "{ productData: any; customAttributes: any; }"
           }
         ],
-        "returns": "Promise<any>",
+        "returns": "void",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -186,7 +242,7 @@
       },
       {
         "name": "removeMParticleProduct",
-        "signature": "(call: { productData: any; customAttributes: any; }) => Promise<any>",
+        "signature": "(call: { productData: any; customAttributes: any; }) => void",
         "parameters": [
           {
             "name": "call",
@@ -194,7 +250,7 @@
             "type": "{ productData: any; customAttributes: any; }"
           }
         ],
-        "returns": "Promise<any>",
+        "returns": "void",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -202,7 +258,7 @@
       },
       {
         "name": "submitPurchaseEvent",
-        "signature": "(call: { productData: any; customAttributes: any; transactionAttributes: any; }) => Promise<any>",
+        "signature": "(call: { productData: any; customAttributes: any; transactionAttributes: any; }) => void",
         "parameters": [
           {
             "name": "call",
@@ -210,7 +266,7 @@
             "type": "{ productData: any; customAttributes: any; transactionAttributes: any; }"
           }
         ],
-        "returns": "Promise<any>",
+        "returns": "void",
         "tags": [],
         "docs": "",
         "complexTypes": [],
@@ -218,12 +274,12 @@
       },
       {
         "name": "registerMParticleUser",
-        "signature": "(call: { email: string; customerId: string; userAttributes: any; }) => Promise<any>",
+        "signature": "(call: { email: string; customerId?: string; userAttributes: any; }) => Promise<any>",
         "parameters": [
           {
             "name": "call",
             "docs": "",
-            "type": "{ email: string; customerId: string; userAttributes: any; }"
+            "type": "{ email: string; customerId?: string | undefined; userAttributes: any; }"
           }
         ],
         "returns": "Promise<any>",
@@ -233,152 +289,730 @@
         "slug": "registermparticleuser"
       }
     ],
-    "properties": []
+    "properties": [
+      {
+        "name": "currentUser",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [
+          "mParticle"
+        ],
+        "type": "mParticle.User"
+      }
+    ]
   },
   "interfaces": [
     {
-      "name": "Function",
-      "slug": "function",
-      "docs": "Creates a new function.",
+      "name": "IdentityResult",
+      "slug": "identityresult",
+      "docs": "",
       "tags": [],
       "methods": [
         {
-          "name": "apply",
-          "signature": "(this: Function, thisArg: any, argArray?: any) => any",
-          "parameters": [
-            {
-              "name": "thisArg",
-              "docs": "The object to be used as the this object.",
-              "type": "any"
-            },
-            {
-              "name": "argArray",
-              "docs": "A set of arguments to be passed to the function.",
-              "type": "any"
-            }
-          ],
-          "returns": "any",
-          "tags": [
-            {
-              "name": "param",
-              "text": "thisArg The object to be used as the this object."
-            },
-            {
-              "name": "param",
-              "text": "argArray A set of arguments to be passed to the function."
-            }
-          ],
-          "docs": "Calls the function, substituting the specified object for the this value of the function, and the specified array for the arguments of the function.",
-          "complexTypes": [
-            "Function"
-          ],
-          "slug": "apply"
-        },
-        {
-          "name": "call",
-          "signature": "(this: Function, thisArg: any, ...argArray: any[]) => any",
-          "parameters": [
-            {
-              "name": "thisArg",
-              "docs": "The object to be used as the current object.",
-              "type": "any"
-            },
-            {
-              "name": "argArray",
-              "docs": "A list of arguments to be passed to the method.",
-              "type": "any[]"
-            }
-          ],
-          "returns": "any",
-          "tags": [
-            {
-              "name": "param",
-              "text": "thisArg The object to be used as the current object."
-            },
-            {
-              "name": "param",
-              "text": "argArray A list of arguments to be passed to the method."
-            }
-          ],
-          "docs": "Calls a method of an object, substituting another object for the current object.",
-          "complexTypes": [
-            "Function"
-          ],
-          "slug": "call"
-        },
-        {
-          "name": "bind",
-          "signature": "(this: Function, thisArg: any, ...argArray: any[]) => any",
-          "parameters": [
-            {
-              "name": "thisArg",
-              "docs": "An object to which the this keyword can refer inside the new function.",
-              "type": "any"
-            },
-            {
-              "name": "argArray",
-              "docs": "A list of arguments to be passed to the new function.",
-              "type": "any[]"
-            }
-          ],
-          "returns": "any",
-          "tags": [
-            {
-              "name": "param",
-              "text": "thisArg An object to which the this keyword can refer inside the new function."
-            },
-            {
-              "name": "param",
-              "text": "argArray A list of arguments to be passed to the new function."
-            }
-          ],
-          "docs": "For a given function, creates a bound function that has the same body as the original function.\r\nThe this object of the bound function is associated with the specified object, and has the specified initial parameters.",
-          "complexTypes": [
-            "Function"
-          ],
-          "slug": "bind"
-        },
-        {
-          "name": "toString",
-          "signature": "() => string",
+          "name": "getPreviousUser",
+          "signature": "() => User",
           "parameters": [],
-          "returns": "string",
+          "returns": "User",
           "tags": [],
-          "docs": "Returns a string representation of a function.",
-          "complexTypes": [],
-          "slug": "tostring"
+          "docs": "",
+          "complexTypes": [
+            "User"
+          ],
+          "slug": "getprevioususer"
+        },
+        {
+          "name": "getUser",
+          "signature": "() => User",
+          "parameters": [],
+          "returns": "User",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "User"
+          ],
+          "slug": "getuser"
         }
       ],
       "properties": [
         {
-          "name": "prototype",
+          "name": "httpCode",
           "tags": [],
           "docs": "",
           "complexTypes": [],
           "type": "any"
         },
         {
-          "name": "length",
+          "name": "body",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "IdentityResultBody"
+          ],
+          "type": "IdentityResultBody"
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "slug": "user",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "getUserIdentities",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "UserIdentities"
+          ],
+          "type": "() => UserIdentities"
+        },
+        {
+          "name": "getMPID",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "MPID"
+          ],
+          "type": "() => string"
+        },
+        {
+          "name": "setUserTag",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "(tag: string) => void"
+        },
+        {
+          "name": "removeUserTag",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "(tag: string) => void"
+        },
+        {
+          "name": "setUserAttribute",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "(key: string, value: string) => void"
+        },
+        {
+          "name": "setUserAttributes",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "Record"
+          ],
+          "type": "(attributeObject: Record<string, unknown>) => void"
+        },
+        {
+          "name": "removeUserAttribute",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "(key: string) => void"
+        },
+        {
+          "name": "setUserAttributeList",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "UserAttributesValue"
+          ],
+          "type": "(key: string, value: UserAttributesValue[]) => void"
+        },
+        {
+          "name": "removeAllUserAttributes",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "() => void"
+        },
+        {
+          "name": "getUserAttributesLists",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "Record",
+            "UserAttributesValue"
+          ],
+          "type": "() => Record<string, UserAttributesValue[]>"
+        },
+        {
+          "name": "getAllUserAttributes",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "AllUserAttributes"
+          ],
+          "type": "() => AllUserAttributes"
+        },
+        {
+          "name": "getCart",
+          "tags": [
+            {
+              "text": "Cart persistence in mParticle has been deprecated",
+              "name": "deprecated"
+            }
+          ],
+          "docs": "",
+          "complexTypes": [
+            "Cart"
+          ],
+          "type": "() => Cart"
+        },
+        {
+          "name": "getConsentState",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "ConsentState"
+          ],
+          "type": "() => ConsentState"
+        },
+        {
+          "name": "setConsentState",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "ConsentState"
+          ],
+          "type": "(ConsentState: ConsentState) => void"
+        },
+        {
+          "name": "isLoggedIn",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "() => boolean"
+        },
+        {
+          "name": "getLastSeenTime",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "() => number"
+        },
+        {
+          "name": "getFirstSeenTime",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "() => number"
+        }
+      ]
+    },
+    {
+      "name": "UserIdentities",
+      "slug": "useridentities",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "customerid",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "email",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "other",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "other2",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "other3",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "other4",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "other5",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "other6",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "other7",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "other8",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "other9",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "other10",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "mobile_number",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "phone_number_2",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "phone_number_3",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "facebook",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "facebookcustomaudienceid",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "google",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "twitter",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "microsoft",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "yahoo",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        }
+      ]
+    },
+    {
+      "name": "Cart",
+      "slug": "cart",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "add",
+          "tags": [
+            {
+              "text": "Cart persistence in mParticle has been deprecated. Please use mParticle.eCommerce.logProductAction(mParticle.ProductActionType.AddToCart, [products])",
+              "name": "deprecated"
+            }
+          ],
+          "docs": "",
+          "complexTypes": [
+            "Product"
+          ],
+          "type": "(product: Product, logEventBoolean?: boolean | undefined) => void"
+        },
+        {
+          "name": "remove",
+          "tags": [
+            {
+              "text": "Cart persistence in mParticle has been deprecated. Please use mParticle.eCommerce.logProductAction(mParticle.ProductActionType.RemoveFromCart, [products])",
+              "name": "deprecated"
+            }
+          ],
+          "docs": "",
+          "complexTypes": [
+            "Product"
+          ],
+          "type": "(product: Product, logEventBoolean?: boolean | undefined) => void"
+        },
+        {
+          "name": "clear",
+          "tags": [
+            {
+              "text": "Cart persistence in mParticle has been deprecated.",
+              "name": "deprecated"
+            }
+          ],
+          "docs": "",
+          "complexTypes": [],
+          "type": "() => void"
+        }
+      ]
+    },
+    {
+      "name": "Product",
+      "slug": "product",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "name",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "sku",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "price",
           "tags": [],
           "docs": "",
           "complexTypes": [],
           "type": "number"
         },
         {
-          "name": "arguments",
+          "name": "quantity",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number | undefined"
+        },
+        {
+          "name": "variant",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "category",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "brand",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "position",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number | undefined"
+        },
+        {
+          "name": "coupon",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "attributes",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "Record"
+          ],
+          "type": "Record<string, unknown> | undefined"
+        }
+      ]
+    },
+    {
+      "name": "ConsentState",
+      "slug": "consentstate",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "setGDPRConsentState",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "GDPRConsentState",
+            "ConsentState"
+          ],
+          "type": "(gdprConsentState: GDPRConsentState) => ConsentState"
+        },
+        {
+          "name": "setCCPAConsentState",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "CCPAConsentState",
+            "ConsentState"
+          ],
+          "type": "(ccpaConsentState: PrivacyConsentState) => ConsentState"
+        },
+        {
+          "name": "addGDPRConsentState",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "PrivacyConsentState",
+            "ConsentState"
+          ],
+          "type": "(purpose: string, gdprConsent: PrivacyConsentState) => ConsentState"
+        },
+        {
+          "name": "getGDPRConsentState",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "GDPRConsentState"
+          ],
+          "type": "() => GDPRConsentState"
+        },
+        {
+          "name": "getCCPAConsentState",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "CCPAConsentState"
+          ],
+          "type": "() => PrivacyConsentState"
+        },
+        {
+          "name": "removeGDPRConsentState",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "ConsentState"
+          ],
+          "type": "(purpose: string) => ConsentState"
+        },
+        {
+          "name": "removeCCPAConsentState",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "ConsentState"
+          ],
+          "type": "() => ConsentState"
+        }
+      ]
+    },
+    {
+      "name": "GDPRConsentState",
+      "slug": "gdprconsentstate",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": []
+    },
+    {
+      "name": "PrivacyConsentState",
+      "slug": "privacyconsentstate",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "Consented",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "boolean"
+        },
+        {
+          "name": "Timestamp",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        },
+        {
+          "name": "ConsentDocument",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "Location",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "HardwareId",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "IdentityResultBody",
+      "slug": "identityresultbody",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "context",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | null"
+        },
+        {
+          "name": "is_ephemeral",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "boolean"
+        },
+        {
+          "name": "is_logged_in",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "boolean"
+        },
+        {
+          "name": "matched_identities",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "Record"
+          ],
+          "type": "Record<string, unknown>"
+        }
+      ]
+    },
+    {
+      "name": "MParticleConfigArguments",
+      "slug": "mparticleconfigarguments",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "isDevelopmentMode",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "planID",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "planVer",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number | undefined"
+        },
+        {
+          "name": "planVersionRequired",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "logLevel",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "identifyRequest",
           "tags": [],
           "docs": "",
           "complexTypes": [],
           "type": "any"
         },
         {
-          "name": "caller",
+          "name": "identityCallback",
           "tags": [],
           "docs": "",
           "complexTypes": [
-            "Function"
+            "IdentityResult"
           ],
-          "type": "Function"
+          "type": "((i: IdentityResult) => void) | undefined"
         }
       ]
     }
@@ -391,9 +1025,84 @@
       "docs": "",
       "types": [
         {
-          "text": "{\n  isDevelopmentMode?: boolean,\n  dataPlan?: {\n    planId?: string,\n    planVersion?: number\n  },\n  identifyRequest?: any,\n  logLevel?: string,\n  identityCallback?: Function,\n}",
+          "text": "{\n  isDevelopmentMode?: boolean,\n  dataPlan?: {\n    planId?: string,\n    planVersion?: number\n  },\n  identifyRequest?: any,\n  logLevel?: string,\n  identityCallback?: (i: IdentityResult) => void,\n}",
           "complexTypes": [
-            "Function"
+            "IdentityResult"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "MPID",
+      "slug": "mpid",
+      "docs": "",
+      "types": [
+        {
+          "text": "string",
+          "complexTypes": []
+        }
+      ]
+    },
+    {
+      "name": "Record",
+      "slug": "record",
+      "docs": "Construct a type with a set of properties K of type T",
+      "types": [
+        {
+          "text": "{\r\n    [P in K]: T;\r\n}",
+          "complexTypes": [
+            "K",
+            "T"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "UserAttributesValue",
+      "slug": "userattributesvalue",
+      "docs": "",
+      "types": [
+        {
+          "text": "string",
+          "complexTypes": []
+        },
+        {
+          "text": "number",
+          "complexTypes": []
+        },
+        {
+          "text": "boolean",
+          "complexTypes": []
+        },
+        {
+          "text": "null",
+          "complexTypes": []
+        }
+      ]
+    },
+    {
+      "name": "AllUserAttributes",
+      "slug": "alluserattributes",
+      "docs": "",
+      "types": [
+        {
+          "text": "Record<\n    string,\n    UserAttributesValue | UserAttributesValue[]\n>",
+          "complexTypes": [
+            "Record",
+            "UserAttributesValue"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "CCPAConsentState",
+      "slug": "ccpaconsentstate",
+      "docs": "",
+      "types": [
+        {
+          "text": "PrivacyConsentState",
+          "complexTypes": [
+            "PrivacyConsentState"
           ]
         }
       ]
