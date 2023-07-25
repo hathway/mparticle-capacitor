@@ -417,12 +417,12 @@ logMParticlePageView(call: { pageName: string; pageLink: any; overrides?: any; }
 ### logMParticleScreenView(...)
 
 ```typescript
-logMParticleScreenView(call: { pageName: string; pageLink: any; overrides?: any; }) => void
+logMParticleScreenView(call: { eventName: string; eventType: any; eventProperties?: any; }) => void
 ```
 
-| Param      | Type                                                               |
-| ---------- | ------------------------------------------------------------------ |
-| **`call`** | <code>{ pageName: string; pageLink: any; overrides?: any; }</code> |
+| Param      | Type                                                                       |
+| ---------- | -------------------------------------------------------------------------- |
+| **`call`** | <code>{ eventName: string; eventType: any; eventProperties?: any; }</code> |
 
 --------------------
 
