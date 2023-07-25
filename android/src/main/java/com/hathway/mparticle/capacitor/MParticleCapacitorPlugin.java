@@ -82,21 +82,21 @@ public class MParticleCapacitorPlugin extends Plugin {
         call.resolve(new JSObject());
     }
 
-    @PluginMethod
-    public void logMParticleScreenView(PluginCall call) {
+    // @PluginMethod
+    // public void logMParticleScreenView(PluginCall call) {
 
-        System.out.print("you are now in logMParticleScreenView")
+    //     System.out.print("you are now in logMParticleScreenView")
 
-        // String name = call.getString("pageName");
-        // String link = call.getString("pageLink");
-        // String optionalAttribute = call.getObject("overrides").getString("attributeName");
-        // String attributeName = optionalAttribute != null ? optionalAttribute : "page";
+    //     // String name = call.getString("pageName");
+    //     // String link = call.getString("pageLink");
+    //     // String optionalAttribute = call.getObject("overrides").getString("attributeName");
+    //     // String attributeName = optionalAttribute != null ? optionalAttribute : "page";
 
-        // Map<String, String> screenInfo = new HashMap<String, String>();
-        // screenInfo.put(attributeName, link);
-        // MParticle.getInstance().logScreen(name, screenInfo );
-        call.resolve(new JSObject());
-    }
+    //     // Map<String, String> screenInfo = new HashMap<String, String>();
+    //     // screenInfo.put(attributeName, link);
+    //     // MParticle.getInstance().logScreen(name, screenInfo );
+    //     call.resolve(new JSObject());
+    // }
 
 
     @PluginMethod
@@ -108,7 +108,7 @@ public class MParticleCapacitorPlugin extends Plugin {
 
         Map<String, String> screenInfo = new HashMap<String, String>();
         screenInfo.put(attributeName, link);
-        MParticle.getInstance().logScreen(name, screenInfo );
+        MParticle.getInstance().logScreen(name, screenInfo);
         call.resolve(new JSObject());
     }
 

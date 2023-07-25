@@ -30,11 +30,6 @@ export interface MParticleCapacitorPlugin {
         pageLink: any;
         overrides?: any;
     }): void;
-    logMParticleScreenView(call: {
-        eventName: string;
-        eventType: any;
-        eventProperties?: any;
-    }): void;
     setUserAttribute(call: {
         attributeName: string;
         attributeValue: string;

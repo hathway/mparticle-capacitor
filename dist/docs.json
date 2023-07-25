@@ -143,22 +143,6 @@
         "slug": "logmparticlepageview"
       },
       {
-        "name": "logMParticleScreenView",
-        "signature": "(call: { eventName: string; eventType: any; eventProperties?: any; }) => void",
-        "parameters": [
-          {
-            "name": "call",
-            "docs": "",
-            "type": "{ eventName: string; eventType: any; eventProperties?: any; }"
-          }
-        ],
-        "returns": "void",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [],
-        "slug": "logmparticlescreenview"
-      },
-      {
         "name": "setUserAttribute",
         "signature": "(call: { attributeName: string; attributeValue: string; }) => void",
         "parameters": [
