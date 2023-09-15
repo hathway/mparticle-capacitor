@@ -18,6 +18,7 @@ import com.mparticle.commerce.CommerceEvent;
 import com.mparticle.commerce.CommerceEvent.Builder;
 import com.mparticle.commerce.TransactionAttributes;
 import com.mparticle.identity.IdentityApiResult;
+import com.mparticle.identity.MParticleUser;
 import com.mparticle.identity.TaskSuccessListener;
 import com.mparticle.*;
 import java.util.*;
