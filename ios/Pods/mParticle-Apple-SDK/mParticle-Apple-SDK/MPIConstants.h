@@ -273,6 +273,8 @@ extern NSString * _Nonnull const kMPRemoteConfigRestrictIDFA;
 extern NSString * _Nonnull const kMPRemoteConfigAliasMaxWindow;
 extern NSString * _Nonnull const kMPRemoteConfigAllowASR;
 extern NSString * _Nonnull const kMPRemoteConfigExcludeAnonymousUsersKey;
+extern NSString * _Nonnull const kMPRemoteConfigDirectURLRouting;
+
 extern NSString * _Nonnull const kMPRemoteConfigBlockUnplannedEvents;
 extern NSString * _Nonnull const kMPRemoteConfigBlockUnplannedEventAttributes;
 extern NSString * _Nonnull const kMPRemoteConfigBlockUnplannedIdentities;
@@ -324,8 +326,6 @@ extern NSString * _Nonnull const kMPRemoteConfigDataPlanningDataPlanVersionValue
 extern NSString * _Nonnull const kMPRemoteConfigDataPlanningDataPlanVersionValueImpressionView;
 extern NSString * _Nonnull const kMPRemoteConfigDataPlanningDataPlanVersionValueImpressionClick;
 
-
-
 // Notifications
 extern NSString * _Nonnull const kMPCrashReportOccurredNotification;
 extern NSString * _Nonnull const kMPConfigureExceptionHandlingNotification;
@@ -372,6 +372,7 @@ extern NSString * _Nonnull const kMPNetworkPerformanceKey;
 // Kits
 extern NSString * _Nonnull const MPKitAttributeJailbrokenKey;
 extern NSString * _Nonnull const MPIntegrationAttributesKey;
+extern NSString * _Nonnull const MPSideloadedKitsCountUserDefaultsKey;
 
 // mParticle Javascript SDK paths
 extern NSString * _Nonnull const kMParticleWebViewSdkScheme;
@@ -440,7 +441,7 @@ extern NSString * _Nonnull const kMPEventTypeStringMedia;
 // Primitive data type constants
 //
 extern const NSTimeInterval MINIMUM_SESSION_TIMEOUT;
-extern const NSTimeInterval MAXIMUM_SESSION_TIMEOUT;
+extern const NSTimeInterval MAXIMUM_SESSION_TIMEOUT DEPRECATED_MSG_ATTRIBUTE("There is no longer a maximum session timout, the value is unlimited");
 extern const NSTimeInterval DEFAULT_SESSION_TIMEOUT;
 extern const NSTimeInterval TWENTY_FOUR_HOURS; // Database clean up interval
 extern const NSTimeInterval SEVEN_DAYS;
@@ -466,7 +467,6 @@ extern const NSInteger SEARCH_ADS_ATTRIBUTION_MAX_RETRIES;
 extern const NSTimeInterval NETWORK_REQUEST_MAX_WAIT_SECONDS;
 
 // Attributes limits
-extern const NSInteger LIMIT_ATTR_COUNT;
 extern const NSInteger LIMIT_ATTR_KEY_LENGTH;
 extern const NSInteger LIMIT_ATTR_VALUE_LENGTH;
 extern const NSInteger MAX_USER_ATTR_LIST_SIZE;

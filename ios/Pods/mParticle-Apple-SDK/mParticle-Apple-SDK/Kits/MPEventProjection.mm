@@ -1,9 +1,7 @@
 #import "MPEventProjection.h"
 #import "MPAttributeProjection.h"
-#include <vector>
-#import "MPIHasher.h"
-
-using namespace std;
+#import "Swift.h"
+#import <vector>
 
 @implementation MPProjectionMatch
 
@@ -18,6 +16,10 @@ using namespace std;
     }
     
     return isEqual;
+}
+
+- (NSUInteger)hash {
+    return [self.attributeKey hash] ^ [self.attributeValues hash];
 }
 
 #pragma mark NSSecureCoding
@@ -136,7 +138,7 @@ using namespace std;
     
     NSArray *attributeMaps = !MPIsNull(actionDictionary[@"attribute_maps"]) ? actionDictionary[@"attribute_maps"] : nil;
     if (attributeMaps) {
-        __block vector<MPAttributeProjection *> attributeProjectionsVector;
+        __block std::vector<MPAttributeProjection *> attributeProjectionsVector;
         
         [attributeMaps enumerateObjectsUsingBlock:^(NSDictionary *attributeMap, NSUInteger idx, BOOL *stop) {
             MPAttributeProjection *attributeProjection = [[MPAttributeProjection alloc] initWithConfiguration:configuration projectionType:MPProjectionTypeAttribute attributeIndex:idx];
@@ -176,6 +178,10 @@ using namespace std;
     }
     
     return isEqual;
+}
+
+- (NSUInteger)hash {
+    return [self.projectionMatches hash] ^ self.messageType ^ self.maxCustomParameters ^ self.appendAsIs ^ self.isDefault ^ [self.attributeProjections hash];
 }
 
 #pragma mark NSSecureCoding

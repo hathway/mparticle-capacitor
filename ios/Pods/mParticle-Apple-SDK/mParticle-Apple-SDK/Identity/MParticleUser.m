@@ -8,8 +8,6 @@
 #import "MPKitContainer.h"
 #import "MPILogger.h"
 #import "mParticle.h"
-#import "MPUserSegments.h"
-#import "MPUserSegments+Setters.h"
 #import "MPPersistenceController.h"
 #import "MPIUserDefaults.h"
 #import "MPDataPlanFilter.h"
@@ -64,16 +62,12 @@
     return [NSDate dateWithTimeIntervalSince1970:lastSeenMs.doubleValue/1000.0];
 }
 
--(NSDictionary*) identities {
-    NSMutableArray *userIdentitiesArray = [[NSMutableArray alloc] initWithCapacity:10];
+- (NSDictionary*) identities {
     MPIUserDefaults *userDefaults = [MPIUserDefaults standardUserDefaults];
     NSArray *userIdentityArray = [userDefaults mpObjectForKey:kMPUserIdentityArrayKey userId:_userId];
-    if (userIdentityArray) {
-        [userIdentitiesArray addObjectsFromArray:userIdentityArray];
-    }
     
     NSMutableDictionary *userIdentities = [NSMutableDictionary dictionary];
-    [userIdentitiesArray enumerateObjectsUsingBlock:^(NSDictionary<NSString *,id> * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [userIdentityArray enumerateObjectsUsingBlock:^(NSDictionary<NSString *,id> * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSString *identity = obj[@"i"];
         NSNumber *type = obj[@"n"];
         [userIdentities setObject:identity forKey:type];
@@ -450,33 +444,6 @@
                                        }
                                    }
                            }];
-    });
-}
-
-#pragma mark - User Segments
-- (void)userSegments:(NSTimeInterval)timeout endpointId:(NSString *)endpointId completionHandler:(MPUserSegmentsHandler)completionHandler {
-    dispatch_async([MParticle messageQueue], ^{
-        MPExecStatus execStatus = [self.backendController fetchSegments:timeout
-                                                             endpointId:endpointId
-                                                      completionHandler:^(NSArray *segments, NSTimeInterval elapsedTime, NSError *error) {
-                                                          if (!segments) {
-                                                              dispatch_async(dispatch_get_main_queue(), ^{
-                                                                  completionHandler(nil, error);
-                                                              });
-                                                              return;
-                                                          }
-                                                          
-                                                          MPUserSegments *userSegments = [[MPUserSegments alloc] initWithSegments:segments];
-                                                          dispatch_async(dispatch_get_main_queue(), ^{
-                                                              completionHandler(userSegments, error);
-                                                          });
-                                                      }];
-        
-        if (execStatus == MPExecStatusSuccess) {
-            MPILogDebug(@"Fetching user segments");
-        } else {
-            MPILogError(@"Could not fetch user segments: %@", [self.backendController execStatusDescription:execStatus]);
-        }
     });
 }
 

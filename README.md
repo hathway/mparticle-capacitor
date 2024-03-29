@@ -360,7 +360,7 @@ loginMParticleUser(call: { email: string; customerId?: string; }) => Promise<{ v
 ### logoutMParticleUser(...)
 
 ```typescript
-logoutMParticleUser(call?: any) => Promise<IdentityResult>
+logoutMParticleUser(call?: any) => Promise<mParticle.IdentityResult>
 ```
 
 | Param      | Type             |
@@ -539,7 +539,7 @@ registerMParticleUser(call: { email: string; customerId?: string; userAttributes
 
 | Prop                          | Type                                                                                                         |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| **`getUserIdentities`**       | <code>() =&gt; <a href="#useridentities">UserIdentities</a></code>                                           |
+| **`getUserIdentities`**       | <code>() =&gt; <a href="#identityapidata">IdentityApiData</a></code>                                         |
 | **`getMPID`**                 | <code>() =&gt; string</code>                                                                                 |
 | **`setUserTag`**              | <code>(tag: string) =&gt; void</code>                                                                        |
 | **`removeUserTag`**           | <code>(tag: string) =&gt; void</code>                                                                        |
@@ -556,6 +556,13 @@ registerMParticleUser(call: { email: string; customerId?: string; userAttributes
 | **`isLoggedIn`**              | <code>() =&gt; boolean</code>                                                                                |
 | **`getLastSeenTime`**         | <code>() =&gt; number</code>                                                                                 |
 | **`getFirstSeenTime`**        | <code>() =&gt; number</code>                                                                                 |
+
+
+#### IdentityApiData
+
+| Prop                 | Type                                                      |
+| -------------------- | --------------------------------------------------------- |
+| **`userIdentities`** | <code><a href="#useridentities">UserIdentities</a></code> |
 
 
 #### UserIdentities
@@ -596,34 +603,40 @@ registerMParticleUser(call: { email: string; customerId?: string; userAttributes
 
 #### Product
 
-| Prop             | Type                                                             |
-| ---------------- | ---------------------------------------------------------------- |
-| **`name`**       | <code>string</code>                                              |
-| **`sku`**        | <code>string</code>                                              |
-| **`price`**      | <code>number</code>                                              |
-| **`quantity`**   | <code>number</code>                                              |
-| **`variant`**    | <code>string</code>                                              |
-| **`category`**   | <code>string</code>                                              |
-| **`brand`**      | <code>string</code>                                              |
-| **`position`**   | <code>number</code>                                              |
-| **`coupon`**     | <code>string</code>                                              |
-| **`attributes`** | <code><a href="#record">Record</a>&lt;string, unknown&gt;</code> |
+| Prop                        | Type                                    |
+| --------------------------- | --------------------------------------- |
+| **`id`**                    | <code>string</code>                     |
+| **`name`**                  | <code>string</code>                     |
+| **`brand`**                 | <code>string</code>                     |
+| **`category`**              | <code>string</code>                     |
+| **`variant`**               | <code>string</code>                     |
+| **`position`**              | <code>number</code>                     |
+| **`price`**                 | <code>number</code>                     |
+| **`quantity`**              | <code>number</code>                     |
+| **`coupon_code`**           | <code>string</code>                     |
+| **`added_to_cart_time_ms`** | <code>number</code>                     |
+| **`total_product_amount`**  | <code>number</code>                     |
+| **`custom_attributes`**     | <code>{ [key: string]: string; }</code> |
 
 
 #### ConsentState
 
-| Prop                         | Type                                                                                                                                               |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`setGDPRConsentState`**    | <code>(gdprConsentState: <a href="#gdprconsentstate">GDPRConsentState</a>) =&gt; <a href="#consentstate">ConsentState</a></code>                   |
-| **`setCCPAConsentState`**    | <code>(ccpaConsentState: <a href="#privacyconsentstate">PrivacyConsentState</a>) =&gt; <a href="#consentstate">ConsentState</a></code>             |
-| **`addGDPRConsentState`**    | <code>(purpose: string, gdprConsent: <a href="#privacyconsentstate">PrivacyConsentState</a>) =&gt; <a href="#consentstate">ConsentState</a></code> |
-| **`getGDPRConsentState`**    | <code>() =&gt; <a href="#gdprconsentstate">GDPRConsentState</a></code>                                                                             |
-| **`getCCPAConsentState`**    | <code>() =&gt; <a href="#privacyconsentstate">PrivacyConsentState</a></code>                                                                       |
-| **`removeGDPRConsentState`** | <code>(purpose: string) =&gt; <a href="#consentstate">ConsentState</a></code>                                                                      |
-| **`removeCCPAConsentState`** | <code>() =&gt; <a href="#consentstate">ConsentState</a></code>                                                                                     |
+| Prop       | Type                                                                                  |
+| ---------- | ------------------------------------------------------------------------------------- |
+| **`gdpr`** | <code>{ [key: string]: <a href="#gdprconsentstate">GDPRConsentState</a>; }</code>     |
+| **`ccpa`** | <code>{ data_sale_opt_out: <a href="#ccpaconsentstate">CCPAConsentState</a>; }</code> |
 
 
 #### GDPRConsentState
+
+| Prop                        | Type                 |
+| --------------------------- | -------------------- |
+| **`purpose`**               | <code>string</code>  |
+| **`document`**              | <code>string</code>  |
+| **`consented`**             | <code>boolean</code> |
+| **`timestamp_unixtime_ms`** | <code>number</code>  |
+| **`location`**              | <code>string</code>  |
+| **`hardware_id`**           | <code>string</code>  |
 
 
 #### PrivacyConsentState
@@ -692,7 +705,7 @@ Construct a type with a set of properties K of type T
 
 #### AllUserAttributes
 
-<code><a href="#record">Record</a>&lt; string, <a href="#userattributesvalue">UserAttributesValue</a> | UserAttributesValue[] &gt;</code>
+<code><a href="#record">Record</a>&lt;string, <a href="#userattributesvalue">UserAttributesValue</a> | UserAttributesValue[]&gt;</code>
 
 
 #### Product
@@ -715,14 +728,35 @@ Construct a type with a set of properties K of type T
 <code>{ Consented: boolean; Timestamp: number; ConsentDocument: string; Location: string; HardwareId: string; }</code>
 
 
+#### CCPAConsentState
+
+<code><a href="#omit">Omit</a>&lt;<a href="#gdprconsentstate">GDPRConsentState</a>, 'purpose'&gt;</code>
+
+
+#### Omit
+
+Construct a type with the properties of T except for those in type K.
+
+<code><a href="#pick">Pick</a>&lt;T, <a href="#exclude">Exclude</a>&lt;keyof T, K&gt;&gt;</code>
+
+
+#### Pick
+
+From T, pick a set of properties whose keys are in the union K
+
+<code>{ [P in K]: T[P]; }</code>
+
+
+#### Exclude
+
+<a href="#exclude">Exclude</a> from T those types that are assignable to U
+
+<code>T extends U ? never : T</code>
+
+
 #### ConsentState
 
 <code>{ setGDPRConsentState: (gdprConsentState: <a href="#gdprconsentstate">GDPRConsentState</a>) =&gt; <a href="#consentstate">ConsentState</a>; setCCPAConsentState: (ccpaConsentState: <a href="#ccpaconsentstate">CCPAConsentState</a>) =&gt; <a href="#consentstate">ConsentState</a>; addGDPRConsentState: ( purpose: string, gdprConsent: <a href="#privacyconsentstate">PrivacyConsentState</a>, ) =&gt; <a href="#consentstate">ConsentState</a>; getGDPRConsentState: () =&gt; <a href="#gdprconsentstate">GDPRConsentState</a>; getCCPAConsentState: () =&gt; <a href="#ccpaconsentstate">CCPAConsentState</a>; removeGDPRConsentState: (purpose: string) =&gt; <a href="#consentstate">ConsentState</a>; removeCCPAConsentState: () =&gt; <a href="#consentstate">ConsentState</a>; }</code>
-
-
-#### CCPAConsentState
-
-<code><a href="#privacyconsentstate">PrivacyConsentState</a></code>
 
 
 #### User

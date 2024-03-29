@@ -3,7 +3,9 @@
 
 #if TARGET_OS_IOS == 1
     #import "MPNotificationController.h"
-    #import <CoreLocation/CoreLocation.h>
+    #ifndef MPARTICLE_LOCATION_DISABLE
+        #import <CoreLocation/CoreLocation.h>
+    #endif
 
     @class MParticleUserNotification;
 #endif
@@ -46,7 +48,6 @@ typedef NS_ENUM(NSUInteger, MPExecStatus) {
 
 extern const NSTimeInterval kMPRemainingBackgroundTimeMinimumThreshold;
 extern const NSInteger kNilAttributeValue;
-extern const NSInteger kExceededAttributeCountLimit;
 extern const NSInteger kExceededAttributeValueMaximumLength;
 extern const NSInteger kExceededAttributeKeyMaximumLength;
 extern const NSInteger kInvalidDataType;
@@ -64,7 +65,7 @@ extern const NSInteger kInvalidKey;
 @property (nonatomic, weak, nullable) id<MPBackendControllerDelegate> delegate;
 @property (nonatomic, strong, nullable) NSMutableSet<MPEvent *> *eventSet;
 @property (nonatomic, strong, nullable) MPNetworkCommunication *networkCommunication;
-@property (nonatomic, strong, nullable) MPSession *session;
+@property (strong, nullable) MPSession *session;
 @property (nonatomic, readwrite) NSTimeInterval sessionTimeout;
 @property (nonatomic) NSTimeInterval uploadInterval;
 
@@ -78,8 +79,7 @@ extern const NSInteger kInvalidKey;
 - (void)beginTimedEvent:(nonnull MPEvent *)event completionHandler:(void (^ _Nonnull)(MPEvent * _Nonnull event, MPExecStatus execStatus))completionHandler;
 + (BOOL)checkAttribute:(nonnull NSDictionary *)attributesDictionary key:(nonnull NSString *)key value:(nonnull id)value error:(out NSError *__autoreleasing _Nullable * _Nullable)error;
 - (nullable MPEvent *)eventWithName:(nonnull NSString *)eventName;
-- (nullable NSString *)execStatusDescription:(MPExecStatus)execStatus;
-- (MPExecStatus)fetchSegments:(NSTimeInterval)timeout endpointId:(nullable NSString *)endpointId completionHandler:(void (^ _Nonnull)(NSArray * _Nullable segments, NSTimeInterval elapsedTime, NSError * _Nullable error))completionHandler;
++ (nullable NSString *)execStatusDescription:(MPExecStatus)execStatus;
 - (nullable NSNumber *)incrementSessionAttribute:(nonnull MPSession *)session key:(nonnull NSString *)key byValue:(nonnull NSNumber *)value;
 - (nullable NSNumber *)incrementUserAttribute:(nonnull NSString *)key byValue:(nonnull NSNumber *)value;
 - (void)leaveBreadcrumb:(nonnull MPEvent *)event completionHandler:(void (^ _Nonnull)(MPEvent * _Nonnull event, MPExecStatus execStatus))completionHandler;
@@ -106,8 +106,10 @@ extern const NSInteger kInvalidKey;
 - (nonnull NSMutableArray<NSDictionary<NSString *, id> *> *)userIdentitiesForUserId:(nonnull NSNumber *)userId;
 
 #if TARGET_OS_IOS == 1
+#ifndef MPARTICLE_LOCATION_DISABLE
 - (MPExecStatus)beginLocationTrackingWithAccuracy:(CLLocationAccuracy)accuracy distanceFilter:(CLLocationDistance)distance authorizationRequest:(MPLocationAuthorizationRequest)authorizationRequest;
 - (MPExecStatus)endLocationTracking;
+#endif
 - (void)handleDeviceTokenNotification:(nonnull NSNotification *)notification;
 - (void)logUserNotification:(nonnull MParticleUserNotification *)userNotification;
 #endif

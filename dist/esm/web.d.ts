@@ -1,6 +1,6 @@
 import { WebPlugin } from '@capacitor/core';
 import mParticle from '@mparticle/web-sdk';
-import type { AllUserAttributes, IdentityResult, MParticleCapacitorPlugin, MPConfigType, Product, User } from './definitions';
+import type { AllUserAttributes, IdentityResult, MParticleCapacitorPlugin, MPConfigType } from './definitions';
 export interface MParticleConfigArguments {
     isDevelopmentMode?: boolean;
     planID?: string;
@@ -23,7 +23,7 @@ export declare class MParticleCapacitorWeb extends WebPlugin implements MParticl
     }): Promise<{
         value: string;
     }>;
-    logoutMParticleUser(_call?: any): Promise<IdentityResult>;
+    logoutMParticleUser(_call?: any): Promise<mParticle.IdentityResult>;
     registerMParticleUser(call: {
         email: string;
         customerId?: string;
@@ -72,9 +72,9 @@ export declare class MParticleCapacitorWeb extends WebPlugin implements MParticl
         customAttributes: any;
         transactionAttributes: any;
     }): void;
-    get currentUser(): User;
+    get currentUser(): mParticle.User;
     protected identityRequest(email: string, customerId?: string): any;
-    protected createMParticleProduct(productData: any): Product;
+    protected createMParticleProduct(productData: any): mParticle.Product;
     protected logProductAction(eventType: any, product: any, customAttributes: any, transactionAttributes?: any, customFlags?: any): void;
     echo(options: {
         value: string;

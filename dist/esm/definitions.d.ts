@@ -1,12 +1,12 @@
 import type { MParticleConfigArguments } from "./web";
-export declare type mParticleInitListener = (info: any) => any;
+export type mParticleInitListener = (info: any) => any;
 export interface MParticleCapacitorPlugin {
     echo(options: {
         value: string;
     }): Promise<{
         value: string;
     }>;
-    currentUser: User;
+    currentUser: mParticle.User;
     mParticleConfig(call: MParticleConfigArguments): Promise<MPConfigType>;
     mParticleInit(call: {
         key: string;
@@ -18,7 +18,7 @@ export interface MParticleCapacitorPlugin {
     }): Promise<{
         value: string;
     }>;
-    logoutMParticleUser(call?: any): Promise<IdentityResult>;
+    logoutMParticleUser(call?: any): Promise<mParticle.IdentityResult>;
     getAllUserAttributes(call?: any): AllUserAttributes;
     logMParticleEvent(call: {
         eventName: string;
@@ -71,24 +71,24 @@ export interface IdentityResultBody {
     is_logged_in: boolean;
     matched_identities: Record<string, unknown>;
 }
-export declare type IdentityResult = {
+export type IdentityResult = {
     httpCode: any;
     getPreviousUser(): User;
     getUser(): User;
     body: IdentityResultBody;
 };
-export declare type GDPRConsentState = {
+export type GDPRConsentState = {
     [key: string]: PrivacyConsentState;
 };
-export declare type PrivacyConsentState = {
+export type PrivacyConsentState = {
     Consented: boolean;
     Timestamp: number;
     ConsentDocument: string;
     Location: string;
     HardwareId: string;
 };
-export declare type CCPAConsentState = PrivacyConsentState;
-export declare type ConsentState = {
+export type CCPAConsentState = PrivacyConsentState;
+export type ConsentState = {
     setGDPRConsentState: (gdprConsentState: GDPRConsentState) => ConsentState;
     setCCPAConsentState: (ccpaConsentState: CCPAConsentState) => ConsentState;
     addGDPRConsentState: (purpose: string, gdprConsent: PrivacyConsentState) => ConsentState;
@@ -97,7 +97,7 @@ export declare type ConsentState = {
     removeGDPRConsentState: (purpose: string) => ConsentState;
     removeCCPAConsentState: () => ConsentState;
 };
-export declare type Product = {
+export type Product = {
     name: string;
     sku: string;
     price: number;
@@ -109,7 +109,7 @@ export declare type Product = {
     coupon?: string | undefined;
     attributes?: Record<string, unknown> | undefined;
 };
-export declare type Cart = {
+export type Cart = {
     /**
      *
      * @deprecated Cart persistence in mParticle has been deprecated. Please use mParticle.eCommerce.logProductAction(mParticle.ProductActionType.AddToCart, [products])
@@ -126,8 +126,8 @@ export declare type Cart = {
      */
     clear: () => void;
 };
-export declare type MPID = string;
-export declare type User = {
+export type MPID = string;
+export type User = {
     getUserIdentities: () => UserIdentities;
     getMPID: () => MPID;
     setUserTag: (tag: string) => void;
@@ -150,9 +150,9 @@ export declare type User = {
     getLastSeenTime: () => number;
     getFirstSeenTime: () => number;
 };
-export declare type UserAttributesValue = string | number | boolean | null;
-export declare type AllUserAttributes = Record<string, UserAttributesValue | UserAttributesValue[]>;
-export declare type UserIdentities = {
+export type UserAttributesValue = string | number | boolean | null;
+export type AllUserAttributes = Record<string, UserAttributesValue | UserAttributesValue[]>;
+export type UserIdentities = {
     customerid?: string | undefined;
     email?: string | undefined;
     other?: string | undefined;
@@ -198,7 +198,7 @@ export declare enum MParticleProductActionType {
     AddToWishlist = 9,
     RemoveFromWishlist = 10
 }
-export declare type MPConfigType = {
+export type MPConfigType = {
     isDevelopmentMode?: boolean;
     dataPlan?: {
         planId?: string;
@@ -208,14 +208,14 @@ export declare type MPConfigType = {
     logLevel?: string;
     identityCallback?: (i: IdentityResult) => void;
 };
-export declare type EventAttributesMap = {
+export type EventAttributesMap = {
     eventAttributesMap: {
         pageView: {
             url: string;
         };
     };
 };
-export declare type IdentityRequestAttributesMap = {
+export type IdentityRequestAttributesMap = {
     email: {
         required: boolean;
     };

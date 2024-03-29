@@ -16,9 +16,14 @@
 @property (nonatomic, strong, nonnull) NSMutableDictionary<NSNumber *, MPAttributionResult *> *attributionInfo;
 @property (nonatomic, strong, nonnull) NSArray<NSDictionary *> *originalConfig;
 
+@property (nonatomic, strong, nonnull) NSArray<MPSideloadedKit*> *sideloadedKits;
+
 + (BOOL)registerKit:(nonnull id<MPExtensionKitProtocol>)kitRegister;
 + (nullable NSSet<id<MPExtensionKitProtocol>> *)registeredKits;
 
+- (void)flushSerializedKits;
+- (void)removeAllSideloadedKits;
+- (void)removeKitsFromRegistryInvalidForWorkspaceSwitch;
 - (nullable NSArray<id<MPExtensionKitProtocol>> *)activeKitsRegistry;
 - (nullable NSArray<NSNumber *> *)configuredKitsRegistry;
 - (void)configureKits:(nullable NSArray<NSDictionary *> *)kitsConfiguration;

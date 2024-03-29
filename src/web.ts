@@ -1,7 +1,7 @@
 import { WebPlugin } from '@capacitor/core';
 import mParticle from '@mparticle/web-sdk';
 
-import type { AllUserAttributes, IdentityResult, MParticleCapacitorPlugin, MPConfigType, Product, User } from './definitions';
+import type { AllUserAttributes, IdentityResult, MParticleCapacitorPlugin, MPConfigType } from './definitions';
 
 export interface MParticleConfigArguments {
   isDevelopmentMode?: boolean;
@@ -55,7 +55,7 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
   public loginMParticleUser(call: { email: string, customerId?: string }): Promise<{value: string}> {
     return new Promise((resolve, reject) => {
       try {
-        this.mParticle.Identity.login(this.identityRequest(call.email, call.customerId), (result: IdentityResult) => {
+        this.mParticle.Identity.login(this.identityRequest(call.email, call.customerId), (result: mParticle.IdentityResult) => {
           resolve({value: result.getUser().getMPID()});
         });
       } catch (e) {
@@ -64,7 +64,7 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     })
   }
 
-  public logoutMParticleUser(_call?: any): Promise<IdentityResult> {
+  public logoutMParticleUser(_call?: any): Promise<mParticle.IdentityResult> {
     return new Promise((resolve, reject) => {
       try {
         this.mParticle.Identity.logout({} as any, (result) => {
@@ -154,7 +154,7 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     this.logProductAction(this.mParticle.ProductActionType.Purchase, productArray, call.customAttributes, call.transactionAttributes, null);
   }
 
-  public get currentUser(): User {
+  public get currentUser(): mParticle.User {
     return this.mParticle.Identity.getCurrentUser();
   }
 
@@ -170,7 +170,7 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     return identity;
   }
 
-  protected createMParticleProduct(productData: any): Product {
+  protected createMParticleProduct(productData: any): mParticle.Product {
     return this.mParticle.eCommerce.createProduct(
       productData.name, //productName
       productData.sku, //productSku

@@ -14,21 +14,21 @@
 #import "MPNetworkPerformance.h"
 #import "MPNotificationController.h"
 #import "MPPersistenceController.h"
-#import "MPSegment.h"
 #import "MPSession.h"
 #import "MPStateMachine.h"
-#import "MPUserSegments+Setters.h"
 #import "MPIUserDefaults.h"
 #import "MPConvertJS.h"
 #import "MPIdentityApi.h"
-#import "MPIHasher.h"
 #import "MPApplication.h"
 #import "MParticleWebView.h"
 #import "MPDataPlanFilter.h"
 #import "MPResponseConfig.h"
+#import "Swift.h"
 
 #if TARGET_OS_IOS == 1
+#ifndef MPARTICLE_LOCATION_DISABLE
     #import "MPLocationManager.h"
+#endif
 #endif
 
 static dispatch_queue_t messageQueue = nil;
@@ -38,11 +38,14 @@ static NSArray *eventTypeStrings = nil;
 static MParticle *_sharedInstance = nil;
 static dispatch_once_t predicate;
 
-NSString *const kMPEventNameLogTransaction = @"Purchase";
-NSString *const kMPEventNameLTVIncrease = @"Increase LTV";
-NSString *const kMParticleFirstRun = @"firstrun";
-NSString *const kMPMethodName = @"$MethodName";
-NSString *const kMPStateKey = @"state";
+static MPWrapperSdk _wrapperSdk = MPWrapperSdkNone;
+static NSString *_wrapperSdkVersion = nil;
+
+static NSString *const kMPEventNameLogTransaction = @"Purchase";
+static NSString *const kMPEventNameLTVIncrease = @"Increase LTV";
+static NSString *const kMParticleFirstRun = @"firstrun";
+static NSString *const kMPMethodName = @"$MethodName";
+static NSString *const kMPStateKey = @"state";
 
 @interface MPIdentityApi ()
 - (void)identifyNoDispatch:(MPIdentityApiRequest *)identifyRequest completion:(nullable MPIdentityApiResultCallback)completion;
@@ -188,7 +191,7 @@ NSString *const kMPStateKey = @"state";
     if (self) {
         _proxyAppDelegate = YES;
         _collectUserAgent = YES;
-        _collectSearchAdsAttribution = YES;
+        _collectSearchAdsAttribution = NO;
         _trackNotifications = YES;
         _automaticSessionTracking = YES;
         _shouldBeginSession = YES;
@@ -274,7 +277,9 @@ NSString *const kMPStateKey = @"state";
 @synthesize appNotificationHandler = _appNotificationHandler;
 
 + (void)initialize {
-    eventTypeStrings = @[@"Reserved - Not Used", @"Navigation", @"Location", @"Search", @"Transaction", @"UserContent", @"UserPreference", @"Social", @"Other"];
+    if (self == [MParticle class]) {
+        eventTypeStrings = @[@"Reserved - Not Used", @"Navigation", @"Location", @"Search", @"Transaction", @"UserContent", @"UserPreference", @"Social", @"Other"];
+    }
 }
 
 + (dispatch_queue_t)messageQueue {
@@ -295,6 +300,30 @@ NSString *const kMPStateKey = @"state";
     }
 }
 
++ (void)executeOnMessageSync:(void(^)(void))block {
+    if ([MParticle isMessageQueue]) {
+        block();
+    } else {
+        dispatch_sync([MParticle messageQueue], block);
+    }
+}
+
++ (void)executeOnMain:(void(^)(void))block {
+    if ([NSThread isMainThread]) {
+        block();
+    } else {
+        dispatch_async(dispatch_get_main_queue(), block);
+    }
+}
+
++ (void)executeOnMainSync:(void(^)(void))block {
+    if ([NSThread isMainThread]) {
+        block();
+    } else {
+        dispatch_sync(dispatch_get_main_queue(), block);
+    }
+}
+
 - (instancetype)init {
     self = [super init];
     if (!self) {
@@ -308,7 +337,7 @@ NSString *const kMPStateKey = @"state";
     _kitActivity = [[MPKitActivity alloc] init];
     _kitsInitializedBlocks = [NSMutableArray array];
     _collectUserAgent = YES;
-    _collectSearchAdsAttribution = YES;
+    _collectSearchAdsAttribution = NO;
     _trackNotifications = YES;
     _automaticSessionTracking = YES;
     _appNotificationHandler = [[MPAppNotificationHandler alloc] init];
@@ -316,12 +345,6 @@ NSString *const kMPStateKey = @"state";
     _webView = [[MParticleWebView alloc] init];
     
     return self;
-}
-
-- (void)dealloc {
-    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
-    [notificationCenter removeObserver:self name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 }
 
 #pragma mark Private accessors
@@ -444,6 +467,13 @@ NSString *const kMPStateKey = @"state";
     return [MParticle sharedInstance].stateMachine.consumerInfo.uniqueIdentifier;
 }
 
+- (void)setUploadInterval:(NSTimeInterval)uploadInterval {
+    if (uploadInterval >= 1.0 && uploadInterval != self.backendController.uploadInterval) {
+        [self upload];
+        self.backendController.uploadInterval = uploadInterval;
+    }
+}
+
 - (NSTimeInterval)uploadInterval {
     return self.backendController.uploadInterval;
 }
@@ -560,6 +590,9 @@ NSString *const kMPStateKey = @"state";
     }
     
     _kitContainer = [[MPKitContainer alloc] init];
+    _kitContainer.sideloadedKits = options.sideloadedKits ?: [NSArray array];
+    NSUInteger sideLoadedKitsCount = _kitContainer.sideloadedKits.count;
+    [userDefaults setSideloadedKitsCount:sideLoadedKitsCount];
 
     [self.backendController startWithKey:apiKey
                                   secret:secret
@@ -635,11 +668,13 @@ NSString *const kMPStateKey = @"state";
                                    self->_trackNotifications = [strongSelf.configSettings[kMPConfigTrackNotifications] boolValue];
                                }
 #if TARGET_OS_IOS == 1
+#ifndef MPARTICLE_LOCATION_DISABLE
                                if ([strongSelf.configSettings[kMPConfigLocationTracking] boolValue]) {
                                    CLLocationAccuracy accuracy = [strongSelf.configSettings[kMPConfigLocationAccuracy] doubleValue];
                                    CLLocationDistance distanceFilter = [strongSelf.configSettings[kMPConfigLocationDistanceFilter] doubleValue];
                                    [strongSelf beginLocationTracking:accuracy minDistance:distanceFilter];
                                }
+#endif
 #endif
                            }
                            
@@ -668,6 +703,35 @@ NSString *const kMPStateKey = @"state";
     }
     
     return session;
+}
+
+- (void)switchWorkspaceWithOptions:(MParticleOptions *)options {
+    void (^finishReset)(void) = ^void(void) {
+        // Remove any kits that can't be reconfigured
+        [self.kitContainer removeKitsFromRegistryInvalidForWorkspaceSwitch];
+        
+        // Reset SDK (config, database, etc)
+        [self reset:^{
+            // Start the SDK using the new options
+            // NOTE: Explicitely calling sharedInstance here to generate a new one
+            // as reset nil's out the old one and self may be deallocated
+            [[MParticle sharedInstance] startWithOptions:options];
+        }];
+    };
+    
+    if (sdkInitialized) {
+        // End session if we use automatic session tracking
+        if (self.currentSession && self.automaticSessionTracking) {
+            [self.backendController endSession];
+        }
+        
+        // Upload events
+        [self.backendController waitForKitsAndUploadWithCompletionHandler:^{
+            finishReset();
+        }];
+    } else {
+        finishReset();
+    }
 }
 
 #pragma mark Application notifications
@@ -761,15 +825,24 @@ NSString *const kMPStateKey = @"state";
     return [[MParticle sharedInstance].appNotificationHandler continueUserActivity:userActivity restorationHandler:restorationHandler];
 }
 
-
+- (void)reset:(void (^)(void))completion {
+    [MParticle executeOnMessageSync:^{
+        [self.kitContainer flushSerializedKits];
+        [self.kitContainer removeAllSideloadedKits];
+        [[MPIUserDefaults standardUserDefaults] resetDefaults];
+        [self.persistenceController resetDatabase];
+        [MParticle executeOnMainSync:^{
+            [self.backendController unproxyOriginalAppDelegate];
+            [MParticle setSharedInstance:nil];
+            if (completion) {
+                completion();
+            }
+        }];
+    }];
+}
 
 - (void)reset {
-    dispatch_sync(messageQueue, ^{
-        [[MPIUserDefaults standardUserDefaults] resetDefaults];
-        [[MParticle sharedInstance].persistenceController resetDatabase];
-        [[MParticle sharedInstance].backendController unproxyOriginalAppDelegate];
-        [MParticle setSharedInstance:nil];
-    });
+    [self reset:nil];
 }
 
 #pragma mark Basic tracking
@@ -1340,15 +1413,24 @@ NSString *const kMPStateKey = @"state";
 - (BOOL)backgroundLocationTracking {
     [MPListenerController.sharedInstance onAPICalled:_cmd];
     
+#ifndef MPARTICLE_LOCATION_DISABLE
     return [MParticle sharedInstance].stateMachine.locationManager.backgroundLocationTracking;
+#else
+    return false;
+#endif
 }
 
 - (void)setBackgroundLocationTracking:(BOOL)backgroundLocationTracking {
     [MPListenerController.sharedInstance onAPICalled:_cmd parameter1:@(backgroundLocationTracking)];
     
+#ifndef MPARTICLE_LOCATION_DISABLE
     [MParticle sharedInstance].stateMachine.locationManager.backgroundLocationTracking = backgroundLocationTracking;
+#else
+    MPILogDebug(@"Automatic background tracking has been disabled to support users excluding location services from their applications.");
+#endif
 }
 
+#ifndef MPARTICLE_LOCATION_DISABLE
 - (CLLocation *)location {
     [MPListenerController.sharedInstance onAPICalled:_cmd];
     
@@ -1393,7 +1475,7 @@ NSString *const kMPStateKey = @"state";
     if (execStatus == MPExecStatusSuccess) {
         MPILogDebug(@"Began location tracking with accuracy: %0.0f and distance filter %0.0f", accuracy, distanceFilter);
     } else {
-        MPILogError(@"Could not begin location tracking: %@", [_backendController execStatusDescription:execStatus]);
+        MPILogError(@"Could not begin location tracking: %@", [MPBackendController execStatusDescription:execStatus]);
     }
 }
 
@@ -1404,10 +1486,11 @@ NSString *const kMPStateKey = @"state";
     if (execStatus == MPExecStatusSuccess) {
         MPILogDebug(@"Ended location tracking");
     } else {
-        MPILogError(@"Could not end location tracking: %@", [_backendController execStatusDescription:execStatus]);
+        MPILogError(@"Could not end location tracking: %@", [MPBackendController execStatusDescription:execStatus]);
     }
 }
-#endif
+#endif // MPARTICLE_LOCATION_DISABLE
+#endif // TARGET_OS_IOS
 
 - (void)logNetworkPerformance:(NSString *)urlString httpMethod:(NSString *)httpMethod startTime:(NSTimeInterval)startTime duration:(NSTimeInterval)duration bytesSent:(NSUInteger)bytesSent bytesReceived:(NSUInteger)bytesReceived {
     NSURL *url = [NSURL URLWithString:urlString];
@@ -1456,7 +1539,7 @@ NSString *const kMPStateKey = @"state";
         if (execStatus == MPExecStatusSuccess) {
             MPILogDebug(@"Set session attribute - %@:%@", key, value);
         } else {
-            MPILogError(@"Could not set session attribute - %@:%@\n Reason: %@", key, value, [self.backendController execStatusDescription:execStatus]);
+            MPILogError(@"Could not set session attribute - %@:%@\n Reason: %@", key, value, [MPBackendController execStatusDescription:execStatus]);
         }
     });
 }
@@ -1494,7 +1577,7 @@ NSString *const kMPStateKey = @"state";
         if (execStatus == MPExecStatusSuccess) {
             MPILogDebug(@"Forcing Upload");
         } else {
-            MPILogError(@"Could not upload data: %@", [strongSelf.backendController execStatusDescription:execStatus]);
+            MPILogError(@"Could not upload data: %@", [MPBackendController execStatusDescription:execStatus]);
         }
     });
 }
@@ -1857,5 +1940,18 @@ NSString *const kMPStateKey = @"state";
     [self.backendController logUserNotification:userNotification];
 }
 #endif
+
+#pragma mark - Wrapper SDK Information
+
+/**
+ Internal use only. Used by our wrapper SDKs to identify themselves during initialization.
+ */
++ (void)_setWrapperSdk_internal:(MPWrapperSdk)wrapperSdk version:(nonnull NSString *)wrapperSdkVersion {
+    static dispatch_once_t predicate;
+    dispatch_once(&predicate, ^{
+        _wrapperSdk = wrapperSdk;
+        _wrapperSdkVersion = wrapperSdkVersion;
+    });
+}
 
 @end

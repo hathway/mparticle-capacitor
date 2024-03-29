@@ -1,7 +1,7 @@
 #import "MPIConstants.h"
 
 // mParticle SDK Version
-NSString *const kMParticleSDKVersion = @"8.8.0";
+NSString *const kMParticleSDKVersion = @"8.20.0";
 
 // Message Type (dt)
 NSString *const kMPMessageTypeKey = @"dt";
@@ -224,6 +224,7 @@ NSString *const kMPRemoteConfigRestrictIDFA = @"rdlat";
 NSString *const kMPRemoteConfigAliasMaxWindow = @"alias_max_window";
 NSString *const kMPRemoteConfigAllowASR = @"iasr";
 NSString *const kMPRemoteConfigExcludeAnonymousUsersKey = @"eau";
+NSString *const kMPRemoteConfigDirectURLRouting = @"dur";
 NSString *const kMPRemoteConfigDataPlanningResults = @"dpr";
 NSString *const kMPRemoteConfigDataPlanning = @"dtpn";
 NSString *const kMPRemoteConfigDataPlanningBlock = @"blok";
@@ -314,6 +315,7 @@ NSString *const kMPNetworkPerformanceKey = @"MPNetworkPerformance";
 // Kits
 NSString *const MPKitAttributeJailbrokenKey = @"jailbroken";
 NSString *const MPIntegrationAttributesKey = @"ia";
+NSString *const MPSideloadedKitsCountUserDefaultsKey = @"MPSideloadedKitsCountUserDefaultsKey";
 
 // mParticle Javascript SDK paths
 NSString *const kMParticleWebViewSdkScheme = @"mp-sdk";
@@ -383,38 +385,18 @@ NSString *const kMPEventTypeStringProductImpression = @"ProductImpression";
 //
 const NSTimeInterval MINIMUM_SESSION_TIMEOUT = 1.0;
 
-const NSTimeInterval MAXIMUM_SESSION_TIMEOUT =
-    #if TARGET_OS_TV == 1
-        12.0;
-    #else
-        120.0;
-    #endif
+const NSTimeInterval MAXIMUM_SESSION_TIMEOUT = DBL_MAX;
 
-const NSTimeInterval DEFAULT_SESSION_TIMEOUT =
-    #if TARGET_OS_TV == 1
-        6.0;
-    #else
-        60.0;
-    #endif
+const NSTimeInterval DEFAULT_SESSION_TIMEOUT = 60.0;
 
 const NSTimeInterval TWENTY_FOUR_HOURS = 86400; // database clean up interval
 const NSTimeInterval SEVEN_DAYS = 60 * 60 * 24 * 7; // Old messages purged on migration = 60 seconds * 60 minutes * 24 hours * 7 days
 const NSTimeInterval NINETY_DAYS = 60 * 60 * 24 * 90; // Old messages purge interval = 60 seconds * 60 minutes * 24 hours * 90 days
 
 // Interval between uploads if not specified
-const NSTimeInterval DEFAULT_DEBUG_UPLOAD_INTERVAL =
-    #if TARGET_OS_TV == 1
-        2.0;
-    #else
-        20.0;
-    #endif
+const NSTimeInterval DEFAULT_DEBUG_UPLOAD_INTERVAL = 60.0;
 
-const NSTimeInterval DEFAULT_UPLOAD_INTERVAL =
-    #if TARGET_OS_TV == 1
-        6.0;
-    #else
-        600.0;
-    #endif
+const NSTimeInterval DEFAULT_UPLOAD_INTERVAL = 600.0;
 
 // How long to block config requests after a successful response.
 const NSTimeInterval CONFIG_REQUESTS_DEFAULT_EXPIRATION_AGE = 5.0*60;
@@ -427,7 +409,6 @@ const NSInteger SEARCH_ADS_ATTRIBUTION_MAX_RETRIES = 4;
 const NSTimeInterval NETWORK_REQUEST_MAX_WAIT_SECONDS = 10;
 
 // Attributes limits
-const NSInteger LIMIT_ATTR_COUNT = 100;
 const NSInteger LIMIT_ATTR_KEY_LENGTH = 256;
 const NSInteger LIMIT_ATTR_VALUE_LENGTH = 4096;
 const NSInteger MAX_USER_ATTR_LIST_SIZE = 1000;

@@ -1,10 +1,6 @@
 var capacitorMParticleCapacitor = (function (exports, core, mParticle) {
     'use strict';
 
-    function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-    var mParticle__default = /*#__PURE__*/_interopDefaultLegacy(mParticle);
-
     exports.MParticleEventType = void 0;
     (function (MParticleEventType) {
         MParticleEventType[MParticleEventType["Navigation"] = 1] = "Navigation";
@@ -38,7 +34,7 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle) {
     class MParticleCapacitorWeb extends core.WebPlugin {
         constructor() {
             super(...arguments);
-            this.mParticle = mParticle__default["default"];
+            this.mParticle = mParticle;
         }
         async mParticleConfig(call) {
             const mParticleConfig = {
@@ -206,8 +202,6 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle) {
     });
 
     exports.MParticleCapacitor = MParticleCapacitor;
-
-    Object.defineProperty(exports, '__esModule', { value: true });
 
     return exports;
 

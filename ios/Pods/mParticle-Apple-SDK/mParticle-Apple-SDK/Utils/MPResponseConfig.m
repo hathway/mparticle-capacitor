@@ -10,7 +10,9 @@
 #import "MPBackendController.h"
 
 #if TARGET_OS_IOS == 1
+#ifndef MPARTICLE_LOCATION_DISABLE
     #import <CoreLocation/CoreLocation.h>
+#endif
 #endif
 
 @interface MParticle ()
@@ -97,6 +99,7 @@
     [stateMachine configureDataBlocking:_configuration[kMPRemoteConfigDataPlanningResults]];
     
     stateMachine.allowASR = [_configuration[kMPRemoteConfigAllowASR] boolValue];
+    stateMachine.enableDirectRouting = [_configuration[kMPRemoteConfigDirectURLRouting] boolValue];
         
     // Exception handling
     NSString *auxString = !MPIsNull(_configuration[kMPRemoteConfigExceptionHandlingModeKey]) ? _configuration[kMPRemoteConfigExceptionHandlingModeKey] : nil;
@@ -195,6 +198,7 @@
     NSString *locationMode = locationDictionary[kMPRemoteConfigLocationModeKey];
     [MParticle sharedInstance].stateMachine.locationTrackingMode = locationMode;
     
+#ifndef MPARTICLE_LOCATION_DISABLE
     if ([locationMode isEqualToString:kMPRemoteConfigForceTrue]) {
         NSNumber *accurary = locationDictionary[kMPRemoteConfigLocationAccuracyKey];
         NSNumber *minimumDistance = locationDictionary[kMPRemoteConfigLocationMinimumDistanceKey];
@@ -203,6 +207,7 @@
     } else if ([locationMode isEqualToString:kMPRemoteConfigForceFalse]) {
         [[MParticle sharedInstance] endLocationTracking];
     }
+#endif
 }
 
 - (void)configurePushNotifications:(NSDictionary *)pushNotificationDictionary {

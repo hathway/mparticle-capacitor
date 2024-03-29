@@ -1,13 +1,7 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
 var core = require('@capacitor/core');
 var mParticle = require('@mparticle/web-sdk');
-
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var mParticle__default = /*#__PURE__*/_interopDefaultLegacy(mParticle);
 
 exports.MParticleEventType = void 0;
 (function (MParticleEventType) {
@@ -42,7 +36,7 @@ const MParticleCapacitor = core.registerPlugin('MParticleCapacitor', {
 class MParticleCapacitorWeb extends core.WebPlugin {
     constructor() {
         super(...arguments);
-        this.mParticle = mParticle__default["default"];
+        this.mParticle = mParticle;
     }
     async mParticleConfig(call) {
         const mParticleConfig = {

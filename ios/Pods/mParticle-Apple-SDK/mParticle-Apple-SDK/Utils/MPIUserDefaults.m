@@ -7,7 +7,7 @@
 #import "MPArchivist.h"
 #import "MPStateMachine.h"
 #import "MPKitContainer.h"
-#import "MPIHasher.h"
+#import "Swift.h"
 
 @interface MParticle ()
 
@@ -424,6 +424,14 @@ static NSString *const NSUserDefaultsPrefix = @"mParticle::";
     [configString appendFormat:@"Environment: %@\n", environment];
     
     return [MPIHasher hashString:configString];
+}
+
+- (void)setSideloadedKitsCount:(NSUInteger)sideloadedKitsCount {
+    [[NSUserDefaults standardUserDefaults] setObject:@(sideloadedKitsCount) forKey:MPSideloadedKitsCountUserDefaultsKey];
+}
+
+- (NSUInteger)sideloadedKitsCount {
+    return [[[NSUserDefaults standardUserDefaults] objectForKey:MPSideloadedKitsCountUserDefaultsKey] intValue];
 }
 
 #pragma mark Objective-C Literals

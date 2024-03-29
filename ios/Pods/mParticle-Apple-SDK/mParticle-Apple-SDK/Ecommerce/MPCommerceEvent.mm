@@ -8,14 +8,12 @@
 #import "MPTransactionAttributes+Dictionary.h"
 #import "MPIConstants.h"
 #import "MPEnums.h"
-#include <vector>
 #import "MPEvent.h"
 #import "MPCommerceEventInstruction.h"
 #import "NSDictionary+MPCaseInsensitive.h"
 #import "mParticle.h"
 #import "MPILogger.h"
-
-using namespace std;
+#import <vector>
 
 // Internal keys
 NSString *const kMPCECheckoutOptions = @"co";
@@ -66,7 +64,9 @@ static NSArray *actionNames;
 @synthesize messageType = _messageType;
 
 + (void)initialize {
-    actionNames = @[@"add_to_cart", @"remove_from_cart", @"add_to_wishlist", @"remove_from_wishlist", @"checkout", @"checkout_option", @"click", @"view_detail", @"purchase", @"refund"];
+    if (self == [MPCommerceEvent class]) {
+        actionNames = @[@"add_to_cart", @"remove_from_cart", @"add_to_wishlist", @"remove_from_wishlist", @"checkout", @"checkout_option", @"click", @"view_detail", @"purchase", @"refund"];
+    }
 }
 
 - (id)init {
@@ -339,6 +339,10 @@ static NSArray *actionNames;
     return isEqual;
 }
 
+- (NSUInteger)hash {
+    return [self.productActionAttributes hash] ^ [self.beautifiedAttributes hash] ^ [self.productsList hash] ^ [self.productImpressions hash] ^ [self.promotionContainer hash] ^ [self.transactionAttributes hash] ^ commerceEventKind ^ [self.currency hash];
+}
+
 #pragma mark NSCopying
 - (id)copyWithZone:(NSZone *)zone {
     MPCommerceEvent *copyObject = [super copyWithZone:zone];
@@ -603,7 +607,7 @@ static NSArray *actionNames;
 }
 
 - (NSArray<MPCommerceEventInstruction *> *)expandedInstructions {
-    __block vector<MPCommerceEventInstruction *> expansionInstructions;
+    __block std::vector<MPCommerceEventInstruction *> expansionInstructions;
     NSString *eventName;
     __block MPEvent *event;
     __block NSMutableDictionary *eventInfo;

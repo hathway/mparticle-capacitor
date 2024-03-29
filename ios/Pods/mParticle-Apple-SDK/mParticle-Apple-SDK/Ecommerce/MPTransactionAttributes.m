@@ -1,6 +1,6 @@
 #import "MPTransactionAttributes.h"
+#import "Swift.h"
 #import "NSDictionary+MPCaseInsensitive.h"
-#import "NSNumber+MPFormatter.h"
 #import "MPILogger.h"
 #import "mParticle.h"
 
@@ -48,6 +48,10 @@ NSString *const kMPExpTACouponCode = @"Coupon Code";
     }
     
     return [_attributes isEqualToDictionary:((MPTransactionAttributes *)object)->_attributes];
+}
+
+- (NSUInteger)hash {
+    return [self.attributes hash];
 }
 
 #pragma mark Private accessors

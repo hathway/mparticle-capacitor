@@ -76,7 +76,7 @@
       },
       {
         "name": "logoutMParticleUser",
-        "signature": "(call?: any) => Promise<IdentityResult>",
+        "signature": "(call?: any) => Promise<mParticle.IdentityResult>",
         "parameters": [
           {
             "name": "call",
@@ -88,7 +88,7 @@
         "tags": [],
         "docs": "",
         "complexTypes": [
-          "IdentityResult"
+          "mParticle"
         ],
         "slug": "logoutmparticleuser"
       },
@@ -277,9 +277,9 @@
         "tags": [],
         "docs": "",
         "complexTypes": [
-          "User"
+          "mParticle"
         ],
-        "type": "User"
+        "type": "mParticle.User"
       }
     ]
   },
@@ -346,9 +346,9 @@
           "tags": [],
           "docs": "",
           "complexTypes": [
-            "UserIdentities"
+            "IdentityApiData"
           ],
-          "type": "() => UserIdentities"
+          "type": "() => IdentityApiData"
         },
         {
           "name": "getMPID",
@@ -483,6 +483,24 @@
           "docs": "",
           "complexTypes": [],
           "type": "() => number"
+        }
+      ]
+    },
+    {
+      "name": "IdentityApiData",
+      "slug": "identityapidata",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "userIdentities",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "UserIdentities"
+          ],
+          "type": "UserIdentities"
         }
       ]
     },
@@ -699,42 +717,14 @@
       "methods": [],
       "properties": [
         {
-          "name": "name",
-          "tags": [],
-          "docs": "",
-          "complexTypes": [],
-          "type": "string"
-        },
-        {
-          "name": "sku",
-          "tags": [],
-          "docs": "",
-          "complexTypes": [],
-          "type": "string"
-        },
-        {
-          "name": "price",
-          "tags": [],
-          "docs": "",
-          "complexTypes": [],
-          "type": "number"
-        },
-        {
-          "name": "quantity",
-          "tags": [],
-          "docs": "",
-          "complexTypes": [],
-          "type": "number | undefined"
-        },
-        {
-          "name": "variant",
+          "name": "id",
           "tags": [],
           "docs": "",
           "complexTypes": [],
           "type": "string | undefined"
         },
         {
-          "name": "category",
+          "name": "name",
           "tags": [],
           "docs": "",
           "complexTypes": [],
@@ -748,6 +738,20 @@
           "type": "string | undefined"
         },
         {
+          "name": "category",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "variant",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
           "name": "position",
           "tags": [],
           "docs": "",
@@ -755,20 +759,46 @@
           "type": "number | undefined"
         },
         {
-          "name": "coupon",
+          "name": "price",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number | undefined"
+        },
+        {
+          "name": "quantity",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number | undefined"
+        },
+        {
+          "name": "coupon_code",
           "tags": [],
           "docs": "",
           "complexTypes": [],
           "type": "string | undefined"
         },
         {
-          "name": "attributes",
+          "name": "added_to_cart_time_ms",
           "tags": [],
           "docs": "",
-          "complexTypes": [
-            "Record"
-          ],
-          "type": "Record<string, unknown> | undefined"
+          "complexTypes": [],
+          "type": "number | undefined"
+        },
+        {
+          "name": "total_product_amount",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number | undefined"
+        },
+        {
+          "name": "custom_attributes",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "{ [key: string]: string; } | undefined"
         }
       ]
     },
@@ -780,70 +810,22 @@
       "methods": [],
       "properties": [
         {
-          "name": "setGDPRConsentState",
-          "tags": [],
-          "docs": "",
-          "complexTypes": [
-            "GDPRConsentState",
-            "ConsentState"
-          ],
-          "type": "(gdprConsentState: GDPRConsentState) => ConsentState"
-        },
-        {
-          "name": "setCCPAConsentState",
-          "tags": [],
-          "docs": "",
-          "complexTypes": [
-            "CCPAConsentState",
-            "ConsentState"
-          ],
-          "type": "(ccpaConsentState: PrivacyConsentState) => ConsentState"
-        },
-        {
-          "name": "addGDPRConsentState",
-          "tags": [],
-          "docs": "",
-          "complexTypes": [
-            "PrivacyConsentState",
-            "ConsentState"
-          ],
-          "type": "(purpose: string, gdprConsent: PrivacyConsentState) => ConsentState"
-        },
-        {
-          "name": "getGDPRConsentState",
+          "name": "gdpr",
           "tags": [],
           "docs": "",
           "complexTypes": [
             "GDPRConsentState"
           ],
-          "type": "() => GDPRConsentState"
+          "type": "{ [key: string]: GDPRConsentState; } | undefined"
         },
         {
-          "name": "getCCPAConsentState",
+          "name": "ccpa",
           "tags": [],
           "docs": "",
           "complexTypes": [
             "CCPAConsentState"
           ],
-          "type": "() => PrivacyConsentState"
-        },
-        {
-          "name": "removeGDPRConsentState",
-          "tags": [],
-          "docs": "",
-          "complexTypes": [
-            "ConsentState"
-          ],
-          "type": "(purpose: string) => ConsentState"
-        },
-        {
-          "name": "removeCCPAConsentState",
-          "tags": [],
-          "docs": "",
-          "complexTypes": [
-            "ConsentState"
-          ],
-          "type": "() => ConsentState"
+          "type": "{ data_sale_opt_out: CCPAConsentState; } | undefined"
         }
       ]
     },
@@ -853,7 +835,50 @@
       "docs": "",
       "tags": [],
       "methods": [],
-      "properties": []
+      "properties": [
+        {
+          "name": "purpose",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "document",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "consented",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "boolean"
+        },
+        {
+          "name": "timestamp_unixtime_ms",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number | undefined"
+        },
+        {
+          "name": "location",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "hardware_id",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        }
+      ]
     },
     {
       "name": "PrivacyConsentState",
@@ -1079,7 +1104,7 @@
       "docs": "",
       "types": [
         {
-          "text": "Record<\n    string,\n    UserAttributesValue | UserAttributesValue[]\n>",
+          "text": "Record<string, UserAttributesValue | UserAttributesValue[]>",
           "complexTypes": [
             "Record",
             "UserAttributesValue"
@@ -1138,6 +1163,65 @@
       ]
     },
     {
+      "name": "CCPAConsentState",
+      "slug": "ccpaconsentstate",
+      "docs": "",
+      "types": [
+        {
+          "text": "Omit<GDPRConsentState, 'purpose'>",
+          "complexTypes": [
+            "Omit",
+            "GDPRConsentState"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Omit",
+      "slug": "omit",
+      "docs": "Construct a type with the properties of T except for those in type K.",
+      "types": [
+        {
+          "text": "Pick<T, Exclude<keyof T, K>>",
+          "complexTypes": [
+            "Pick",
+            "T",
+            "Exclude",
+            "K"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pick",
+      "slug": "pick",
+      "docs": "From T, pick a set of properties whose keys are in the union K",
+      "types": [
+        {
+          "text": "{\r\n    [P in K]: T[P];\r\n}",
+          "complexTypes": [
+            "K",
+            "T",
+            "P"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Exclude",
+      "slug": "exclude",
+      "docs": "Exclude from T those types that are assignable to U",
+      "types": [
+        {
+          "text": "T extends U ? never : T",
+          "complexTypes": [
+            "T",
+            "U"
+          ]
+        }
+      ]
+    },
+    {
       "name": "ConsentState",
       "slug": "consentstate",
       "docs": "",
@@ -1148,19 +1232,6 @@
             "GDPRConsentState",
             "ConsentState",
             "CCPAConsentState",
-            "PrivacyConsentState"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "CCPAConsentState",
-      "slug": "ccpaconsentstate",
-      "docs": "",
-      "types": [
-        {
-          "text": "PrivacyConsentState",
-          "complexTypes": [
             "PrivacyConsentState"
           ]
         }

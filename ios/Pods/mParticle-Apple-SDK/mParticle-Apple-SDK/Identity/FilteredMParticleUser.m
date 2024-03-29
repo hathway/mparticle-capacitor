@@ -2,8 +2,8 @@
 #import "mParticle.h"
 #import "MParticleUser.h"
 #import "MPKitConfiguration.h"
-#import "MPIHasher.h"
 #import "MPDataPlanFilter.h"
+#import "Swift.h"
 
 @interface MParticle ()
 
@@ -72,7 +72,7 @@
     
     for (NSString* key in unfilteredUserAttributes) {
         id value = [unfilteredUserAttributes objectForKey:key];
-        NSString *hashKey = [MPIHasher hashString:[key lowercaseString]];
+        NSString *hashKey = [MPIHasher hashString:key];
         BOOL shouldFilter = NO;
         
         if (self.kitConfiguration) {
