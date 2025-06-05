@@ -75,4 +75,47 @@ public class MParticleCapacitor {
             .customAttributes((Map<String,String>) customAttributes)
             .build();
     }
+
+    public Product createCustomMParticleProduct(JSObject productData) {
+        Map<String, String> customAttributes = new HashMap<>();
+        JSObject temp = productData.getJSObject("attributes");
+        if (temp != null) {
+            Iterator<String> keys = temp.keys();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                try {
+                    Object value = temp.get(key);
+                    customAttributes.put(key, value.toString());
+                } catch (JSONException e) {
+                    // Something went wrong!
+                }
+            }
+        }
+
+        String name = productData.getString("name");
+        String sku = productData.getString("sku");
+        double cost = Double.parseDouble(productData.getString("cost"));
+        double quantity = (double) productData.getInteger("quantity");
+
+        // Optional fields
+        String variant = productData.has("variant") ? productData.getString("variant") : null;
+        String category = productData.has("category") ? productData.getString("category") : null;
+        String brand = productData.has("brand") ? productData.getString("brand") : null;
+        Integer position = productData.has("position") ? productData.getInteger("position") : null;
+        String couponCode = productData.has("couponCode") ? productData.getString("couponCode") : null;
+
+        // Build product
+        Product.Builder builder = new Product.Builder(name, sku, cost)
+            .quantity(quantity)
+            .customAttributes(customAttributes);
+
+        if (variant != null) builder.variant(variant);
+        if (category != null) builder.category(category);
+        if (brand != null) builder.brand(brand);
+        if (position != null) builder.position(position);
+        if (couponCode != null) builder.couponCode(couponCode);
+
+        return builder.build();
+    }
+
 }

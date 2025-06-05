@@ -59,6 +59,11 @@ export interface MParticleCapacitorPlugin {
         customAttributes: any;
         transactionAttributes: any;
     }): void;
+    submitCheckoutEvent(call: {
+        productData: any;
+        customAttributes: any;
+        transactionAttributes: any;
+    }): void;
     registerMParticleUser(call: {
         email: string;
         customerId?: string;

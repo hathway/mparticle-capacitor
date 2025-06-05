@@ -72,9 +72,15 @@ export declare class MParticleCapacitorWeb extends WebPlugin implements MParticl
         customAttributes: any;
         transactionAttributes: any;
     }): void;
+    submitCheckoutEvent(call: {
+        productData: any[];
+        customAttributes: any;
+        transactionAttributes: any;
+    }): void;
     get currentUser(): mParticle.User;
     protected identityRequest(email: string, customerId?: string): any;
     protected createMParticleProduct(productData: any): mParticle.Product;
+    protected createCustomMParticleProduct(productData: any): mParticle.Product;
     protected logProductAction(eventType: any, product: any, customAttributes: any, transactionAttributes?: any, customFlags?: any): void;
     echo(options: {
         value: string;

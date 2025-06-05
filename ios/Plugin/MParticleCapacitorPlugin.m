@@ -20,5 +20,6 @@ CAP_PLUGIN(MParticleCapacitorPlugin, "MParticleCapacitor",
            CAP_PLUGIN_METHOD(addMParticleProduct, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(removeMParticleProduct, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(submitPurchaseEvent, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(submitCheckoutEvent, CAPPluginReturnPromise);
            CAP_PLUGIN_METHOD(registerMParticleUser, CAPPluginReturnPromise);
 )

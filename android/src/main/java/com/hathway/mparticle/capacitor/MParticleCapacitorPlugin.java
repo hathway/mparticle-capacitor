@@ -283,6 +283,41 @@ public class MParticleCapacitorPlugin extends Plugin {
     }
 
     @PluginMethod
+    public void submitCheckoutEvent(PluginCall call) throws JSONException {
+        Map<String, String> customAttributes = new HashMap<String, String>();
+        JSObject temp = call.getObject("customAttributes");
+        if (temp != null) {
+            Iterator<String> iter = temp.keys();
+            while (iter.hasNext()) {
+                String key = iter.next();
+                try {
+                    Object value = temp.get(key);
+                    customAttributes.put(key, value.toString());
+                    } catch (JSONException e) {
+                    // Something went wrong!
+                }
+            }
+        }
+
+        List<Product> productsArr = new ArrayList<>();
+        JSArray products_tmp = call.getArray("productData");
+        for (int i = 0; i < products_tmp.length(); i++) {
+            productsArr.add(implementation.createCustomMParticleProduct(JSObject.fromJSONObject((JSONObject) products_tmp.get(i))));
+        }
+
+        JSObject t_attributes = call.getObject("transactionAttributes");
+        TransactionAttributes attributes = new TransactionAttributes(t_attributes.getString("Id"))
+        .setRevenue((double) t_attributes.getInteger("Revenue"))
+        .setTax((double) t_attributes.getInteger("Tax"));
+        CommerceEvent event = new CommerceEvent.Builder(Product.CHECKOUT, productsArr.get(0))
+        .products(productsArr)
+        .customAttributes(customAttributes)    
+        .transactionAttributes(attributes)
+        .build();
+        MParticle.getInstance().logEvent(event);
+    }
+
+    @PluginMethod
     public void loginMParticleUser(PluginCall call) {
         String email = call.getString("email");
         String customerId = call.getString("customerId");
