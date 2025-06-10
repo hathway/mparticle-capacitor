@@ -3,6 +3,8 @@
 #import "MPEnums.h"
 
 @class MPSession;
+@class MPNetworkOptions;
+@class MPUploadSettings;
 
 @interface MPUpload : MPDataModelAbstract <NSCopying, MPDataModelProtocol>
 
@@ -15,10 +17,15 @@
 @property (nonatomic, strong, nullable) NSNumber *dataPlanVersion;
 @property BOOL containsOptOutMessage;
 
+@property (nonatomic, strong, nonnull) MPUploadSettings *uploadSettings;
+
+
 - (nonnull instancetype)initWithSessionId:(nullable NSNumber *)sessionId
                          uploadDictionary:(nonnull NSDictionary *)uploadDictionary
                                dataPlanId:(nullable NSString *)dataPlanId
-                          dataPlanVersion:(nullable NSNumber *)dataPlanVersion;
+                          dataPlanVersion:(nullable NSNumber *)dataPlanVersion
+                           uploadSettings:(nonnull MPUploadSettings *)uploadSettings;
+
 - (nonnull instancetype)initWithSessionId:(nullable NSNumber *)sessionId
                                  uploadId:(int64_t)uploadId
                                      UUID:(nonnull NSString *)uuid
@@ -26,6 +33,7 @@
                                 timestamp:(NSTimeInterval)timestamp
                                uploadType:(MPUploadType)uploadType
                                dataPlanId:(nullable NSString *)dataPlanId
-                          dataPlanVersion:(nullable NSNumber *)dataPlanVersion;
+                          dataPlanVersion:(nullable NSNumber *)dataPlanVersion
+                           uploadSettings:(nonnull MPUploadSettings *)uploadSettings;
 
 @end

@@ -7,16 +7,14 @@
 #import "mParticle.h"
 #import "MPBackendController.h"
 #import "MPConsumerInfo.h"
-#import "MPIUserDefaults.h"
 #import "MPSession.h"
 #import "MPPersistenceController.h"
 #import "MPIdentityDTO.h"
 #import "MPEnums.h"
 #import "MPILogger.h"
 #import "MPKitContainer.h"
-#import "MPDevice.h"
 #import "MPUpload.h"
-#import "MPStateMachine.h"
+#import "MParticleSwift.h"
 
 typedef NS_ENUM(NSUInteger, MPIdentityRequestType) {
     MPIdentityRequestIdentify = 0,
@@ -27,9 +25,8 @@ typedef NS_ENUM(NSUInteger, MPIdentityRequestType) {
 
 @interface MParticle ()
 
-@property (nonatomic, strong, readonly) MPPersistenceController *persistenceController;
-@property (nonatomic, strong, readonly) MPKitContainer *kitContainer;
-@property (nonatomic, strong, readonly) MPStateMachine *stateMachine;
+@property (nonatomic, strong, readonly) MPPersistenceController_PRIVATE *persistenceController;
+@property (nonatomic, strong, readonly) MPStateMachine_PRIVATE *stateMachine;
 
 @end
 
@@ -43,13 +40,13 @@ typedef NS_ENUM(NSUInteger, MPIdentityRequestType) {
 @interface MParticle ()
 
 + (dispatch_queue_t)messageQueue;
-@property (nonatomic, strong, nonnull) MPBackendController *backendController;
+@property (nonatomic, strong, nonnull) MPBackendController_PRIVATE *backendController;
 @property (nonatomic, strong, nullable) NSString *dataPlanId;
 @property (nonatomic, strong, nullable) NSNumber *dataPlanVersion;
 
 @end
 
-@interface MPBackendController ()
+@interface MPBackendController_PRIVATE ()
 
 - (NSMutableDictionary<NSString *, id> *)userAttributesForUserId:(NSNumber *)userId;
 
@@ -62,7 +59,7 @@ typedef NS_ENUM(NSUInteger, MPIdentityRequestType) {
 - (void)setIsLoggedIn:(BOOL)isLoggedIn;
 @end
 
-@interface MPKitContainer ()
+@interface MPKitContainer_PRIVATE ()
 
 @property (nonatomic, strong) NSMutableDictionary<NSNumber *, MPKitConfiguration *> *kitConfigurations;
 
@@ -156,8 +153,8 @@ typedef NS_ENUM(NSUInteger, MPIdentityRequestType) {
         }
         return;
     }
-    NSNumber *previousMPID = [MPPersistenceController mpId];
-    [MPPersistenceController setMpid:httpResponse.mpid];
+    NSNumber *previousMPID = [MPPersistenceController_PRIVATE mpId];
+    [MPPersistenceController_PRIVATE setMpid:httpResponse.mpid];
     MPIdentityApiResult *apiResult = [[MPIdentityApiResult alloc] init];
     MParticleUser *previousUser = self.currentUser;
     MParticleUser *user = [[MParticleUser alloc] init];
@@ -171,7 +168,7 @@ typedef NS_ENUM(NSUInteger, MPIdentityRequestType) {
     NSString *userIdsString = session.sessionUserIds;
     NSMutableArray *userIds = [[userIdsString componentsSeparatedByString:@","] mutableCopy];
     
-    MPIUserDefaults *userDefaults = [MPIUserDefaults standardUserDefaults];
+    MPUserDefaults *userDefaults = [MPUserDefaults standardUserDefaultsWithStateMachine:[MParticle sharedInstance].stateMachine backendController:[MParticle sharedInstance].backendController identity:[MParticle sharedInstance].identity];
 
     if (user.userId.longLongValue != 0) {
         [userDefaults setMPObject:[NSDate date] forKey:kMPLastIdentifiedDate userId:user.userId];
@@ -218,7 +215,7 @@ typedef NS_ENUM(NSUInteger, MPIdentityRequestType) {
 
 - (void)onMPIDChange:(MPIdentityApiRequest *)request httpResponse:(MPIdentityHTTPSuccessResponse *)httpResponse previousUser:(MParticleUser *)previousUser newUser:(MParticleUser *)newUser {
     
-    MPIUserDefaults *userDefaults = [MPIUserDefaults standardUserDefaults];
+    MPUserDefaults *userDefaults = [MPUserDefaults standardUserDefaultsWithStateMachine:[MParticle sharedInstance].stateMachine backendController:[MParticle sharedInstance].backendController identity:[MParticle sharedInstance].identity];
 
     NSDate *date = [NSDate date];
     NSNumber *dateMs = @([date timeIntervalSince1970] * 1000.0);
@@ -246,10 +243,10 @@ typedef NS_ENUM(NSUInteger, MPIdentityRequestType) {
         });
     }
     
-    NSArray<NSDictionary *> *kitConfig = [[MParticle sharedInstance].kitContainer.originalConfig copy];
+    NSArray<NSDictionary *> *kitConfig = [[MParticle sharedInstance].kitContainer_PRIVATE.originalConfig copy];
     if (kitConfig) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[MParticle sharedInstance].kitContainer configureKits:kitConfig];
+            [[MParticle sharedInstance].kitContainer_PRIVATE configureKits:kitConfig];
         });
     }
 }
@@ -258,7 +255,7 @@ typedef NS_ENUM(NSUInteger, MPIdentityRequestType) {
     dispatch_async(dispatch_get_main_queue(), ^{
         switch (identityRequestType) {
             case MPIdentityRequestIdentify: {
-                [[MParticle sharedInstance].kitContainer forwardIdentitySDKCall:@selector(onIdentifyComplete: request:)
+                [[MParticle sharedInstance].kitContainer_PRIVATE forwardIdentitySDKCall:@selector(onIdentifyComplete: request:)
                                                                      kitHandler:^(id<MPKitProtocol> kit, MPKitConfiguration *kitConfig) {
                                                                          FilteredMParticleUser *filteredUser = [[FilteredMParticleUser alloc] initWithMParticleUser:user kitConfiguration:kitConfig];
                                                                          FilteredMPIdentityApiRequest *filteredRequest = [[FilteredMPIdentityApiRequest alloc] initWithIdentityRequest:request kitConfiguration:kitConfig];
@@ -267,7 +264,7 @@ typedef NS_ENUM(NSUInteger, MPIdentityRequestType) {
                 break;
             }
             case MPIdentityRequestLogin: {
-                [[MParticle sharedInstance].kitContainer forwardIdentitySDKCall:@selector(onLoginComplete: request:)
+                [[MParticle sharedInstance].kitContainer_PRIVATE forwardIdentitySDKCall:@selector(onLoginComplete: request:)
                                                                      kitHandler:^(id<MPKitProtocol> kit, MPKitConfiguration *kitConfig) {
                                                                          FilteredMParticleUser *filteredUser = [[FilteredMParticleUser alloc] initWithMParticleUser:user kitConfiguration:kitConfig];
                                                                          FilteredMPIdentityApiRequest *filteredRequest = [[FilteredMPIdentityApiRequest alloc] initWithIdentityRequest:request kitConfiguration:kitConfig];
@@ -276,7 +273,7 @@ typedef NS_ENUM(NSUInteger, MPIdentityRequestType) {
                 break;
             }
             case MPIdentityRequestLogout: {
-                [[MParticle sharedInstance].kitContainer forwardIdentitySDKCall:@selector(onLogoutComplete: request:)
+                [[MParticle sharedInstance].kitContainer_PRIVATE forwardIdentitySDKCall:@selector(onLogoutComplete: request:)
                                                                      kitHandler:^(id<MPKitProtocol> kit, MPKitConfiguration *kitConfig) {
                                                                          FilteredMParticleUser *filteredUser = [[FilteredMParticleUser alloc] initWithMParticleUser:user kitConfiguration:kitConfig];
                                                                          FilteredMPIdentityApiRequest *filteredRequest = [[FilteredMPIdentityApiRequest alloc] initWithIdentityRequest:request kitConfiguration:kitConfig];
@@ -285,7 +282,7 @@ typedef NS_ENUM(NSUInteger, MPIdentityRequestType) {
                 break;
             }
             case MPIdentityRequestModify: {
-                [[MParticle sharedInstance].kitContainer forwardIdentitySDKCall:@selector(onModifyComplete: request:)
+                [[MParticle sharedInstance].kitContainer_PRIVATE forwardIdentitySDKCall:@selector(onModifyComplete: request:)
                                                                      kitHandler:^(id<MPKitProtocol> kit, MPKitConfiguration *kitConfig) {
                                                                          FilteredMParticleUser *filteredUser = [[FilteredMParticleUser alloc] initWithMParticleUser:user kitConfiguration:kitConfig];
                                                                          FilteredMPIdentityApiRequest *filteredRequest = [[FilteredMPIdentityApiRequest alloc] initWithIdentityRequest:request kitConfiguration:kitConfig];
@@ -306,7 +303,7 @@ typedef NS_ENUM(NSUInteger, MPIdentityRequestType) {
         return _currentUser;
     }
 
-    NSNumber *mpid = [MPPersistenceController mpId];
+    NSNumber *mpid = [MPPersistenceController_PRIVATE mpId];
     MParticleUser *user = [[MParticleUser alloc] init];
     user.userId = mpid;
     _currentUser = user;
@@ -314,7 +311,7 @@ typedef NS_ENUM(NSUInteger, MPIdentityRequestType) {
 }
 
 - (MParticleUser *)getUser:(NSNumber *)mpId {
-    MPIUserDefaults *userDefaults = [MPIUserDefaults standardUserDefaults];
+    MPUserDefaults *userDefaults = [MPUserDefaults standardUserDefaultsWithStateMachine:[MParticle sharedInstance].stateMachine backendController:[MParticle sharedInstance].backendController identity:[MParticle sharedInstance].identity];
     if ([userDefaults isExistingUserId:mpId]) {
         MParticleUser *user = [[MParticleUser alloc] init];
         user.userId = mpId;
@@ -345,7 +342,7 @@ typedef NS_ENUM(NSUInteger, MPIdentityRequestType) {
 }
 
 - (NSArray<MParticleUser *> *)getAllUsers {
-    MPIUserDefaults *userDefaults = [MPIUserDefaults standardUserDefaults];
+    MPUserDefaults *userDefaults = [MPUserDefaults standardUserDefaultsWithStateMachine:[MParticle sharedInstance].stateMachine backendController:[MParticle sharedInstance].backendController identity:[MParticle sharedInstance].identity];
     NSMutableArray<MParticleUser *> *userArray = [[NSMutableArray alloc] init];
     
     for (NSNumber *userID in [userDefaults userIDsInUserDefaults]) {
@@ -359,7 +356,7 @@ typedef NS_ENUM(NSUInteger, MPIdentityRequestType) {
 }
 
 - (NSString *)deviceApplicationStamp {
-    MPDevice *device = [[MPDevice alloc] init];
+    MPDevice *device = [[MPDevice alloc] initWithStateMachine:[MParticle sharedInstance].stateMachine userDefaults:[MPUserDefaults standardUserDefaultsWithStateMachine:[MParticle sharedInstance].stateMachine backendController:[MParticle sharedInstance].backendController identity:[MParticle sharedInstance].identity] identity:[MParticle sharedInstance].identity];
 
     return device.deviceIdentifier;
 }
@@ -450,22 +447,23 @@ typedef NS_ENUM(NSUInteger, MPIdentityRequestType) {
         return NO;
     }
     
+    double maxDaysAgo = MParticle.sharedInstance.stateMachine.aliasMaxWindow != nil ? MParticle.sharedInstance.stateMachine.aliasMaxWindow.doubleValue : 90;
+    double secondsPerDay = 60*60*24;
+    NSDate *oldestAllowableDate = [NSDate dateWithTimeIntervalSinceNow:-1*secondsPerDay*maxDaysAgo];
+    
     if (aliasRequest.usedFirstLastSeen) {
-        double maxDaysAgo = MParticle.sharedInstance.stateMachine.aliasMaxWindow.doubleValue;
-        double secondsPerDay = 60*60*24;
-        NSDate *oldestAllowableDate = [NSDate dateWithTimeIntervalSinceNow:-1*secondsPerDay*maxDaysAgo];
         if ([aliasRequest.startTime compare:oldestAllowableDate] == NSOrderedAscending) {
             aliasRequest.startTime = oldestAllowableDate;
         }
     }
     
-    if (aliasRequest.startTime == nil || aliasRequest.endTime == nil || [aliasRequest.startTime compare:aliasRequest.endTime] != NSOrderedAscending) {
-        if (!aliasRequest.usedFirstLastSeen) {
-            MPILogError(@"Invalid alias request - both start and end dates must exist and start date must occur before end date.");
-        } else {
-            MPILogError(@"Invalid alias request - Source User has not been seen in the last %@ days", MParticle.sharedInstance.stateMachine.aliasMaxWindow);
-        }
-        return NO;
+    if (aliasRequest.startTime == nil || aliasRequest.endTime == nil) {
+        aliasRequest.startTime = oldestAllowableDate;
+        aliasRequest.endTime = [NSDate dateWithTimeIntervalSinceNow:0];
+    }
+    
+    if ([aliasRequest.startTime compare:aliasRequest.endTime] != NSOrderedAscending) {
+        MPILogWarning(@"Invalid alias request - Start date must occur before end date. Alias Request will likely fail");
     }
     
     dispatch_async([MParticle messageQueue], ^{
@@ -485,7 +483,8 @@ typedef NS_ENUM(NSUInteger, MPIdentityRequestType) {
                                                          timestamp:[NSDate date].timeIntervalSince1970
                                                         uploadType:MPUploadTypeAlias
                                                         dataPlanId:[MParticle sharedInstance].dataPlanId
-                                                   dataPlanVersion:[MParticle sharedInstance].dataPlanVersion];
+                                                   dataPlanVersion:[MParticle sharedInstance].dataPlanVersion
+                                                    uploadSettings:[MPUploadSettings currentUploadSettingsWithStateMachine:[MParticle sharedInstance].stateMachine networkOptions:[MParticle sharedInstance].networkOptions]];
             
             [MParticle.sharedInstance.persistenceController saveUpload:upload];
             [MParticle.sharedInstance.backendController waitForKitsAndUploadWithCompletionHandler:nil];

@@ -1,12 +1,17 @@
 #import "MPUpload.h"
 #import "MPSession.h"
 #import "MPIConstants.h"
+#import "mParticle.h"
+#import "MParticleSwift.h"
+
+@interface MParticle()
+@property (nonatomic, strong) MPStateMachine_PRIVATE *stateMachine;
+@end
 
 @implementation MPUpload
 
-- (instancetype)initWithSessionId:(NSNumber *)sessionId uploadDictionary:(NSDictionary *)uploadDictionary dataPlanId:(nullable NSString *)dataPlanId dataPlanVersion:(nullable NSNumber *)dataPlanVersion {
+- (instancetype)initWithSessionId:(NSNumber *)sessionId uploadDictionary:(NSDictionary *)uploadDictionary dataPlanId:(nullable NSString *)dataPlanId dataPlanVersion:(nullable NSNumber *)dataPlanVersion uploadSettings:(nonnull MPUploadSettings *)uploadSettings {
     NSData *uploadData = [NSJSONSerialization dataWithJSONObject:uploadDictionary options:0 error:nil];
-    
     return [self initWithSessionId:sessionId
                           uploadId:0
                               UUID:uploadDictionary[kMPMessageIdKey]
@@ -14,10 +19,11 @@
                          timestamp:[uploadDictionary[kMPTimestampKey] doubleValue]
                         uploadType:MPUploadTypeMessage
                         dataPlanId:dataPlanId
-                   dataPlanVersion:dataPlanVersion];
+                   dataPlanVersion:dataPlanVersion
+                    uploadSettings:uploadSettings];
 }
 
-- (instancetype)initWithSessionId:(NSNumber *)sessionId uploadId:(int64_t)uploadId UUID:(NSString *)uuid uploadData:(NSData *)uploadData timestamp:(NSTimeInterval)timestamp uploadType:(MPUploadType)uploadType dataPlanId:(nullable NSString *)dataPlanId dataPlanVersion:(nullable NSNumber *)dataPlanVersion {
+- (instancetype)initWithSessionId:(NSNumber *)sessionId uploadId:(int64_t)uploadId UUID:(NSString *)uuid uploadData:(NSData *)uploadData timestamp:(NSTimeInterval)timestamp uploadType:(MPUploadType)uploadType dataPlanId:(nullable NSString *)dataPlanId dataPlanVersion:(nullable NSNumber *)dataPlanVersion uploadSettings:(nonnull MPUploadSettings *)uploadSettings {
     self = [super init];
     if (self) {
         _sessionId = sessionId;
@@ -29,6 +35,7 @@
         _containsOptOutMessage = NO;
         _dataPlanId = dataPlanId;
         _dataPlanVersion = dataPlanVersion;
+        _uploadSettings = uploadSettings;
     }
     
     return self;
@@ -70,8 +77,8 @@
                                                      timestamp:_timestamp
                                                     uploadType:_uploadType
                                                     dataPlanId:[_dataPlanId copy]
-                                               dataPlanVersion:[_dataPlanVersion copy]];
-    
+                                               dataPlanVersion:[_dataPlanVersion copy]
+                                                uploadSettings:[_uploadSettings copy]];
     return copyObject;
 }
 

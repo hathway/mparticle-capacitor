@@ -3,12 +3,12 @@
 #import <dlfcn.h>
 #import <mach-o/arch.h>
 #import <mach-o/dyld.h>
-#import "MPIUserDefaults.h"
 #import <UIKit/UIKit.h>
 #import "MPStateMachine.h"
-#import "MPSearchAdsAttribution.h"
 #import <libkern/OSAtomic.h>
 #import "mParticle.h"
+#import "mParticleSwift.h"
+#import "MPIConstants.h"
 
 NSString *const kMPApplicationInformationKey = @"ai";
 NSString *const kMPApplicationNameKey = @"an";
@@ -28,7 +28,6 @@ NSString *const kMPAppLastUseDateKey = @"lud";
 NSString *const kMPAppStoredVersionKey = @"asv";
 NSString *const kMPAppStoredBuildKey = @"asb";
 NSString *const kMPAppEnvironmentKey = @"env";
-NSString *const kMPAppBadgeNumberKey = @"bn";
 NSString *const kMPAppStoreReceiptKey = @"asr";
 NSString *const kMPAppImageBaseAddressKey = @"iba";
 NSString *const kMPAppImageSizeKey = @"is";
@@ -67,23 +66,20 @@ static void processBinaryImage(const char *name, const void *header, struct uuid
 
 @interface MParticle ()
 
-@property (nonatomic, strong, readonly) MPStateMachine *stateMachine;
-
-#if TARGET_OS_IOS == 1
-@property (nonatomic, strong, readwrite, nullable) NSNumber *badgeNumber;
-#endif
+@property (nonatomic, strong, readonly) MPStateMachine_PRIVATE *stateMachine;
+@property (nonatomic, strong, nonnull) MPBackendController_PRIVATE *backendController;
 
 @end
 
-@interface MPApplication() {
+@interface MPApplication_PRIVATE() {
     NSDictionary *appInfo;
-    MPIUserDefaults *userDefaults;
+    MPUserDefaults *userDefaults;
 }
 
 @end
 
 
-@implementation MPApplication
+@implementation MPApplication_PRIVATE
 
 @synthesize architecture = _architecture;
 @synthesize buildUUID = _buildUUID;
@@ -92,7 +88,7 @@ static void processBinaryImage(const char *name, const void *header, struct uuid
 @synthesize pirated = _pirated;
 
 + (void)initialize {
-    if (self == [MPApplication class]) {
+    if (self == [MPApplication_PRIVATE class]) {
         _dyld_register_func_for_add_image(addImageListCallback);
     }
 }
@@ -103,7 +99,8 @@ static void processBinaryImage(const char *name, const void *header, struct uuid
         return nil;
     }
     
-    userDefaults = [MPIUserDefaults standardUserDefaults];
+    userDefaults = [MPUserDefaults standardUserDefaultsWithStateMachine:[MParticle sharedInstance].stateMachine backendController:[MParticle sharedInstance].backendController identity:[MParticle sharedInstance].identity];
+
     
     return self;
 }
@@ -178,7 +175,7 @@ static void processBinaryImage(const char *name, const void *header, struct uuid
 }
 
 - (MPEnvironment)environment {
-    return [MPStateMachine environment];
+    return [MPStateMachine_PRIVATE environment];
 }
 
 - (NSNumber *)firstSeenInstallation {
@@ -282,7 +279,7 @@ static void processBinaryImage(const char *name, const void *header, struct uuid
 }
 
 - (NSNumber *)sideloadedKitsCount {
-    NSNumber *sideloadedKitsCount = @([[MPIUserDefaults standardUserDefaults] sideloadedKitsCount]);
+    NSNumber *sideloadedKitsCount = @([[MPUserDefaults standardUserDefaultsWithStateMachine:[MParticle sharedInstance].stateMachine backendController:[MParticle sharedInstance].backendController identity:[MParticle sharedInstance].identity] sideloadedKitsCount]);
     return sideloadedKitsCount;
 }
 
@@ -298,31 +295,13 @@ static void processBinaryImage(const char *name, const void *header, struct uuid
     return nil;
 }
 
-#if TARGET_OS_IOS == 1
-- (NSNumber *)badgeNumber {
-    if (![MPStateMachine isAppExtension]) {
-        MPIUserDefaults *userDefaults = [MPIUserDefaults standardUserDefaults];
-        NSNumber *badgeNumber = userDefaults[kMPAppBadgeNumberKey];
-        return badgeNumber.integerValue != 0 ? badgeNumber : nil;
-    }
-    return nil;
-}
-
-- (void)setBadgeNumber:(NSNumber * _Nullable)badgeNumber {
-    if (![MPStateMachine isAppExtension]) {
-        MPIUserDefaults *userDefaults = [MPIUserDefaults standardUserDefaults];
-        userDefaults[kMPAppBadgeNumberKey] = badgeNumber;
-    }
-}
-#endif
-
 - (NSDictionary *)searchAdsAttribution {
     return MParticle.sharedInstance.stateMachine.searchAdsInfo;
 }
 
 #pragma mark NSCopying
 - (instancetype)copyWithZone:(NSZone *)zone {
-    MPApplication *copyObject = [[[self class] alloc] init];
+    MPApplication_PRIVATE *copyObject = [[[self class] alloc] init];
     
     if (copyObject) {
         copyObject->_architecture = [_architecture copy];
@@ -349,7 +328,7 @@ static void processBinaryImage(const char *name, const void *header, struct uuid
 }
 
 + (void)markInitialLaunchTime {
-    MPIUserDefaults *userDefaults = [MPIUserDefaults standardUserDefaults];
+    MPUserDefaults *userDefaults = [MPUserDefaults standardUserDefaultsWithStateMachine:[MParticle sharedInstance].stateMachine backendController:[MParticle sharedInstance].backendController identity:[MParticle sharedInstance].identity];
     NSNumber *initialLaunchTime = userDefaults[kMPAppInitialLaunchTimeKey];
     
     if (initialLaunchTime == nil) {
@@ -363,12 +342,12 @@ static void processBinaryImage(const char *name, const void *header, struct uuid
 }
 
 + (void)updateLastUseDate:(NSDate *)date {
-    MPApplication *application = [[MPApplication alloc] init];
+    MPApplication_PRIVATE *application = [[MPApplication_PRIVATE alloc] init];
     application.lastUseDate = MPMilliseconds([date timeIntervalSince1970]);
 }
 
 + (void)updateLaunchCountsAndDates {
-    MPApplication *application = [[MPApplication alloc] init];
+    MPApplication_PRIVATE *application = [[MPApplication_PRIVATE alloc] init];
     
     application.launchCount = @([application.launchCount integerValue] + 1);
     
@@ -381,23 +360,9 @@ static void processBinaryImage(const char *name, const void *header, struct uuid
 }
 
 + (void)updateStoredVersionAndBuildNumbers {
-    MPApplication *application = [[MPApplication alloc] init];
+    MPApplication_PRIVATE *application = [[MPApplication_PRIVATE alloc] init];
     application.storedVersion = application.version;
     application.storedBuild = application.build;
-}
-
-+ (void)updateBadgeNumber {
-#if TARGET_OS_IOS == 1
-    if ([NSThread isMainThread]) {
-        MPApplication *application = [[MPApplication alloc] init];
-        application.badgeNumber = @([MPApplication sharedUIApplication].applicationIconBadgeNumber);
-    } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            MPApplication *application = [[MPApplication alloc] init];
-            application.badgeNumber = @([MPApplication sharedUIApplication].applicationIconBadgeNumber);
-        });
-    }
-#endif
 }
 
 + (NSDictionary *)appImageInfo {
@@ -446,7 +411,7 @@ static void processBinaryImage(const char *name, const void *header, struct uuid
                          kMPAppDeploymentTargetKey:[NSString stringWithFormat:@"%i", __IPHONE_OS_VERSION_MIN_REQUIRED],
                          kMPAppBuildSDKKey:[NSString stringWithFormat:@"%i", __IPHONE_OS_VERSION_MAX_ALLOWED],
                          kMPAppEnvironmentKey:@(self.environment),
-                         kMPAppFirstSeenInstallationKey:self.firstSeenInstallation,
+                         kMPAppFirstSeenInstallationKey:@(self.firstSeenInstallation.boolValue),
                          kMPAppSideloadKitsCountKey:self.sideloadedKitsCount
                          }
                        mutableCopy];
@@ -506,16 +471,9 @@ static void processBinaryImage(const char *name, const void *header, struct uuid
         applicationInfo[kMPAppBuildNumberKey] = auxString;
     }
     
-    if ([MParticle sharedInstance].stateMachine.allowASR && [MPApplication appStoreReceipt]) {
-        applicationInfo[kMPAppStoreReceiptKey] = [MPApplication appStoreReceipt];
+    if ([MParticle sharedInstance].stateMachine.allowASR && [MPApplication_PRIVATE appStoreReceipt]) {
+        applicationInfo[kMPAppStoreReceiptKey] = [MPApplication_PRIVATE appStoreReceipt];
     }
-    
-#if TARGET_OS_IOS == 1
-    NSNumber *badgeNumber = self.badgeNumber;
-    if (badgeNumber != nil) {
-        applicationInfo[kMPAppBadgeNumberKey] = badgeNumber;
-    }
-#endif
     
     appInfo = (NSDictionary *)applicationInfo;
     
