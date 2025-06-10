@@ -288,7 +288,6 @@ Full documentation here: https://github.com/AppsFlyerSDK/appsflyer-capacitor-plu
 * [`addMParticleProduct(...)`](#addmparticleproduct)
 * [`removeMParticleProduct(...)`](#removemparticleproduct)
 * [`submitPurchaseEvent(...)`](#submitpurchaseevent)
-* [`submitCheckoutEvent(...)`](#submitCheckoutEvent)
 * [`registerMParticleUser(...)`](#registermparticleuser)
 * [Interfaces](#interfaces)
 * [Type Aliases](#type-aliases)
@@ -505,19 +504,6 @@ submitPurchaseEvent(call: { productData: any; customAttributes: any; transaction
 --------------------
 
 
-### submitCheckoutEvent(...)
-
-```typescript
-submitCheckoutEvent(call: { productData: any; customAttributes: any; transactionAttributes: any;  }) => void
-```
-
-| Param      | Type                                                                                  |
-| ---------- | ------------------------------------------------------------------------------------- |
-| **`call`** | <code>{ productData: any; customAttributes: any; transactionAttributes: any;  }</code> |
-
---------------------
-
-
 ### registerMParticleUser(...)
 
 ```typescript
@@ -581,29 +567,29 @@ registerMParticleUser(call: { email: string; customerId?: string; userAttributes
 
 #### UserIdentities
 
-| Prop                           | Type                |
-| ------------------------------ | ------------------- |
-| **`customerid`**               | <code>string</code> |
-| **`email`**                    | <code>string</code> |
-| **`other`**                    | <code>string</code> |
-| **`other2`**                   | <code>string</code> |
-| **`other3`**                   | <code>string</code> |
-| **`other4`**                   | <code>string</code> |
-| **`other5`**                   | <code>string</code> |
-| **`other6`**                   | <code>string</code> |
-| **`other7`**                   | <code>string</code> |
-| **`other8`**                   | <code>string</code> |
-| **`other9`**                   | <code>string</code> |
-| **`other10`**                  | <code>string</code> |
-| **`mobile_number`**            | <code>string</code> |
-| **`phone_number_2`**           | <code>string</code> |
-| **`phone_number_3`**           | <code>string</code> |
-| **`facebook`**                 | <code>string</code> |
-| **`facebookcustomaudienceid`** | <code>string</code> |
-| **`google`**                   | <code>string</code> |
-| **`twitter`**                  | <code>string</code> |
-| **`microsoft`**                | <code>string</code> |
-| **`yahoo`**                    | <code>string</code> |
+| Prop                           | Type                        |
+| ------------------------------ | --------------------------- |
+| **`customerid`**               | <code>string \| null</code> |
+| **`email`**                    | <code>string \| null</code> |
+| **`other`**                    | <code>string \| null</code> |
+| **`other2`**                   | <code>string \| null</code> |
+| **`other3`**                   | <code>string \| null</code> |
+| **`other4`**                   | <code>string \| null</code> |
+| **`other5`**                   | <code>string \| null</code> |
+| **`other6`**                   | <code>string \| null</code> |
+| **`other7`**                   | <code>string \| null</code> |
+| **`other8`**                   | <code>string \| null</code> |
+| **`other9`**                   | <code>string \| null</code> |
+| **`other10`**                  | <code>string \| null</code> |
+| **`mobile_number`**            | <code>string \| null</code> |
+| **`phone_number_2`**           | <code>string \| null</code> |
+| **`phone_number_3`**           | <code>string \| null</code> |
+| **`facebook`**                 | <code>string \| null</code> |
+| **`facebookcustomaudienceid`** | <code>string \| null</code> |
+| **`google`**                   | <code>string \| null</code> |
+| **`twitter`**                  | <code>string \| null</code> |
+| **`microsoft`**                | <code>string \| null</code> |
+| **`yahoo`**                    | <code>string \| null</code> |
 
 
 #### Cart
@@ -709,9 +695,7 @@ registerMParticleUser(call: { email: string; customerId?: string; userAttributes
 
 Construct a type with a set of properties K of type T
 
-<code>{
- [P in K]: T;
- }</code>
+<code>{ [P in K]: T; }</code>
 
 
 #### UserAttributesValue
@@ -760,9 +744,7 @@ Construct a type with the properties of T except for those in type K.
 
 From T, pick a set of properties whose keys are in the union K
 
-<code>{
- [P in K]: T[P];
- }</code>
+<code>{ [P in K]: T[P]; }</code>
 
 
 #### Exclude
