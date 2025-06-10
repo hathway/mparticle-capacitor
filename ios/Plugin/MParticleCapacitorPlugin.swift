@@ -214,6 +214,30 @@ public class MParticleCapacitorPlugin: CAPPlugin {
         ])
     }
 
+        @objc func submitCheckoutEvent(_ call: CAPPluginCall) {
+        let products_tmp = call.getArray("productData") ?? []
+        let cust_attr = call.getObject("customAttributes") ?? [:]
+        let trans_tmp = call.getObject("transactionAttributes") ?? [:]
+        
+        let action =  MPCommerceEventAction.checkout
+        let event = MPCommerceEvent.init(action: action)
+        for product in products_tmp {
+            event?.addProduct(implementation.createCustomMParticleProduct(product as AnyObject))
+        }
+
+        let attributes = MPTransactionAttributes.init()
+        attributes.transactionId = trans_tmp["Id"] as? String
+        attributes.revenue = trans_tmp["Revenue"] as? NSNumber
+        attributes.tax = trans_tmp["Tax"] as? NSNumber
+                
+        event?.customAttributes = cust_attr
+        event?.transactionAttributes = attributes
+        MParticle.sharedInstance().logEvent(event!)
+        call.resolve([
+            "value":"success",
+        ])
+    }
+
     @objc func echo(_ call: CAPPluginCall) {
         let value = call.getString("value") ?? ""
         call.resolve([

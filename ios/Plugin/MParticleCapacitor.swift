@@ -61,4 +61,44 @@ import Capacitor
         }
         return product
     }
+
+    @objc public func createCustomMParticleProduct(_ productData: AnyObject) -> MPProduct {
+    let dataDict = productData as! [String: Any]
+
+    let product = MPProduct.init(
+        name: (dataDict["name"] as? String) ?? "",
+        sku: "\(dataDict["sku"] ?? "")",
+        quantity: (dataDict["quantity"] as? NSNumber) ?? 0,
+        price: (dataDict["cost"] as? NSNumber) ?? 0
+    )
+
+    if let variant = dataDict["variant"] as? String {
+        product.variant = variant
+    }
+
+    if let category = dataDict["category"] as? String {
+        product.category = category
+    }
+
+    if let brand = dataDict["brand"] as? String {
+        product.brand = brand
+    }
+
+    if let position = dataDict["position"] as? NSNumber {
+        product.position = position
+    }
+
+    if let couponCode = dataDict["couponCode"] as? String {
+        product.couponCode = couponCode
+    }
+
+    if let attrs = dataDict["attributes"] as? [String: JSValue] {
+        for (key, value) in attrs {
+            product[key] = "\(value)"
+        }
+    }
+
+    return product
+}
+
 }

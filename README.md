@@ -288,6 +288,7 @@ Full documentation here: https://github.com/AppsFlyerSDK/appsflyer-capacitor-plu
 * [`addMParticleProduct(...)`](#addmparticleproduct)
 * [`removeMParticleProduct(...)`](#removemparticleproduct)
 * [`submitPurchaseEvent(...)`](#submitpurchaseevent)
+* [`submitCheckoutEvent(...)`](#submitCheckoutEvent)
 * [`registerMParticleUser(...)`](#registermparticleuser)
 * [Interfaces](#interfaces)
 * [Type Aliases](#type-aliases)
@@ -504,6 +505,19 @@ submitPurchaseEvent(call: { productData: any; customAttributes: any; transaction
 --------------------
 
 
+### submitCheckoutEvent(...)
+
+```typescript
+submitCheckoutEvent(call: { productData: any; customAttributes: any; transactionAttributes: any;  }) => void
+```
+
+| Param      | Type                                                                                  |
+| ---------- | ------------------------------------------------------------------------------------- |
+| **`call`** | <code>{ productData: any; customAttributes: any; transactionAttributes: any;  }</code> |
+
+--------------------
+
+
 ### registerMParticleUser(...)
 
 ```typescript
@@ -695,7 +709,9 @@ registerMParticleUser(call: { email: string; customerId?: string; userAttributes
 
 Construct a type with a set of properties K of type T
 
-<code>{ [P in K]: T; }</code>
+<code>{
+ [P in K]: T;
+ }</code>
 
 
 #### UserAttributesValue
@@ -744,7 +760,9 @@ Construct a type with the properties of T except for those in type K.
 
 From T, pick a set of properties whose keys are in the union K
 
-<code>{ [P in K]: T[P]; }</code>
+<code>{
+ [P in K]: T[P];
+ }</code>
 
 
 #### Exclude

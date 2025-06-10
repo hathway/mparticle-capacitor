@@ -154,6 +154,14 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
     this.logProductAction(this.mParticle.ProductActionType.Purchase, productArray, call.customAttributes, call.transactionAttributes, null);
   }
 
+    public submitCheckoutEvent(call: { productData: any[], customAttributes: any, transactionAttributes: any }): void {
+    const productArray: any = [];
+    (call.productData).forEach((element: any) => {
+      productArray.push(this.createMParticleProduct(element));
+    });
+    this.logProductAction(this.mParticle.ProductActionType.Checkout, productArray, call.customAttributes, call.transactionAttributes, null);
+  }
+
   public get currentUser(): mParticle.User {
     return this.mParticle.Identity.getCurrentUser();
   }
@@ -181,6 +189,21 @@ export class MParticleCapacitorWeb extends WebPlugin implements MParticleCapacit
       undefined, // brand
       undefined, // position
       undefined, // couponCode
+      productData.attributes
+    );
+  }
+
+    protected createCustomMParticleProduct(productData: any): mParticle.Product {
+    return this.mParticle.eCommerce.createProduct(
+      productData.name, //productName
+      productData.sku, //productSku
+      productData.cost, //productPrice
+      productData.quantity,  //quantity
+      productData.variant || undefined, // variant
+      productData.category || undefined, // category
+      productData.brand || undefined, // brand
+      productData.position || undefined, // position
+      productData.couponCode || undefined, // couponCode
       productData.attributes
     );
   }

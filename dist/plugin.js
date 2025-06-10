@@ -160,6 +160,13 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle) {
             });
             this.logProductAction(this.mParticle.ProductActionType.Purchase, productArray, call.customAttributes, call.transactionAttributes, null);
         }
+        submitCheckoutEvent(call) {
+            const productArray = [];
+            (call.productData).forEach((element) => {
+                productArray.push(this.createCustomMParticleProduct(element));
+            });
+            this.logProductAction(this.mParticle.ProductActionType.Checkout, productArray, call.customAttributes, call.transactionAttributes, null);
+        }
         get currentUser() {
             return this.mParticle.Identity.getCurrentUser();
         }
@@ -184,6 +191,18 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle) {
             undefined, // brand
             undefined, // position
             undefined, // couponCode
+            productData.attributes);
+        }
+        createCustomMParticleProduct(productData) {
+            return this.mParticle.eCommerce.createProduct(productData.name, //productName
+            productData.sku, //productSku
+            productData.cost, //productPrice
+            productData.quantity, //quantity
+            productData.variant || undefined, // variant
+            productData.category || undefined, // category
+            productData.brand || undefined, // brand
+            productData.position || undefined, // position
+            productData.couponCode || undefined, // couponCode
             productData.attributes);
         }
         logProductAction(eventType, product, customAttributes, transactionAttributes, customFlags) {
