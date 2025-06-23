@@ -255,6 +255,22 @@
         "slug": "submitpurchaseevent"
       },
       {
+        "name": "submitCheckoutEvent",
+        "signature": "(call: { productData: any; customAttributes: any; transactionAttributes: any; }) => void",
+        "parameters": [
+          {
+            "name": "call",
+            "docs": "",
+            "type": "{ productData: any; customAttributes: any; transactionAttributes: any; }"
+          }
+        ],
+        "returns": "void",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "submitcheckoutevent"
+      },
+      {
         "name": "registerMParticleUser",
         "signature": "(call: { email: string; customerId?: string; userAttributes: any; }) => Promise<any>",
         "parameters": [

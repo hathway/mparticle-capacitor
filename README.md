@@ -288,6 +288,7 @@ Full documentation here: https://github.com/AppsFlyerSDK/appsflyer-capacitor-plu
 * [`addMParticleProduct(...)`](#addmparticleproduct)
 * [`removeMParticleProduct(...)`](#removemparticleproduct)
 * [`submitPurchaseEvent(...)`](#submitpurchaseevent)
+* [`submitCheckoutEvent(...)`](#submitcheckoutevent)
 * [`registerMParticleUser(...)`](#registermparticleuser)
 * [Interfaces](#interfaces)
 * [Type Aliases](#type-aliases)
@@ -495,6 +496,19 @@ removeMParticleProduct(call: { productData: any; customAttributes: any; }) => vo
 
 ```typescript
 submitPurchaseEvent(call: { productData: any; customAttributes: any; transactionAttributes: any; }) => void
+```
+
+| Param      | Type                                                                                  |
+| ---------- | ------------------------------------------------------------------------------------- |
+| **`call`** | <code>{ productData: any; customAttributes: any; transactionAttributes: any; }</code> |
+
+--------------------
+
+
+### submitCheckoutEvent(...)
+
+```typescript
+submitCheckoutEvent(call: { productData: any; customAttributes: any; transactionAttributes: any; }) => void
 ```
 
 | Param      | Type                                                                                  |

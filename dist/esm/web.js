@@ -132,7 +132,7 @@ export class MParticleCapacitorWeb extends WebPlugin {
     submitCheckoutEvent(call) {
         const productArray = [];
         (call.productData).forEach((element) => {
-            productArray.push(this.createMParticleProduct(element));
+            productArray.push(this.createCustomMParticleProduct(element));
         });
         this.logProductAction(this.mParticle.ProductActionType.Checkout, productArray, call.customAttributes, call.transactionAttributes, null);
     }
