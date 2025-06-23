@@ -1,7 +1,6 @@
 #import "MPCommerceEvent.h"
 #import "MPCommerceEventInstruction.h"
 #import "MPCommerceEvent+Dictionary.h"
-#import "MPDateFormatter.h"
 #import "MPEnums.h"
 #import "MPEvent.h"
 #import "MPExtensionProtocol.h"
@@ -13,16 +12,21 @@
 #import "MPPromotion.h"
 #import "MPTransactionAttributes.h"
 #import "MPTransactionAttributes+Dictionary.h"
-#import "NSArray+MPCaseInsensitive.h"
 #import "NSDictionary+MPCaseInsensitive.h"
 #import "MPIdentityApi.h"
 #import "MPKitAPI.h"
 #import "MPConsentState.h"
-#import "MPGDPRConsent.h"
-#import "MPCCPAConsent.h"
 #import "MPListenerController.h"
 #import "MPForwardRecord.h"
 #import <UIKit/UIKit.h>
+#import "MPStateMachine.h"
+#import "MPKitContainer.h"
+#import "MPBackendController.h"
+#import "MPApplication.h"
+#import "MPNotificationController.h"
+#import "MPNetworkCommunication.h"
+#import "MPPersistenceController.h"
+#import "MPRokt.h"
 
 #if TARGET_OS_IOS == 1
     #ifndef MPARTICLE_LOCATION_DISABLE
@@ -38,6 +42,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class MPSideloadedKit;
+@class MPKitContainer;
 
 /**
  An SDK session.
@@ -89,7 +94,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
 Allows you to override the default configuration host.
 */
-@property (nonatomic) NSString *configHost;
+@property (nonatomic, nullable) NSString *configHost;
 /**
 Defaults to false. If set true the configHost above with overwrite the subdirectory of the URL in addition to the host.
 */
@@ -98,7 +103,11 @@ Defaults to false. If set true the configHost above with overwrite the subdirect
 /**
 Allows you to override the default event host.
 */
-@property (nonatomic) NSString *eventsHost;
+@property (nonatomic, nullable) NSString *eventsHost;
+/**
+Allows you to override the tracking event host. Set this to automatically use an alternate custom domain when ATTStatus has been authorized.
+*/
+@property (nonatomic, nullable) NSString *eventsTrackingHost;
 /**
 Defaults to false. If set true the eventsHost above with overwrite the subdirectory of the URL in addition to the host.
 */
@@ -107,7 +116,11 @@ Defaults to false. If set true the eventsHost above with overwrite the subdirect
 /**
 Allows you to override the default identity host.
 */
-@property (nonatomic) NSString *identityHost;
+@property (nonatomic, nullable) NSString *identityHost;
+/**
+Allows you to override the tracking identity host. Set this to automatically use an alternate custom domain when ATTStatus has been authorized.
+*/
+@property (nonatomic, nullable) NSString *identityTrackingHost;
 /**
 Defaults to false. If set true the identityHost above with overwrite the subdirectory of the URL in addition to the host.
 */
@@ -116,7 +129,11 @@ Defaults to false. If set true the identityHost above with overwrite the subdire
 /**
 Allows you to override the default alias host.
 */
-@property (nonatomic) NSString *aliasHost;
+@property (nonatomic, nullable) NSString *aliasHost;
+/**
+Allows you to override the tracking alias host. Set this to automatically use an alternate custom domain when ATTStatus has been authorized.
+*/
+@property (nonatomic, nullable) NSString *aliasTrackingHost;
 /**
 Defaults to false. If set true the aliasHost above with overwrite the subdirectory of the URL in addition to the host.
 */
@@ -125,6 +142,8 @@ Defaults to false. If set true the aliasHost above with overwrite the subdirecto
 @property (nonatomic) NSArray<NSData *> *certificates;
 
 @property (nonatomic) BOOL pinningDisabledInDevelopment;
+
+@property (nonatomic) BOOL pinningDisabled;
 /**
 Defaults to false. Prevents the eventsHost above from overwriting the alias endpoint.
 */
@@ -329,7 +348,7 @@ Defaults to false. Prevents the eventsHost above from overwriting the alias endp
  
  (Provided to accomodate certain advanced use cases. Most integrations of the SDK will not require modifying this property.)
  */
-@property (nonatomic, strong, readwrite) MPNetworkOptions *networkOptions;
+@property (nonatomic, strong, readwrite, nullable) MPNetworkOptions *networkOptions;
 
 /**
  Consent state.
@@ -360,6 +379,14 @@ Defaults to false. Prevents the eventsHost above from overwriting the alias endp
 @property (nonatomic, strong, readwrite, nullable) MPDataPlanOptions *dataPlanOptions;
 
 /**
+ Disabled Kits.
+ 
+ Include the Kit Integration ID of any kit you'd like to disable
+ @see MPKitInstance
+ */
+@property (nonatomic, strong, readwrite, nullable) NSArray<NSNumber *> *disabledKits;
+
+/**
  Set the App Tracking Transparency Authorization Status upon starting the SDK.
  Only sets a new state if it has changed.
  */
@@ -384,6 +411,19 @@ Defaults to false. Prevents the eventsHost above from overwriting the alias endp
  configMaxAgeSeconds will prevent those users from potentially using very old forwarding logic.
  */
 @property (nonatomic, strong, readwrite, nullable) NSNumber *configMaxAgeSeconds;
+
+/**
+ Set a maximum threshold for stored events, batches, and sessions, in seconds.
+ 
+ By default, data is persisted for 90 days before being deleted to minimize data loss, however
+ this can lead to excessive storage usage on some users' devices. This is exacerbated if you log
+ a large number of events, or events with a lot of data (attributes, etc).
+ 
+ You can set this to any value greater than 0 seconds, so if you have storage usage concerns, set a lower
+ value such as 48 hours or 1 week. Or alternatively, if you have data loss concerns, you can set this to an even
+ longer value than the default.
+ */
+@property (nonatomic, strong, nullable) NSNumber *persistenceMaxAgeSeconds;
 
 /**
  Set an array of instances of kit (MPKitProtocol wrapped in MPSideloadedKit) objects to be "sideloaded".
@@ -455,6 +495,12 @@ Defaults to false. Prevents the eventsHost above from overwriting the alias endp
 @property (nonatomic, strong, readonly) MPIdentityApi * identity;
 
 /**
+ This property is an instance of MPRokt. It allows you to access the Rokt SDK through mParticle
+ @see MPRokt
+ */
+@property (nonatomic, strong, readonly) MPRokt * rokt;
+
+/**
  If set to YES development logs will be output to the
  console, if set to NO the development logs will be suppressed. This property works in conjunction with
  the environment property. If the environment is Production, consoleLogging will always be NO,
@@ -489,7 +535,7 @@ Defaults to false. Prevents the eventsHost above from overwriting the alias endp
  N.B.: The format/wording of mParticle log messages may change between releases--please avoid using this programatically to detect SDK behavior unless absolutely necessary, and then only as a temporary workaround.
  @see MParticleOptions
  */
-@property (nonatomic, copy, readwrite) void (^customLogger)(NSString *message);
+@property (nonatomic, copy, nullable, readwrite) void (^customLogger)(NSString *message);
 
 /**
  Gets/Sets the opt-in/opt-out status for the application. Set it to YES to opt-out of event tracking. Set it to NO to opt-in of event tracking.
@@ -545,7 +591,7 @@ Defaults to false. Prevents the eventsHost above from overwriting the alias endp
  Allows you to proxy SDK traffic by overriding the default network endpoints and certificates used by the SDK.
  @see MParticleOptions
  */
-@property (nonatomic, readonly) MPNetworkOptions *networkOptions;
+@property (nonatomic, readonly, nullable) MPNetworkOptions *networkOptions;
  
  #if TARGET_OS_IOS == 1
  /**
@@ -607,6 +653,22 @@ Defaults to false. Prevents the eventsHost above from overwriting the alias endp
  */
 @property (nonatomic, readonly, nullable) NSNumber *configMaxAgeSeconds;
 
+/**
+ Maximum threshold for stored events, batches, and sessions, in seconds.
+ @see MParticleOptions
+ */
+@property (nonatomic, readonly, nullable) NSNumber *persistenceMaxAgeSeconds;
+
+/**
+ The instance which manages all initialized kits. For internal use only
+ */
+@property (nonatomic, strong, readonly) MPKitContainer_PRIVATE *kitContainer_PRIVATE;
+
+/**
+ The Kit Configuration needed should the initialization of kits need to be deferred until identity or consent is resolve. For internal use only
+ */
+@property (nonatomic, strong, nullable) NSArray<NSDictionary *> *deferredKitConfiguration_PRIVATE;
+
 #pragma mark - Initialization
 
 /**
@@ -627,10 +689,10 @@ Defaults to false. Prevents the eventsHost above from overwriting the alias endp
 /**
  Switches the SDK to a new API key and secret.
  
- Will first attempt to upload any batches that have not been sent to mParticle,
- then all SDK state including user defaults, database, etc will be completely reset.
- After that, `startWithOptions` will be called with the new key and secret
- and the SDK will initialize again as if it is a new app launch.
+ Will first batch all events that have not been sent to mParticle into upload records,
+ then all SDK state including user defaults, database (except uploads), etc will be
+ completely reset. After that, `startWithOptions` will be called with the new
+ key and secret and the SDK will initialize again as if it is a new app launch.
  
  Any kits that do not implement the `stop` method will be deactivated and will
  not receive any events until the app is restarted. Any kits that were not used by the
@@ -720,12 +782,14 @@ Defaults to false. Prevents the eventsHost above from overwriting the alias endp
 - (BOOL)continueUserActivity:(nonnull NSUserActivity *)userActivity restorationHandler:(void(^ _Nonnull)(NSArray<id<UIUserActivityRestoring>> * __nullable restorableObjects))restorationHandler;
 
 /**
- This method will permanently remove ALL MParticle data from the device, including MParticle UserDefaults and Database, it will also halt any further upload or download behavior that may be prepared
+ DEPRECATED: This method will permanently remove ALL MParticle data from the device, including MParticle UserDefaults and Database, it will also halt any further upload or download behavior that may be prepared
+ 
+ NOTE: This method is less comprehensive than the new `reset:` method. It resets less state and is called within a `dispatch_sync()` which has the potential to deadlock in rare cases.
 
  If you have any reference to the MParticle instance, you must remove your reference by setting it to "nil", in order to avoid any unexpected behavior
  The SDK will be shut down and [MParticle sharedInstance] will return a new instance without apiKey or secretKey. MParticle can be restarted by calling MParticle.startWithOptions
  */
-- (void)reset;
+- (void)reset DEPRECATED_MSG_ATTRIBUTE("replace calls to `reset` with `reset:` and a completion handler");
 
 /**
  This method will permanently remove ALL MParticle data from the device, including MParticle UserDefaults and Database, it will also halt any further upload or download behavior that may be prepared
@@ -1187,6 +1251,11 @@ Defaults to false. Prevents the eventsHost above from overwriting the alias endp
  Internal use only. Used by our wrapper SDKs to identify themselves during initialization.
  */
 + (void)_setWrapperSdk_internal:(MPWrapperSdk)wrapperSdk version:(nonnull NSString *)wrapperSdkVersion;
+
+/**
+ Internal use only. Used by our SDK to determine if configuration needs refreshed.
+ */
++ (BOOL)isOlderThanConfigMaxAgeSeconds;
 
 @end
 

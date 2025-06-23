@@ -163,7 +163,7 @@ var capacitorMParticleCapacitor = (function (exports, core, mParticle) {
         submitCheckoutEvent(call) {
             const productArray = [];
             (call.productData).forEach((element) => {
-                productArray.push(this.createCustomMParticleProduct(element));
+                productArray.push(this.createMParticleProduct(element));
             });
             this.logProductAction(this.mParticle.ProductActionType.Checkout, productArray, call.customAttributes, call.transactionAttributes, null);
         }

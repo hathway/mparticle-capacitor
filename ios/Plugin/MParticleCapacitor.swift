@@ -85,7 +85,7 @@ import Capacitor
     }
 
     if let position = dataDict["position"] as? NSNumber {
-        product.position = position
+        product.position = UInt(position)
     }
 
     if let couponCode = dataDict["couponCode"] as? String {

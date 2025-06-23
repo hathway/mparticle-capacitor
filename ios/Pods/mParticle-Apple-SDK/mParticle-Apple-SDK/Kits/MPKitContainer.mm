@@ -1,8 +1,7 @@
 #import "MPKitContainer.h"
-#import "Swift.h"
+#import "MParticleSwift.h"
 #import "MPKitExecStatus.h"
 #import "MPEnums.h"
-#import "MPStateMachine.h"
 #import "MPKitConfiguration.h"
 #import <UIKit/UIKit.h>
 #import "MPForwardRecord.h"
@@ -19,8 +18,6 @@
 #import "MPProduct.h"
 #import "MPProduct+Dictionary.h"
 #import "NSDictionary+MPCaseInsensitive.h"
-#import "NSArray+MPCaseInsensitive.h"
-#import "MPIUserDefaults.h"
 #import "MPConsumerInfo.h"
 #import "MPForwardQueueItem.h"
 #import "MPTransactionAttributes.h"
@@ -45,9 +42,9 @@ NSString *const kitFileExtension = @"eks";
 static NSMutableSet <id<MPExtensionKitProtocol>> *kitsRegistry;
 
 @interface MParticle ()
-@property (nonatomic, strong, readonly) MPPersistenceController *persistenceController;
-@property (nonatomic, strong, readonly) MPStateMachine *stateMachine;
-@property (nonatomic, strong, readonly) MPKitContainer *kitContainer;
+@property (nonatomic, strong, readonly) MPPersistenceController_PRIVATE *persistenceController;
+@property (nonatomic, strong, readonly) MPStateMachine_PRIVATE *stateMachine;
+@property (nonatomic, strong, nonnull) MPBackendController_PRIVATE *backendController;
 + (dispatch_queue_t)messageQueue;
 @property (nonatomic, strong, nonnull) MParticleOptions *options;
 @property (nonatomic, strong) MPDataPlanFilter *dataPlanFilter;
@@ -71,7 +68,7 @@ static NSMutableSet <id<MPExtensionKitProtocol>> *kitsRegistry;
 
 static const NSInteger sideloadedKitCodeStartValue = 1000000000;
 
-@interface MPKitContainer () {
+@interface MPKitContainer_PRIVATE () {
     dispatch_semaphore_t kitsSemaphore;
     std::map<NSNumber *, std::shared_ptr<mParticle::Bracket>> brackets;
     NSInteger sideloadedKitCodeNextValue;
@@ -83,12 +80,12 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
 @end
 
 
-@implementation MPKitContainer
+@implementation MPKitContainer_PRIVATE
 
 @synthesize kitsInitialized = _kitsInitialized;
 
 + (void)initialize {
-    if (self == [MPKitContainer class]) {
+    if (self == [MPKitContainer_PRIVATE class]) {
         kitsRegistry = [[NSMutableSet alloc] initWithCapacity:DEFAULT_ALLOCATION_FOR_KITS];
     }
 }
@@ -146,7 +143,7 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
 
 - (void)handleApplicationDidFinishLaunching:(NSNotification *)notification {
     dispatch_async(dispatch_get_main_queue(), ^{
-        MPStateMachine *stateMachine = [MParticle sharedInstance].stateMachine;
+        MPStateMachine_PRIVATE *stateMachine = [MParticle sharedInstance].stateMachine;
         stateMachine.launchOptions = [notification userInfo];
         SEL launchOptionsSelector = @selector(setLaunchOptions:);
         SEL startSelector = @selector(start);
@@ -291,17 +288,22 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
         return;
     }
     
-    MPIUserDefaults *userDefaults = [MPIUserDefaults standardUserDefaults];
+    MPUserDefaults *userDefaults = [MPUserDefaults standardUserDefaultsWithStateMachine:[MParticle sharedInstance].stateMachine backendController:[MParticle sharedInstance].backendController identity:[MParticle sharedInstance].identity];
     
     NSArray *directoryContents = [userDefaults getKitConfigurations];
     
     for (NSDictionary *kitConfigurationDictionary in directoryContents) {
         MPKitConfiguration *kitConfiguration = [[MPKitConfiguration alloc] initWithDictionary:kitConfigurationDictionary];
-        self.kitConfigurations[kitConfiguration.integrationId] = kitConfiguration;
-        [self startKit:kitConfiguration.integrationId configuration:kitConfiguration];
-        
+        BOOL shouldStartKit = !(_disabledKits != nil && [_disabledKits containsObject:kitConfiguration.integrationId]);
+        if (shouldStartKit) {
+            self.kitConfigurations[kitConfiguration.integrationId] = kitConfiguration;
+            [self startKit:kitConfiguration.integrationId configuration:kitConfiguration];
+        }
+    }
+    if (self.kitConfigurations.count > 0) {
         self.kitsInitialized = YES;
     }
+    
     if (self.sideloadedKits.count > 0) {
         self.kitsInitialized = YES;
     }
@@ -414,7 +416,7 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
     NSString *const MPKitBracketLowKey = @"lo";
     NSString *const MPKitBracketHighKey = @"hi";
     
-    long mpId = [[MPPersistenceController mpId] longValue];
+    long mpId = [[MPPersistenceController_PRIVATE mpId] longValue];
     short low = (short)[bracketConfiguration[MPKitBracketLowKey] integerValue];
     short high = (short)[bracketConfiguration[MPKitBracketHighKey] integerValue];
     localBracket = make_shared<mParticle::Bracket>(mpId, low, high);
@@ -477,6 +479,13 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
     return shouldDisable;
 }
 
+- (BOOL)isKitDisabled:(NSNumber *)kitCode {
+    BOOL disabledByConsent =  [self isDisabledByConsentKitFilter:self.kitConfigurations[kitCode].consentKitFilter];
+    BOOL disabledKit = [_disabledKits containsObject:kitCode];
+
+    return disabledByConsent || disabledKit;
+}
+
 - (id<MPKitProtocol>)startKit:(NSNumber *)integrationId configuration:(MPKitConfiguration *)kitConfiguration {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"code == %@", integrationId];
     id<MPExtensionKitProtocol>kitRegister = [[kitsRegistry filteredSetUsingPredicate:predicate] anyObject];
@@ -500,7 +509,7 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
         return;
     }
     
-    disabled = [self isDisabledByConsentKitFilter:kitConfiguration.consentKitFilter];
+    disabled = [self isKitDisabled:kitRegister.code];
     if (disabled) {
         kitRegister.wrapperInstance = nil;
         return;
@@ -518,7 +527,13 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
         }
         
         if ([kitRegister.wrapperInstance respondsToSelector:@selector(didFinishLaunchingWithConfiguration:)]) {
-            [kitRegister.wrapperInstance didFinishLaunchingWithConfiguration:configuration];
+            if ([NSThread isMainThread]) {
+                [kitRegister.wrapperInstance didFinishLaunchingWithConfiguration:configuration];
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [kitRegister.wrapperInstance didFinishLaunchingWithConfiguration:configuration];
+                });
+            }
         }
     }
 }
@@ -607,7 +622,7 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
         return;
     }
     
-    long mpId = [[MPPersistenceController mpId] longValue];
+    long mpId = [[MPPersistenceController_PRIVATE mpId] longValue];
     short low = (short)[configuration[@"lo"] integerValue];
     short high = (short)[configuration[@"hi"] integerValue];
     
@@ -801,7 +816,7 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
         
         if (!projectedEvents.empty()) {
             for (auto &projectedEvent : projectedEvents) {
-                kitFilter = [[MPKitFilter alloc] initWithEvent:projectedEvent shouldFilter:NO appliedProjections:appliedProjectionsArray];
+                kitFilter = [[MPKitFilter alloc] initWithEvent:projectedEvent shouldFilter:NO appliedProjections:appliedProjectionsArray eventCopy:nil commerceEventCopy:commerceEvent];
                 [self attemptToLogEventToKit:kitRegister kitFilter:kitFilter selector:@selector(logEvent:) parameters:nil messageType:MPMessageTypeEvent userInfo:[[NSDictionary alloc] init]];
             }
         }
@@ -905,7 +920,7 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
         NSArray<MPEventProjection *> *appliedProjectionsArray = !appliedProjections.empty() ? [NSArray arrayWithObjects:&appliedProjections[0] count:appliedProjections.size()] : nil;
         
         for (auto &projectedEvent : projectedEvents) {
-            kitFilter = [[MPKitFilter alloc] initWithEvent:projectedEvent shouldFilter:shouldFilter appliedProjections:appliedProjectionsArray];
+            kitFilter = [[MPKitFilter alloc] initWithEvent:projectedEvent shouldFilter:shouldFilter appliedProjections:appliedProjectionsArray eventCopy:event commerceEventCopy:nil];
             SEL mutableSelector = selector;
             if (selector == @selector(logScreen:)) {
                 for (int i = 0; i < appliedProjectionsArray.count; i += 1) {
@@ -1102,9 +1117,9 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
         return;
     }
     
-    __weak MPKitContainer *weakSelf = self;
+    __weak MPKitContainer_PRIVATE *weakSelf = self;
     
-    __strong MPKitContainer *strongSelf = weakSelf;
+    __strong MPKitContainer_PRIVATE *strongSelf = weakSelf;
     if (strongSelf) {
         dispatch_semaphore_wait(strongSelf->kitsSemaphore, DISPATCH_TIME_FOREVER);
     }
@@ -1602,9 +1617,9 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
         return;
     }
     
-    __weak MPKitContainer *weakSelf = self;
+    __weak MPKitContainer_PRIVATE *weakSelf = self;
     
-    __strong MPKitContainer *strongSelf = weakSelf;
+    __strong MPKitContainer_PRIVATE *strongSelf = weakSelf;
     if (strongSelf) {
         dispatch_semaphore_wait(strongSelf->kitsSemaphore, DISPATCH_TIME_FOREVER);
     }
@@ -1942,15 +1957,7 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
     NSMutableArray <id<MPExtensionKitProtocol>> *activeKitsRegistry = [[NSMutableArray alloc] initWithCapacity:kitsRegistry.count];
     
     for (id<MPExtensionKitProtocol>kitRegister in kitsRegistry) {
-        BOOL active = kitRegister.wrapperInstance ? [kitRegister.wrapperInstance started] : NO;
-        std::shared_ptr<mParticle::Bracket> bracket = [self bracketForKit:kitRegister.code];
-        MParticleUser *currentUser = [MParticle sharedInstance].identity.currentUser;
-        
-        BOOL disabledByConsent =  [self isDisabledByConsentKitFilter:self.kitConfigurations[kitRegister.code].consentKitFilter];
-        BOOL disabledByExcludingAnonymousUsers =  (self.kitConfigurations[kitRegister.code].excludeAnonymousUsers && !currentUser.isLoggedIn);
-        BOOL disabledByRamping =  !(bracket == nullptr || (bracket != nullptr && bracket->shouldForward()));
-        
-        if (active && !disabledByRamping && !disabledByConsent && !disabledByExcludingAnonymousUsers) {
+        if ([self isActiveAndNotDisabled:kitRegister]) {
             [activeKitsRegistry addObject:kitRegister];
         }
     }
@@ -1958,8 +1965,21 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
     return activeKitsRegistry.count > 0 ? activeKitsRegistry : nil;
 }
 
+- (BOOL)isActiveAndNotDisabled:(id<MPExtensionKitProtocol>)kitRegister {
+    BOOL active = kitRegister.wrapperInstance ? [kitRegister.wrapperInstance started] : NO;
+    std::shared_ptr<mParticle::Bracket> bracket = [self bracketForKit:kitRegister.code];
+    MParticleUser *currentUser = [MParticle sharedInstance].identity.currentUser;
+    
+    BOOL disabledByConsent =  [self isDisabledByConsentKitFilter:self.kitConfigurations[kitRegister.code].consentKitFilter];
+    BOOL disabledByExcludingAnonymousUsers =  (self.kitConfigurations[kitRegister.code].excludeAnonymousUsers && !currentUser.isLoggedIn);
+    BOOL disabledByRamping =  !(bracket == nullptr || (bracket != nullptr && bracket->shouldForward()));
+    BOOL disabledKit = [_disabledKits containsObject:kitRegister.code];
+    
+    return (active && !disabledByRamping && !disabledByConsent && !disabledByExcludingAnonymousUsers && !disabledKit);
+}
+
 - (void)configureKits:(NSArray<NSDictionary *> *)kitConfigurations {
-    MPStateMachine *stateMachine = [MParticle sharedInstance].stateMachine;
+    MPStateMachine_PRIVATE *stateMachine = [MParticle sharedInstance].stateMachine;
     
     if (MPIsNull(kitConfigurations) || stateMachine.optOut) {
         [self flushSerializedKits];
@@ -1973,7 +1993,7 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
     self.originalConfig = kitConfigurations;
     
     NSPredicate *predicate;
-    MPIUserDefaults *userDefaults = [MPIUserDefaults standardUserDefaults];
+    MPUserDefaults *userDefaults = [MPUserDefaults standardUserDefaultsWithStateMachine:[MParticle sharedInstance].stateMachine backendController:[MParticle sharedInstance].backendController identity:[MParticle sharedInstance].identity];
     NSDictionary *userAttributes = userDefaults[kMPUserAttributeKey];
     NSArray *userIdentities = userDefaults[kMPUserIdentityArrayKey];
     NSArray<NSNumber *> *supportedKits = [self supportedKits];
@@ -2008,7 +2028,7 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
             
             if (kitInstance) {
                 
-                BOOL disabled = [self isDisabledByConsentKitFilter:kitConfiguration.consentKitFilter];
+                BOOL disabled = [self isKitDisabled:kitRegister.code];
                 if (disabled) {
                     kitRegister.wrapperInstance = nil;
                 } else {
@@ -2077,13 +2097,7 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
                     }
                 }
                 
-                NSArray *alreadySynchedUserIdentities = userDefaults[kMPSynchedUserIdentitiesKey];
-                if (userIdentities && [kitInstance respondsToSelector:@selector(setUserIdentity:identityType:)] && ![alreadySynchedUserIdentities containsObject:integrationId]) {
-                    NSMutableArray *synchedUserIdentities = [[NSMutableArray alloc] initWithCapacity:alreadySynchedUserIdentities.count + 1];
-                    [synchedUserIdentities addObjectsFromArray:alreadySynchedUserIdentities];
-                    [synchedUserIdentities addObject:integrationId];
-                    userDefaults[kMPSynchedUserIdentitiesKey] = synchedUserIdentities;
-                    
+                if (userIdentities && [kitInstance respondsToSelector:@selector(setUserIdentity:identityType:)]) {
                     for (NSDictionary *userIdentity in userIdentities) {
                         MPUserIdentity identityType = (MPUserIdentity)[userIdentity[kMPUserIdentityTypeKey] intValue];
                         if (![MParticle.sharedInstance.dataPlanFilter isBlockedUserIdentityType:(MPIdentity)identityType]) {
@@ -2212,13 +2226,7 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
             if (execStatus.success && ![lastKit isEqualToNumber:currentKit]) {
                 lastKit = currentKit;
                 
-                MPForwardRecord *forwardRecord = [[MPForwardRecord alloc] initWithMessageType:MPMessageTypeCommerceEvent
-                                                                                   execStatus:execStatus
-                                                                                    kitFilter:kitFilter
-                                                                                originalEvent:kitFilter.originalCommerceEvent];
-                dispatch_async([MParticle messageQueue], ^{
-                    [[MParticle sharedInstance].persistenceController saveForwardRecord:forwardRecord];
-                });
+                [self forwardCommerceEventRecord:kitFilter execStatus:execStatus commerceEvent:kitFilter.originalCommerceEvent];
                 MPILogDebug(@"Forwarded logCommerceEvent call to kit: %@", kitRegister.name);
             }
         });
@@ -2291,6 +2299,16 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
                         return;
                     }
                     execStatus = [kitRegister.wrapperInstance logEvent:((MPEvent *)kitFilter.forwardEvent)];
+                } else if (selector == @selector(executeWithViewName:attributes:placements:callbacks:filteredUser:)) {
+                    if (kitFilter.shouldFilter) {
+                        return;
+                    }
+                    FilteredMParticleUser *filteredUser = [[FilteredMParticleUser alloc] initWithMParticleUser:[[[MParticle sharedInstance] identity] currentUser] kitConfiguration:self.kitConfigurations[kitRegister.code]];
+                    execStatus = [kitRegister.wrapperInstance executeWithViewName:parameters[0]
+                                                                       attributes:parameters[1]
+                                                                       placements:parameters[2]
+                                                                        callbacks:parameters[3]
+                                                                     filteredUser:filteredUser];
                 } else if (selector == @selector(logScreen:)) {
                     if (!kitFilter.forwardEvent || ![kitFilter.forwardEvent isKindOfClass:[MPEvent class]]) {
                         return;
@@ -2302,6 +2320,13 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
                 } else if (selector == @selector(shouldDelayMParticleUpload)) {
                     [kitRegister.wrapperInstance shouldDelayMParticleUpload];
                     execStatus = [[MPKitExecStatus alloc] initWithSDKCode:kitRegister.code returnCode:MPKitReturnCodeSuccess];
+                } else if (selector == @selector(setATTStatus:withATTStatusTimestampMillis:)) {
+                    MPATTAuthorizationStatus status = (MPATTAuthorizationStatus)[parameters[0] unsignedIntValue];
+                    NSNumber *timestamp = [parameters[1] isKindOfClass:[NSNumber class]] ? (NSNumber*)parameters[1] : nil;
+                    execStatus = [kitRegister.wrapperInstance setATTStatus:status withATTStatusTimestampMillis:timestamp];
+                } else if (selector == @selector(setOptOut:)) {
+                    BOOL isOptOut = (parameters.count >= 1 && [parameters[0] boolValue]);
+                    execStatus = [kitRegister.wrapperInstance setOptOut:isOptOut];
                 } else if (parameters.count == 3) {
                     typedef MPKitExecStatus *(*send_type)(id, SEL, id, id, id);
                     send_type func = (send_type)objc_msgSend;
@@ -2335,25 +2360,46 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
         if (execStatus.success && ![lastKit isEqualToNumber:currentKit] && messageType != MPMessageTypeUnknown && messageType != MPMessageTypeMedia) {
             lastKit = currentKit;
             
-            MPForwardRecord *forwardRecord = nil;
-            
-            if (messageType == MPMessageTypeOptOut || messageType == MPMessageTypePushRegistration) {
-                forwardRecord = [[MPForwardRecord alloc] initWithMessageType:messageType
-                                                                  execStatus:execStatus
-                                                                   stateFlag:[userInfo[@"state"] boolValue]];
-            } else {
-                forwardRecord = [[MPForwardRecord alloc] initWithMessageType:messageType
-                                                                  execStatus:execStatus
-                                                                   kitFilter:kitFilter
-                                                               originalEvent:kitFilter.originalEvent];
-            }
-            
-            if (forwardRecord != nil) {
-                dispatch_async([MParticle messageQueue], ^{
-                    [[MParticle sharedInstance].persistenceController saveForwardRecord:forwardRecord];
-                });
+            if (!kitFilter.appliedProjections) {
+                [self forwardEventRecord:kitFilter messageType:messageType userInfo:userInfo execStatus:execStatus event:kitFilter.originalEvent];
+            } else if (kitFilter.originalCommerceEventCopy) {
+                [self forwardCommerceEventRecord:kitFilter execStatus:execStatus commerceEvent:kitFilter.originalCommerceEventCopy];
+            } else if (kitFilter.originalEventCopy) {
+                [self forwardEventRecord:kitFilter messageType:messageType userInfo:userInfo execStatus:execStatus event:kitFilter.originalEventCopy];
             }
         }
+    });
+}
+
+- (void)forwardEventRecord:(MPKitFilter *)kitFilter messageType:(MPMessageType)messageType userInfo:(NSDictionary *)userInfo execStatus:(MPKitExecStatus*) execStatus event:(MPBaseEvent *)event{
+    MPForwardRecord *forwardRecord = nil;
+    
+    if (messageType == MPMessageTypeOptOut || messageType == MPMessageTypePushRegistration) {
+        forwardRecord = [[MPForwardRecord alloc] initWithMessageType:messageType
+                                                          execStatus:execStatus
+                                                           stateFlag:[userInfo[@"state"] boolValue]];
+    } else {
+        
+        forwardRecord = [[MPForwardRecord alloc] initWithMessageType:messageType
+                                                          execStatus:execStatus
+                                                           kitFilter:kitFilter
+                                                       originalEvent:event];
+    }
+    
+    if (forwardRecord != nil) {
+        dispatch_async([MParticle messageQueue], ^{
+            [[MParticle sharedInstance].persistenceController saveForwardRecord:forwardRecord];
+        });
+    }
+}
+
+- (void)forwardCommerceEventRecord:(MPKitFilter *)kitFilter execStatus:(MPKitExecStatus*) execStatus commerceEvent:(MPCommerceEvent *)commerceEvent{
+    MPForwardRecord *forwardRecord = [[MPForwardRecord alloc] initWithMessageType:MPMessageTypeCommerceEvent
+                                                                       execStatus:execStatus
+                                                                        kitFilter:kitFilter
+                                                                    originalEvent:commerceEvent];
+    dispatch_async([MParticle messageQueue], ^{
+        [[MParticle sharedInstance].persistenceController saveForwardRecord:forwardRecord];
     });
 }
 
@@ -2512,7 +2558,7 @@ static const NSInteger sideloadedKitCodeStartValue = 1000000000;
         return nil;
     }
     
-    MPIUserDefaults *userDefaults = [MPIUserDefaults standardUserDefaults];
+    MPUserDefaults *userDefaults = [MPUserDefaults standardUserDefaultsWithStateMachine:[MParticle sharedInstance].stateMachine backendController:[MParticle sharedInstance].backendController identity:[MParticle sharedInstance].identity];
     NSArray<NSDictionary<NSString *, id> *> *userIdentities = userDefaults[kMPUserIdentityArrayKey];
     __block NSMutableArray *forwardUserIdentities = [[NSMutableArray alloc] initWithCapacity:userIdentities.count];
     

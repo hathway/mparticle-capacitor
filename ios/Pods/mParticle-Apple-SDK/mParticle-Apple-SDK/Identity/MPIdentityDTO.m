@@ -4,17 +4,16 @@
 
 #import "MPIdentityDTO.h"
 #import "mParticle.h"
-#import "MPDevice.h"
 #import "MPNotificationController.h"
 #import "MPPersistenceController.h"
-#import "MPStateMachine.h"
 #import "MPConsumerInfo.h"
-#import "MPIUserDefaults.h"
+#import "mParticleSwift.h"
 
 @interface MParticle ()
 
-@property (nonatomic, strong, readonly) MPPersistenceController *persistenceController;
-@property (nonatomic, strong, readonly) MPStateMachine *stateMachine;
+@property (nonatomic, strong, readonly) MPPersistenceController_PRIVATE *persistenceController;
+@property (nonatomic, strong, readonly) MPStateMachine_PRIVATE *stateMachine;
+@property (nonatomic, strong, nonnull) MPBackendController_PRIVATE *backendController;
 
 @end
 
@@ -55,13 +54,13 @@
     if (self) {
         _knownIdentities = [[MPIdentityHTTPIdentities alloc] initWithIdentities:apiRequest.identities];
         
-        NSNumber *mpid = [MPPersistenceController mpId];
+        NSNumber *mpid = [MPPersistenceController_PRIVATE mpId];
         if (mpid.longLongValue != 0) {
-            _previousMPID = [MPPersistenceController mpId].stringValue;
+            _previousMPID = [MPPersistenceController_PRIVATE mpId].stringValue;
         }
         
-        MPDevice *device = [[MPDevice alloc] init];
-        
+        MPDevice *device = [[MPDevice alloc] initWithStateMachine:[MParticle sharedInstance].stateMachine userDefaults:[MPUserDefaults standardUserDefaultsWithStateMachine:[MParticle sharedInstance].stateMachine backendController:[MParticle sharedInstance].backendController identity:[MParticle sharedInstance].identity] identity:[MParticle sharedInstance].identity];
+
         NSString *vendorId = device.vendorId;
         if (vendorId) {
             _knownIdentities.vendorId = vendorId;
@@ -73,10 +72,10 @@
         }
         
 #if TARGET_OS_IOS == 1
-        if (![MPStateMachine isAppExtension]) {
-            NSData *deviceTokenData = [MPNotificationController deviceToken];
+        if (![MPStateMachine_PRIVATE isAppExtension]) {
+            NSData *deviceTokenData = [MPNotificationController_PRIVATE deviceToken];
             if (deviceTokenData) {
-                NSString *deviceTokenString = [MPIUserDefaults stringFromDeviceToken:deviceTokenData];
+                NSString *deviceTokenString = [MPUserDefaults stringFromDeviceToken:deviceTokenData];
                 if (deviceTokenString && [deviceTokenString length] > 0) {
                     _knownIdentities.pushToken = deviceTokenString;
                 }

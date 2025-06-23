@@ -6,8 +6,6 @@
 #define MPMilliseconds(timestamp) @(trunc((timestamp) * 1000))
 #define MPCurrentEpochInMilliseconds @(trunc([[NSDate date] timeIntervalSince1970] * 1000))
 
-#define CRASH_LOGS_DIRECTORY_PATH [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"CrashLogs"];
-#define ARCHIVED_MESSAGES_DIRECTORY_PATH [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"ArchivedMessages"];
 #define STATE_MACHINE_DIRECTORY_PATH [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"StateMachine"];
 
 #define MPIsNull(object) ((object) == nil || (NSNull *)(object) == [NSNull null])
@@ -229,10 +227,13 @@ extern NSString * _Nonnull const kMPUserAgentValueUserDefaultsKey;
 extern NSString * _Nonnull const kMPFirstSeenUser;
 extern NSString * _Nonnull const kMPLastSeenUser;
 extern NSString * _Nonnull const kMPAppForePreviousForegroundTime;
+extern NSString * _Nonnull const kMPLastUploadSettingsUserDefaultsKey;
 
 // Remote configuration
 extern NSString * _Nonnull const kMPRemoteConfigExceptionHandlingModeKey;
 extern NSString * _Nonnull const kMPRemoteConfigExceptionHandlingModeAppDefined;
+extern NSString * _Nonnull const kMPRemoteConfigFlagsKey;
+extern NSString * _Nonnull const kMPRemoteConfigAudienceAPIKey;
 extern NSString * _Nonnull const kMPRemoteConfigExceptionHandlingModeForce;
 extern NSString * _Nonnull const kMPRemoteConfigExceptionHandlingModeIgnore;
 extern NSString * _Nonnull const kMPRemoteConfigCrashMaxPLReportLength;
@@ -483,4 +484,39 @@ extern const NSInteger MAX_BYTES_PER_EVENT_CRASH;
 extern const NSInteger MAX_BYTES_PER_BATCH_CRASH;
 extern const NSInteger MAX_EVENTS_PER_BATCH;
 
+// Device (Need these in objective C until the classes that use them are refactored to Swift)
+extern NSString * _Nonnull const kMPDeviceInformationKey;
+extern NSString * _Nonnull const kMPDeviceBrandKey;
+extern NSString * _Nonnull const kMPDeviceProductKey;
+extern NSString * _Nonnull const kMPDeviceNameKey;
+extern NSString * _Nonnull const kMPDeviceAdvertiserIdKey;
+extern NSString * _Nonnull const kMPDeviceAppVendorIdKey;
+extern NSString * _Nonnull const kMPDeviceBuildIdKey;
+extern NSString * _Nonnull const kMPDeviceManufacturerKey;
+extern NSString * _Nonnull const kMPDevicePlatformKey;
+extern NSString * _Nonnull const kMPDeviceOSKey;
+extern NSString * _Nonnull const kMPDeviceModelKey;
+extern NSString * _Nonnull const kMPScreenHeightKey;
+extern NSString * _Nonnull const kMPScreenWidthKey;
+extern NSString * _Nonnull const kMPDeviceLocaleCountryKey;
+extern NSString * _Nonnull const kMPDeviceLocaleLanguageKey;
+extern NSString * _Nonnull const kMPNetworkCountryKey;
+extern NSString * _Nonnull const kMPNetworkCarrierKey;
+extern NSString * _Nonnull const kMPMobileNetworkCodeKey;
+extern NSString * _Nonnull const kMPMobileCountryCodeKey;
+extern NSString * _Nonnull const kMPTimezoneOffsetKey;
+extern NSString * _Nonnull const kMPTimezoneDescriptionKey;
+extern NSString * _Nonnull const kMPDeviceJailbrokenKey;
+extern NSString * _Nonnull const kMPDeviceArchitectureKey;
+extern NSString * _Nonnull const kMPDeviceRadioKey;
+extern NSString * _Nonnull const kMPDeviceFloatingPointFormat;
+extern NSString * _Nonnull const kMPDeviceSignerIdentityString;
+extern NSString * _Nonnull const kMPDeviceIsTabletKey;
+extern NSString * _Nonnull const kMPDeviceIdentifierKey;
+extern NSString * _Nonnull const kMPDeviceLimitAdTrackingKey;
+extern NSString * _Nonnull const kMPDeviceIsDaylightSavingTime;
+extern NSString * _Nonnull const kMPDeviceInvalidVendorId;
+
+// MPRokt Constants
+extern NSString * _Nonnull const kMPPlacementAttributesMapping;
 #endif

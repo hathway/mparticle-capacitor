@@ -1,28 +1,28 @@
 #import "MPURLRequestBuilder.h"
 #import <CommonCrypto/CommonHMAC.h>
-#import "MPStateMachine.h"
 #import "MPIConstants.h"
 #import <UIKit/UIKit.h>
-#import "MPIUserDefaults.h"
 #import "MPKitContainer.h"
 #import "MPExtensionProtocol.h"
 #import "MPILogger.h"
 #import "MPApplication.h"
-#import "MParticleWebView.h"
 #import "MPURL.h"
+#import "mParticle.h"
+#import "MParticleSwift.h"
 
 static NSDateFormatter *RFC1123DateFormatter;
 
 @interface MParticle ()
 
-@property (nonatomic, strong, readonly) MPStateMachine *stateMachine;
-@property (nonatomic, strong, readonly) MPKitContainer *kitContainer;
-@property (nonatomic, strong, readonly) MParticleWebView *webView;
+@property (nonatomic, strong, readonly) MPStateMachine_PRIVATE *stateMachine;
+@property (nonatomic, strong, nonnull) MPBackendController_PRIVATE *backendController;
+@property (nonatomic, strong, readonly) MParticleWebView_PRIVATE *webView;
 
 @end
     
 @interface MPURLRequestBuilder() {
-    BOOL SDKURLRequest;
+    BOOL _SDKURLRequest;
+    NSString *_secret;
 }
 
 @property (nonatomic, strong) NSData *headerData;
@@ -81,7 +81,7 @@ static NSDateFormatter *RFC1123DateFormatter;
 - (NSString *)userAgent {
     BOOL isConfig = [[_url.defaultURL relativePath] rangeOfString:@"/config"].location != NSNotFound;
     if (isConfig) {
-        return MParticle.sharedInstance.webView.originalDefaultAgent;
+        return MParticle.sharedInstance.webView.originalDefaultUserAgent;
     }
     return MParticle.sharedInstance.webView.userAgent;
 }
@@ -91,7 +91,7 @@ static NSDateFormatter *RFC1123DateFormatter;
     MPURLRequestBuilder *urlRequestBuilder = [[MPURLRequestBuilder alloc] initWithURL:url];
     
     if (urlRequestBuilder) {
-        urlRequestBuilder->SDKURLRequest = NO;
+        urlRequestBuilder->_SDKURLRequest = NO;
     }
     
     return urlRequestBuilder;
@@ -103,7 +103,7 @@ static NSDateFormatter *RFC1123DateFormatter;
     urlRequestBuilder.message = message;
     
     if (urlRequestBuilder) {
-        urlRequestBuilder->SDKURLRequest = YES;
+        urlRequestBuilder->_SDKURLRequest = YES;
     }
     
     return urlRequestBuilder;
@@ -136,6 +136,12 @@ static NSDateFormatter *RFC1123DateFormatter;
     return self;
 }
 
+- (MPURLRequestBuilder *)withSecret:(nullable NSString *)secret {
+    _secret = secret;
+    
+    return self;
+}
+
 - (NSMutableURLRequest *)build {
     NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:_url.url];
     [urlRequest setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
@@ -143,16 +149,32 @@ static NSDateFormatter *RFC1123DateFormatter;
     [urlRequest setHTTPMethod:_httpMethod];
 
     BOOL isIdentityRequest = [urlRequest.URL.accessibilityHint isEqualToString:@"identity"];
+    BOOL isAudienceRequest = [urlRequest.URL.accessibilityHint isEqualToString:@"audience"];
     
-    if (SDKURLRequest || isIdentityRequest) {
+    NSString *date = [RFC1123DateFormatter stringFromDate:[NSDate date]];
+    NSString *secret = _secret ?: [MParticle sharedInstance].stateMachine.secret;
+
+    if (isAudienceRequest) {
+        NSString *audienceSignature = [NSString stringWithFormat:@"%@\n%@\n%@?%@", _httpMethod, date, [urlRequest.URL relativePath], [urlRequest.URL query]];
+        MPILogVerbose(@"Audience Signature:\n%@", audienceSignature);
+        NSString *hmacSha256Encode = [self hmacSha256Encode:audienceSignature key:secret];
+        if (hmacSha256Encode) {
+            [urlRequest setValue:hmacSha256Encode forHTTPHeaderField:@"x-mp-signature"];
+        }
+        [urlRequest setValue:date forHTTPHeaderField:@"Date"];
+        [urlRequest setValue:[MParticle sharedInstance].stateMachine.apiKey forHTTPHeaderField:@"x-mp-key"];
+        NSString *userAgent = [self userAgent];
+        if (userAgent) {
+            [urlRequest setValue:userAgent forHTTPHeaderField:@"User-Agent"];
+        }
+    } else if (_SDKURLRequest || isIdentityRequest) {
         NSString *deviceLocale = [[NSLocale autoupdatingCurrentLocale] localeIdentifier];
-        MPKitContainer *kitContainer = !isIdentityRequest ? [MParticle sharedInstance].kitContainer : nil;
+        MPKitContainer_PRIVATE *kitContainer = !isIdentityRequest ? [MParticle sharedInstance].kitContainer_PRIVATE : nil;
         NSArray<NSNumber *> *supportedKits = [kitContainer supportedKits];
         NSString *contentType = nil;
         NSString *kits = nil;
         NSString *relativePath = [_url.defaultURL relativePath];
         NSString *signatureMessage;
-        NSString *date = [RFC1123DateFormatter stringFromDate:[NSDate date]];
         NSTimeZone *timeZone = [NSTimeZone defaultTimeZone];
         NSString *secondsFromGMT = [NSString stringWithFormat:@"%ld", (unsigned long)[timeZone secondsFromGMT]];
         NSRange range;
@@ -172,7 +194,7 @@ static NSDateFormatter *RFC1123DateFormatter;
                 kits = nil;
             }
             
-            kits = [MParticle.sharedInstance.kitContainer.configuredKitsRegistry componentsJoinedByString:@","];
+            kits = [MParticle.sharedInstance.kitContainer_PRIVATE.configuredKitsRegistry componentsJoinedByString:@","];
             
             range = [_message rangeOfString:kMPMessageTypeNetworkPerformance];
             if (range.location != NSNotFound) {
@@ -180,33 +202,28 @@ static NSDateFormatter *RFC1123DateFormatter;
             }
             
             signatureMessage = [NSString stringWithFormat:@"%@\n%@\n%@%@", _httpMethod, date, relativePath, _message];
-        } else { // /config and /audience
+        } else { // /config
             contentType = @"application/x-www-form-urlencoded";
             
-            range = [relativePath rangeOfString:@"/config"];
-            if (range.location != NSNotFound) {
-                if (supportedKits) {
-                    kits = [supportedKits componentsJoinedByString:@","];
-                }
-                
-                NSString *environment = [NSString stringWithFormat:@"%d", (int)[MPStateMachine environment]];
-                [urlRequest setValue:environment forHTTPHeaderField:@"x-mp-env"];
-                
-                MPIUserDefaults *userDefaults = [MPIUserDefaults standardUserDefaults];
-                NSString *eTag = userDefaults[kMPHTTPETagHeaderKey];
-                NSDictionary *config = [userDefaults getConfiguration];
-                if (eTag && config) {
-                    [urlRequest setValue:eTag forHTTPHeaderField:@"If-None-Match"];
-                }
-                
-                NSString *query = [_url.defaultURL query];
-                signatureMessage = [NSString stringWithFormat:@"%@\n%@\n%@?%@", _httpMethod, date, relativePath, query];
-            } else {
-                signatureMessage = [NSString stringWithFormat:@"%@\n%@\n%@", _httpMethod, date, relativePath];
+            if (supportedKits) {
+                kits = [supportedKits componentsJoinedByString:@","];
             }
+            
+            NSString *environment = [NSString stringWithFormat:@"%d", (int)[MPStateMachine_PRIVATE environment]];
+            [urlRequest setValue:environment forHTTPHeaderField:@"x-mp-env"];
+            
+            MPUserDefaults *userDefaults = [MPUserDefaults standardUserDefaultsWithStateMachine:[MParticle sharedInstance].stateMachine backendController:[MParticle sharedInstance].backendController identity:[MParticle sharedInstance].identity];
+            NSString *eTag = userDefaults[kMPHTTPETagHeaderKey];
+            NSDictionary *config = [userDefaults getConfiguration];
+            if (eTag && config) {
+                [urlRequest setValue:eTag forHTTPHeaderField:@"If-None-Match"];
+            }
+            
+            NSString *query = [_url.defaultURL query];
+            signatureMessage = [NSString stringWithFormat:@"%@\n%@\n%@?%@", _httpMethod, date, relativePath, query];
         }
         
-        NSString *hmacSha256Encode = [self hmacSha256Encode:signatureMessage key:[MParticle sharedInstance].stateMachine.secret];
+        NSString *hmacSha256Encode = [self hmacSha256Encode:signatureMessage key:secret];
         if (hmacSha256Encode) {
             [urlRequest setValue:hmacSha256Encode forHTTPHeaderField:@"x-mp-signature"];
         }
@@ -248,6 +265,10 @@ static NSDateFormatter *RFC1123DateFormatter;
         [urlRequest setHTTPBody:_postData];
     }
     
+    MPILogVerbose(@"URL Request built");
+    MPILogVerbose(@"with URL:\n%@", urlRequest.URL);
+    MPILogVerbose(@"with headers:\n%@", urlRequest.allHTTPHeaderFields);
+
     return urlRequest;
 }
 

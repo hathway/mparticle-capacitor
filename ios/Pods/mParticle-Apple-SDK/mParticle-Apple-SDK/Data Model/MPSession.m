@@ -2,7 +2,6 @@
 #import "MPIConstants.h"
 #import "MPPersistenceController.h"
 #import "MPApplication.h"
-#import "MPDevice.h"
 
 NSString *const sessionUUIDKey = @"sessionId";
 
@@ -10,7 +9,7 @@ NSString *const sessionUUIDKey = @"sessionId";
 
 - (instancetype)init {
     NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
-    NSNumber *mpId = [MPPersistenceController mpId];
+    NSNumber *mpId = [MPPersistenceController_PRIVATE mpId];
     return [self initWithSessionId:0
                               UUID:[[NSUUID UUID] UUIDString]
                     backgroundTime:0.0

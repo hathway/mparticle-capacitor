@@ -255,22 +255,6 @@
         "slug": "submitpurchaseevent"
       },
       {
-        "name": "submitCheckoutEvent",
-        "signature": "(call: { productData: any; customAttributes: any; transactionAttributes: any; }) => void",
-        "parameters": [
-          {
-            "name": "call",
-            "docs": "",
-            "type": "{ productData: any; customAttributes: any; transactionAttributes: any; }"
-          }
-        ],
-        "returns": "void",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [],
-        "slug": "submitCheckoutEvent"
-      },
-      {
         "name": "registerMParticleUser",
         "signature": "(call: { email: string; customerId?: string; userAttributes: any; }) => Promise<any>",
         "parameters": [
@@ -532,147 +516,147 @@
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         },
         {
           "name": "email",
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         },
         {
           "name": "other",
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         },
         {
           "name": "other2",
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         },
         {
           "name": "other3",
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         },
         {
           "name": "other4",
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         },
         {
           "name": "other5",
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         },
         {
           "name": "other6",
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         },
         {
           "name": "other7",
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         },
         {
           "name": "other8",
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         },
         {
           "name": "other9",
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         },
         {
           "name": "other10",
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         },
         {
           "name": "mobile_number",
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         },
         {
           "name": "phone_number_2",
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         },
         {
           "name": "phone_number_3",
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         },
         {
           "name": "facebook",
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         },
         {
           "name": "facebookcustomaudienceid",
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         },
         {
           "name": "google",
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         },
         {
           "name": "twitter",
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         },
         {
           "name": "microsoft",
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         },
         {
           "name": "yahoo",
           "tags": [],
           "docs": "",
           "complexTypes": [],
-          "type": "string | undefined"
+          "type": "string | null | undefined"
         }
       ]
     },
