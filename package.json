@@ -80,7 +80,7 @@
     "karma-jasmine-html-reporter": "^2.1.0",
     "prettier": "^3.2.5",
     "prettier-plugin-java": "^2.6.0",
-    "rimraf": "^5.0.5",
+    "rimraf": "^5.0.10",
     "rollup": "^4.13.2",
     "rxjs": "^7.8.1",
     "swiftlint": "^1.0.2",
@@ -106,6 +106,7 @@
     }
   },
   "dependencies": {
-    "@mparticle/web-sdk": "^2.25.1"
+    "@mparticle/web-sdk": "^2.25.1",
+    "docgen": "^0.0.1"
   }
 }
