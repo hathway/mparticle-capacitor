@@ -270,16 +270,28 @@ public class MParticleCapacitorPlugin extends Plugin {
             productsArr.add(implementation.createMParticleProduct(JSObject.fromJSONObject((JSONObject) products_tmp.get(i))));
         }
 
+        TransactionAttributes attributes = null;
         JSObject t_attributes = call.getObject("transactionAttributes");
-        TransactionAttributes attributes = new TransactionAttributes(t_attributes.getString("Id"))
-        .setRevenue((double) t_attributes.getInteger("Revenue"))
-        .setTax((double) t_attributes.getInteger("Tax"));
-        CommerceEvent event = new CommerceEvent.Builder(Product.PURCHASE, productsArr.get(0))
-        .products(productsArr)
-        .customAttributes(customAttributes)    
-        .transactionAttributes(attributes)
-        .build();
-        MParticle.getInstance().logEvent(event);
+        if (t_attributes != null) {
+            String id = t_attributes.getString("Id");
+            if (id != null) {
+                attributes = new TransactionAttributes(id);
+                Integer revenue = t_attributes.getInteger("Revenue");
+                Integer tax = t_attributes.getInteger("Tax");
+                if (revenue != null) attributes.setRevenue((double) revenue);
+                if (tax != null) attributes.setTax((double) tax);
+            }
+        }
+
+        CommerceEvent.Builder builder = new CommerceEvent.Builder(Product.CHECKOUT, productsArr.get(0))
+            .products(productsArr)
+            .customAttributes(customAttributes);
+
+        if (attributes != null) {
+            builder.transactionAttributes(attributes);
+        }
+
+        MParticle.getInstance().logEvent(builder.build());
     }
 
     @PluginMethod
@@ -305,16 +317,28 @@ public class MParticleCapacitorPlugin extends Plugin {
             productsArr.add(implementation.createCustomMParticleProduct(JSObject.fromJSONObject((JSONObject) products_tmp.get(i))));
         }
 
+        TransactionAttributes attributes = null;
         JSObject t_attributes = call.getObject("transactionAttributes");
-        TransactionAttributes attributes = new TransactionAttributes(t_attributes.getString("Id"))
-        .setRevenue((double) t_attributes.getInteger("Revenue"))
-        .setTax((double) t_attributes.getInteger("Tax"));
-        CommerceEvent event = new CommerceEvent.Builder(Product.CHECKOUT, productsArr.get(0))
-        .products(productsArr)
-        .customAttributes(customAttributes)    
-        .transactionAttributes(attributes)
-        .build();
-        MParticle.getInstance().logEvent(event);
+        if (t_attributes != null) {
+            String id = t_attributes.getString("Id");
+            if (id != null) {
+                attributes = new TransactionAttributes(id);
+                Integer revenue = t_attributes.getInteger("Revenue");
+                Integer tax = t_attributes.getInteger("Tax");
+                if (revenue != null) attributes.setRevenue((double) revenue);
+                if (tax != null) attributes.setTax((double) tax);
+            }
+        }
+
+        CommerceEvent.Builder builder = new CommerceEvent.Builder(Product.CHECKOUT, productsArr.get(0))
+            .products(productsArr)
+            .customAttributes(customAttributes);
+
+        if (attributes != null) {
+            builder.transactionAttributes(attributes);
+        }
+
+        MParticle.getInstance().logEvent(builder.build());
     }
 
     @PluginMethod
