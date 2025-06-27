@@ -67,11 +67,13 @@ public class MParticleCapacitor {
                 }
             }
         }
+        Integer quantity = productData.getInteger("quantity");
+        double finalQuantity = (quantity != null) ? quantity.doubleValue() : 1.0;
         return new Product.Builder(
             (String) productData.getString("name"),
             (String) productData.getString("sku"),
             (double) Double.parseDouble(productData.getString("cost")))
-            .quantity((double) productData.getInteger("quantity"))
+            .quantity(finalQuantity)
             .customAttributes((Map<String,String>) customAttributes)
             .build();
     }
